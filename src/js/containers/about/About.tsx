@@ -122,12 +122,7 @@ class About extends React.Component{
 	}
 	load = ()=>{
 		
-			import(/*webpackChunkName:"test3"*/"@js/test3").then(res=>{
-				this.setState({
-					mod:res
-				});
-
-			});
+		
 		}
 		change=()=>{
 
@@ -142,18 +137,7 @@ class About extends React.Component{
 
 	}
 
-	shouldComponentUpdate(...arg:any[]){
-
-		const next = arg[1];
-
-
-		if(this.state.load != next.load){
-				this.load();
-		}
-
-		return !this.state.mod;
-
-	}
+	
 
 	render(){
 
@@ -163,7 +147,6 @@ class About extends React.Component{
 						<p>我要异步加载</p>
 						<Abouts />
 						<button 
-							onClick={this.change}
 						>6666</button>
 						<div>
 						<ShowModal/>
