@@ -1,5 +1,5 @@
 import "@css/main.scss";
-import App from "./js/Router";
+import App from "./js/index";
 import {Provider} from "react-redux"
 import {createStore,applyMiddleware,compose} from "redux";
 import {logger} from "redux-logger" ;
@@ -37,8 +37,8 @@ ReactDom.render((
 if(module.hot){
 
 		// 热替换react
-		module.hot.accept("./js/Router",()=>{
-					import("./js/Router").then((module:any)=>{
+		module.hot.accept("./js/index",()=>{
+					import("./js/index").then((module:any)=>{
 						const AppCom = module.default;
 							ReactDom.render((
 								<Provider store={store}>

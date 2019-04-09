@@ -1,40 +1,48 @@
-import {Route,Switch} from "react-router";
-import {Link,BrowserRouter} from "react-router-dom";
+import {Route} from "react-router";
 import * as React from "react";
-import lazyComponent from "@js/common/Boudle";
 
-import * as loadable from "react-loadable"
+import * as loadable from "react-loadable";
+
+const Main = ({routerData}:{routerData:any[]})=>{
+
+			
+
+			const a = routerData.map(val=>{
+
+						const child  = val.children;
+						let childRouter ;
+						
+						if(child.length){
+
+								childRouter = child.map((val:any)=>{
+											const {url,id} = val;
+											return <Route path={`${url}`} key={id} component={loadable({
+																loader:()=>import("./containers/about/About"),
+																loading:()=><div>loading...</div>
+															})}  />
+
+									})
+
+						}
+
+				return  childRouter;
+
+			});
 
 
+			return (a as any).flat();
 
 
-const Nav = ()=>(
-			 <div>
-					<Link to="/todo" > tdos </Link>
-					<Link to="/about" >Aaddddsout</Link>
-				</div> 
-	);
+			// return (
 
-const Page = ()=>(
-						<BrowserRouter basename="/asdf">
-							<Nav/>
-							<Switch>
-										
+			// 										<Route path="/about" component={loadable({
+			// 												loader:()=>import( /*webpackChunkName: "about" */"./containers/about/About"),
+			// 												loading:()=><div>loading...</div>
+			// 										})}  />
 
-								<Route path="/about" component={loadable({
-										loader:()=>import(/* webpackChunkName: "about" */"./containers/about/About"),
-										loading:()=><div>loading...</div>
+			// 	);
 
-								})}  />
-									
-								<Route path="/todo" 
-									component={lazyComponent(()=>import(/* webpackChunkName: "todo" */"@js/index"))}
-								/>
-							</Switch>
-				
-							<div id="modal" className="modal"> </div>
-						</BrowserRouter>
 
-	);
+}
 
-export default Page ;
+export default Main ;

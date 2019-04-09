@@ -161,8 +161,8 @@ module.exports = env =>{
 		        clientLogLevel: "none", // cancel console client log
 		        port: '8034', //设置端口号
 		        proxy: {
-		             '/': {
-		                target: 'http://yapi.demo.qunar.com/mock/69276',
+		             '/69276': {
+		                target: 'http://yapi.demo.qunar.com/mock',
 		                secure: false,
 		                changeOrigin:true,
 		            }
