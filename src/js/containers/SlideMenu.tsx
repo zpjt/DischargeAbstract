@@ -22,7 +22,7 @@ declare global {
 class SlideMenu extends React.PureComponent{
 
 	state:slideMenu = {
-		expand:false,
+		expand:true,
 		isFetch:false,
 		data:Immutable.List([]),
 	}
@@ -67,7 +67,7 @@ class SlideMenu extends React.PureComponent{
 		const {expand,data} = this.state;
 
 							
-		return (<div className={"g-slideMenu "+ (expand ? "expand" : "")}>
+		return (<div className={"g-slideMenu "+ (!expand ? "expand" : "")}>
 										<SlideBar expandHandle={this.expandHandle}/>
 										<ErrorBoundary>
 											<MenuNav  data={data} expand={expand} /> 

@@ -3,6 +3,8 @@ import {Link} from "react-router-dom";
 import "@css/menu.scss";
 import * as Immutable from "immutable";
 
+
+
 type fieldConfig = {
 		textFile:string;
 		childrenField?:string;
@@ -26,6 +28,9 @@ type ItemProps ={
 	slectItem:(id:string,type?:string)=>void;
 	activeName:string;
 	expand:boolean;
+	sub?:Immutable.List<ItemProps["obj"]>;
+	childSlected?:string;
+	parId?:string;
 };
 
 class ParMenu extends React.PureComponent<ItemProps>{
@@ -42,7 +47,7 @@ class ParMenu extends React.PureComponent<ItemProps>{
 		
 		if(nextProps.expand!==this.props.expand){
 				this.setState({
-								drop:!this.props.expand,
+								drop:true,
 				});
 		}
 	
@@ -53,8 +58,9 @@ class ParMenu extends React.PureComponent<ItemProps>{
 	render(){
 
 	
-			console.log("reder")
-			const {obj,config,children,slectItem,activeName} = this.props;
+			
+			const {obj,config=NavMenu.defaultConfig,slectItem,activeName,sub,childSlected} = this.props;
+
 
 
 			const path = obj.get(config.pathFiled);
@@ -77,7 +83,14 @@ class ParMenu extends React.PureComponent<ItemProps>{
 									</span>
 							</div>	
 							<ul className="child-ul " style={hObj}>
-								{children}
+								{
+										sub!.map((node:Immutable.Map<string,any>)=>{
+														  const nodeId = node.get("id");
+															const activeName = nodeId === childSlected ? "active":"";
+														return <SubMenu obj={node} activeName={activeName}   config={config} key={nodeId} slectItem={slectItem} parId={id}/>
+										})
+
+								}
 							</ul>
 					</li>
 				)
@@ -88,11 +101,11 @@ class ParMenu extends React.PureComponent<ItemProps>{
 
 
 
-const SubMenu:React.SFC< (Pick<ItemProps,Exclude<keyof ItemProps,"expand">>  & {parId:string})> = ({obj,config,slectItem,parId,activeName})=>{
+const SubMenu:React.SFC< (Pick<ItemProps,Exclude<keyof ItemProps,"expand">>)> = ({obj,config=NavMenu.defaultConfig,slectItem,parId,activeName})=>{
 
-		const path = obj.get(config.pathFiled);
+		  const path = obj.get(config.pathFiled);
 			const text = obj.get(config.textFile);
-		const id = obj.get(config.idField);
+		  const id = obj.get(config.idField);
 	return (
 			<li className="li-child">
 					<div  className={"menu-item menu-child "+activeName} >
@@ -124,7 +137,6 @@ class NavMenu extends React.PureComponent<props,state>{
 	state={
 		parSlected:"",
 		childSlected:"",
-		test:false,
 	}
 
 	slectItem=(id:string,type?:string)=>{
@@ -155,47 +167,29 @@ class NavMenu extends React.PureComponent<props,state>{
 	render(){
 		const {data,config=NavMenu.defaultConfig,expand} = this.props;
 
-		const {childrenField,...itemConfig} = config ;
+		const {childrenField} = config ;
 
 		const {parSlected,childSlected} = this.state;
-		childSlected
-		const val = data.get(0);
-
-
-			const node = val ? val.get("children").get(0) : null ;
+		
 
 		return <ul className="g-menu">
-							{val ? <ParMenu expand={expand} activeName={val.get("id") === parSlected ? "active":""}  obj={val}  config={NavMenu.defaultConfig} key={val.get("id")} slectItem={this.slectItem}>
-																																<SubMenu obj={node} activeName={""}   config={itemConfig} key={node.get("id")} slectItem={this.slectItem} parId={val.get("id")}/>
-															</ParMenu>:""}
-												{
+						
+							{
 
-								// data.map(item=>{
-															
+								data.map(item=>{
+															const val = item!;
+															const child = val.get(childrenField!) as Immutable.List<Immutable.Map<string,any>>;
+															const id = val.get("id");
+															const activeName = id === parSlected ? "active" : "";
 
-								// 							const val = item!;
-								// 							const child = val.get(childrenField!) as Immutable.List<Immutable.Map<string,any>>;
-								// 							const id = val.get("id");
-								// 							const activeName = id === parSlected ? "active" : "";
-
-								// 							if(child && child.size){
-								// 									return (
-								// 												<ParMenu expand={expand} activeName={activeName}  obj={val}  config={NavMenu.defaultConfig} key={id} slectItem={this.slectItem}>
-								// 													{
-								// 															child.map((node:Immutable.Map<string,any>)=>{
-								// 																const nodeId = node.get("id");
-								// 																	const activeName = nodeId === childSlected ? "active":"";
-								// 																return <SubMenu obj={node} activeName={activeName}   config={itemConfig} key={nodeId} slectItem={this.slectItem} parId={id}/>
-								// 															})
-								// 													}
-								// 												</ParMenu>
-								// 										)
-								// 							}else{
-								// 									return <SubMenu obj={val} key={id} config={itemConfig} activeName={activeName}  slectItem={this.slectItem} parId={""} />
-								// 							}
-								// 					})
+															if(child && child.size){
+																	return <ParMenu expand={expand} activeName={activeName} childSlected={childSlected} sub={child}  obj={val}  config={config} key={id} slectItem={this.slectItem} /> 
+															}else{
+																	return <SubMenu obj={val} key={id} config={config}  activeName={activeName}  slectItem={this.slectItem} parId={""} />
+															}
+													})
+							
 							}
-							<li><button onClick={this.chageState}>测试纯组件</button></li>
 		</ul>
 	}
 }
