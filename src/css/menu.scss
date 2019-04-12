@@ -1,0 +1,101 @@
+
+$color:#535be9;
+$active:#dcdcff;
+$H:48px;
+.g-menu{
+	.menu-item{
+		position: relative;
+		padding-left: 20%;
+	}
+	.menu-par{
+		font-size: 16px;
+		height: $H;
+		line-height: $H;
+		display: flex;
+		justify-content: space-between;
+		padding-right:16px;
+		color:$color;
+		a{
+			color:$color;
+		}
+		.par-icon{
+			position: absolute;
+	    margin-left: -30px;
+		}
+	}
+	.menu-child{
+		height: $H - 10px;
+		line-height: $H - 10px;
+		a{
+			color:black;
+		}
+
+		a:hover{
+			color:$color;
+		}
+		
+	}
+	.child-ul{	
+		overflow: hidden;
+	    transition: max-height .3s ease-out;
+ 		
+	}
+	.j-slide_menu{
+		cursor: pointer;
+	}
+
+}
+
+.menu-par.active{
+	background: $active;
+	
+}
+
+.menu-child.active{
+	a{
+			color:$color;
+	}
+}
+
+/* 菜单收缩时 */
+.g-slideMenu.expand{
+		.g-menu{
+			li{
+				position: relative;
+			}
+		}
+		
+		.menu-par{
+		    justify-content: center;
+		    padding-left:0;
+	  	  padding-right: 0;
+		    .j-nav{
+						display: none
+				}
+				.j-slide_menu{
+						display: none;
+				}
+		}	
+		.par-icon{
+	    margin-left:0;
+		}
+		.li-par:hover .child-ul{
+			
+			display: block;
+			position:absolute;
+			top:0;
+			left: 50px;
+			width: 120px;
+			background-color: #ffffff;
+			box-shadow: 0px 3px 6px 0px 
+			rgba(0, 0, 0, 0.16);
+		
+		}
+		.menu-par + .child-ul{
+			display: none;
+		}
+		
+
+}
+
+

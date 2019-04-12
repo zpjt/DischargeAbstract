@@ -4,6 +4,7 @@ const htmlWebpackPlugin = require("html-webpack-plugin");
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin"); 
 const CleanDistPlugin = require("clean-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = env =>{
 
@@ -65,6 +66,32 @@ module.exports = env =>{
 									},
 					]	
 				},
+				{
+		      test: /\.(jpg|png|ico|jpeg|gif)$/,
+		      exclude: /assert/, // 排除不处理的目录
+		      use: [{
+		        loader: "url-loader",
+		        options: {
+		          name: "[name].[ext]",
+		          limit:100,
+		          publicPath: "../img/",
+		          outputPath: "img/"
+		        }
+		      }]
+		    },	
+		    {
+			      test: /\.(eot|svg|ttf|woff|woff2)$/,
+			    //  exclude://,
+			      use: [{
+			        loader: "url-loader",
+			        options: {
+			         limit:5000,
+			          name: "[name].[ext]",
+			          publicPath: "../fonts/",
+			          outputPath: "fonts/"
+			        }
+			   	   }]
+				} 
 
 			]
 		},
@@ -134,6 +161,9 @@ module.exports = env =>{
 						template:path.join(__dirname,"src/index.html"),
 						chunks:["manifest","vendor","main"]
 				}),
+				new CopyWebpackPlugin([
+					{ from: './src/assert', to: './assert' },
+				]),
 				new CleanDistPlugin(),
 			  new webpack.HotModuleReplacementPlugin(),//模块的热替换
 	 		  new webpack.NamedModulesPlugin(), //热更新时显示更新的模块的名字，默认是模块的id

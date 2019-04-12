@@ -1,5 +1,6 @@
 import * as React from "react";
 import {Link} from "react-router-dom" ;
+import "@css/menu.scss";
 
 interface MenuItem extends React.Props<{}> {
 	path:string;
@@ -7,6 +8,7 @@ interface MenuItem extends React.Props<{}> {
 	id:string;
 	indentNum:number;
 	is_par:boolean;
+	index:number;
 }
 
 
@@ -20,19 +22,27 @@ type MenuConfig = {
 }
 const SlideIcon = ()=>(
 
-		<span>
-			<i className="fa fa-arrorw"></i>
+		<span className="j-slide_menu">
+			<i className="fa fa-chevron-down"></i>
 		</span>
-	);
+);
+
+const iconConfig = ["fa-search","fa-exchange","fa-user-plus"];
+
+const ParIcon = ({index}:{index:number})=>(
+		<span className="par-icon">
+			<i className={"fa "+ iconConfig[index]}></i>
+		</span>
+	)
 
 const MenuItem = (props:MenuItem)=>{
 
-	const {path,text,indentNum,is_par,id} = props;
+	const {path,text,is_par,index} = props;
 	return (
-		<li>
-			<div style={{paddingLeft:indentNum*16+"px"}} className={is_par?"menu-par":"menu-child"} data-id={id}>
-					<i className="fa fa-circle"></i>
-					<Link to={path}>{text}</Link>
+		<li className={(is_par?"li-par":"li-child")}>
+			<div  className={"menu-item "+(is_par?"menu-par":"menu-child")} >
+					{is_par ? <ParIcon index={index} /> : ""}
+					<span className="j-nav"><Link to={path}>{text}</Link></span>
 					{is_par ? <SlideIcon/> : ""}
 			</div>	
 			{props.children}
@@ -47,7 +57,7 @@ const MapMenuItem = ({data,config}:MenuConfig,lev:number):React.ReactNodeArray=>
 						return (
 
 								
-							 data.map(val=>{
+							 data.map((val,index:number)=>{
 
 							 		const {textField="text",idField="id",childField="children"} = config ;
 							 		const text = val[textField] as string;
@@ -59,7 +69,8 @@ const MapMenuItem = ({data,config}:MenuConfig,lev:number):React.ReactNodeArray=>
 							 				text,
 							 				id,
 							 				indentNum:_lev,
-							 				is_par:!!child.length
+							 				is_par:!!child.length,
+							 				index,
 							 		};
 
 							 		if(child.length){
@@ -84,10 +95,11 @@ const MapMenuItem = ({data,config}:MenuConfig,lev:number):React.ReactNodeArray=>
 
 const Menu  = (props:MenuConfig)=>{
 
+
 	const {data,config}= props;
 
 	return (
-			<ul>
+			<ul className="g-menu">
 				{MapMenuItem({data,config},0)}
 			</ul>
 	);
