@@ -3,7 +3,10 @@ import {Link} from "react-router-dom";
 import "@css/menu.scss";
 import * as Immutable from "immutable";
 
+import * as Velocity from "velocity-react";
 
+
+console.log(Velocity);
 
 type fieldConfig = {
 		textFile:string;
@@ -69,6 +72,7 @@ class ParMenu extends React.PureComponent<ItemProps>{
 			const id = obj.get(config.idField);
 
 			const hObj = !this.state.drop ?{maxHeight:"0"}:{maxHeight:"120px"};
+			
 			return (
 					<li className="li-par">
 							<div  className={"menu-item menu-par " + activeName} onClick={()=>slectItem(id)}>

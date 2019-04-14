@@ -21,9 +21,17 @@ class Head extends React.Component{
 								<div>
 									<p>系统设置</p>
 								</div>
-								<div>
-									<span className="fa fa-user">&nbsp;&nbsp;</span>
-									<span>demo</span>
+								<div className="g-user-opt" >
+									<div style={{padding:"20px 10px",}}>
+										<span className="fa fa-user">&nbsp;&nbsp;</span>
+										<span>demo</span>
+									</div>
+									<ul className="m-sysOpt">
+											<li>
+												<span className="fa fa-power-off ">&nbsp;&nbsp;</span>
+												<span>推出系统</span>
+											</li>
+									</ul>
 								</div>
 							</div>
 						</div>
