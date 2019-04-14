@@ -2,11 +2,7 @@ import * as React from "react";
 import {Link} from "react-router-dom";
 import "@css/menu.scss";
 import * as Immutable from "immutable";
-
 import * as Velocity from "velocity-react";
-
-
-console.log(Velocity);
 
 type fieldConfig = {
 		textFile:string;
@@ -47,12 +43,14 @@ class ParMenu extends React.PureComponent<ItemProps>{
 	}
 
 	componentWillReceiveProps(nextProps:any){
+
+		nextProps
 		
-		if(nextProps.expand!==this.props.expand){
+		/*if(nextProps.expand!==this.props.expand){
 				this.setState({
 								drop:true,
 				});
-		}
+		}*/
 	
 	}
 	componentWillUpdate(){
@@ -71,8 +69,8 @@ class ParMenu extends React.PureComponent<ItemProps>{
 			const icon = obj.get(config.iconField!) || "fa-circle";
 			const id = obj.get(config.idField);
 
-			const hObj = !this.state.drop ?{maxHeight:"0"}:{maxHeight:"120px"};
-			
+		const hObj = this.props.expand ? {display: "block"} : {};
+
 			return (
 					<li className="li-par">
 							<div  className={"menu-item menu-par " + activeName} onClick={()=>slectItem(id)}>
@@ -86,16 +84,19 @@ class ParMenu extends React.PureComponent<ItemProps>{
 										<i className={"fa fa-chevron-"+(this.state.drop ? "down":"up")}></i>
 									</span>
 							</div>	
-							<ul className="child-ul " style={hObj}>
-								{
-										sub!.map((node:Immutable.Map<string,any>)=>{
-														  const nodeId = node.get("id");
-															const activeName = nodeId === childSlected ? "active":"";
-														return <SubMenu obj={node} activeName={activeName}   config={config} key={nodeId} slectItem={slectItem} parId={id}/>
-										})
+							<Velocity.VelocityComponent animation={this.state.drop ? "slideDown": "slideUp"} duration={300}>
+									<ul className="child-ul " style={hObj}>
+											{
+													sub!.map((node:Immutable.Map<string,any>)=>{
+																	  const nodeId = node.get("id");
+																		const activeName = nodeId === childSlected ? "active":"";
+																	return <SubMenu obj={node} activeName={activeName}   config={config} key={nodeId} slectItem={slectItem} parId={id}/>
+													})
 
-								}
-							</ul>
+											}
+									</ul>
+							</Velocity.VelocityComponent>
+						
 					</li>
 				)
 

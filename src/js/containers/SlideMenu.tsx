@@ -3,6 +3,8 @@ import MenuNav from "@js/common/NavMenu";
 import SlideBar from "@js/components/SlideBar";
 import ErrorBoundary from "@js/common/ErrorBoundary";
 import * as Immutable from "immutable";
+import * as Velocity from "velocity-react";
+
 
 type slideMenu={
 
@@ -67,14 +69,16 @@ class SlideMenu extends React.PureComponent{
 		const {expand,data} = this.state;
 
 							
-		return (<div className={"g-slideMenu "+ (!expand ? "expand" : "")}>
-										<SlideBar expandHandle={this.expandHandle}/>
-										<ErrorBoundary>
-											<MenuNav  data={data} expand={expand} /> 
-										</ErrorBoundary>
-						</div>
-
-						);
+		return (
+			<Velocity.VelocityComponent duration={300} animation={{width:this.state.expand ? 250 : 50}}>
+					<div className={"g-slideMenu "+ (!expand ? "expand" : "")}>
+															<SlideBar expandHandle={this.expandHandle}/>
+															<ErrorBoundary>
+																<MenuNav  data={data} expand={expand} /> 
+															</ErrorBoundary>
+											
+											</div>
+			</Velocity.VelocityComponent> );
 	}
 
 
