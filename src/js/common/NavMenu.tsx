@@ -42,20 +42,8 @@ class ParMenu extends React.PureComponent<ItemProps>{
 		this.setState((prevState:{drop:boolean})=>({drop:!prevState.drop}))
 	}
 
-	componentWillReceiveProps(nextProps:any){
-
-		nextProps
-		
-		/*if(nextProps.expand!==this.props.expand){
-				this.setState({
-								drop:true,
-				});
-		}*/
 	
-	}
-	componentWillUpdate(){
-		console.log("update")
-	}
+
 	render(){
 
 	

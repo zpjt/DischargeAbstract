@@ -27,6 +27,10 @@ const Main = ()=>{
 											loader:()=>import( /*webpackChunkName: "usermanage" */"./containers/usermanage/index"),
 											loading:()=><div>loading...</div>
 									})}  />
+									<Route path="/ill_type" component={loadable({
+											loader:()=>import( /*webpackChunkName: "illType" */"./containers/illSearch/illType"),
+											loading:()=><div>loading...</div>
+									})}  />
 								</>
 				);
 }

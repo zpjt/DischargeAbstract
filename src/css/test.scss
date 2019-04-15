@@ -4,3 +4,146 @@
 	height: 90px;
 	width: 80%;
 }
+
+
+.main{
+	background:white;
+	padding: 80px 0;
+}
+#article{
+	-webkit-box-shadow: 0 0 10px 6px #e3e3e3;
+    box-shadow: 0 0 10px 6px #e3e3e3;
+    border:1px solid #e3e3e3\0; /* \0 IE8到9,10 */
+}
+.item{
+	background-repeat: no-repeat;
+	background-position:center;;
+	background-size: cover;
+	height: 540px;
+}
+.item-contanner{
+	padding-top: 90px;
+	padding-left: 30px;
+	width: 90%;
+
+}
+.item-title{
+	border-bottom: 3px solid #78BBE6;
+	padding: 10px 0 ;
+	text-align: right;
+}
+/* .item-title span:first-child{
+	float: left;
+} */
+.subtitle{
+	font-size: 17px;
+	    display: inline-block;
+    float: left;
+}
+.theme{
+	font-size: 20px;
+	color: white;
+	font-weight: bolder;
+	cursor:pointer;
+	position: relative;
+}
+.theme a{
+	color: white;
+}
+/* .theme:hover a{
+	color:#3879D9;
+} */
+.item{
+	margin-bottom: 40px;
+}
+.fr{
+	float:right;
+}
+.fl{
+	float:left;
+}
+.item:first-child .des{
+	float: right;
+}
+.des{
+	line-height: 30px;
+	padding-top: 30px;
+	color: white;
+}
+.des dd{
+	padding-left:20px;
+}
+/*
+.des dd:hover{
+	color:black;
+}*/
+
+.theme:hover .moreItems{
+
+	visibility: visible;
+	background: transparent;
+	
+}
+
+
+
+.theme:hover .versonItem{
+	transition: all .5s ease-in;
+	opacity: 1;
+	transform:translateX(0);
+}
+
+.theme .versonItem:hover{
+	transition: all .2s ease-in 0s !important;
+	transform:translateX(20px);
+
+}
+.moreItems{
+
+    visibility: hidden;;
+    position: absolute;
+    width: 242px;
+    margin-left: -120px;
+    top: 30px;
+    left: 50%;
+}
+
+.versonItem{
+		transition: all .5s ease-in;
+		transform:translateX(-100%);
+		opacity: 0;
+    position: absolute;
+   	height: 30px;
+   	padding-right:10px;
+    background: #58A1D0;
+    color: wheat;
+    white-space: nowrap;
+    line-height: 30px;
+    left:40px;
+    cursor: pointer;
+}
+
+
+
+.versonItem:after{
+		content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border: 15px solid transparent;
+    border-left: 15px solid #58A1D0;
+    top: 0;
+    right: -30px;
+   
+}
+.versonItem:before{
+		content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border: 15px solid #58A1D0;
+    border-left: 15px solid transparent;
+    top: 0;
+    left: -30px;
+   
+}
