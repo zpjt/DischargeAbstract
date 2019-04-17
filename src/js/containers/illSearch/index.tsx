@@ -35,9 +35,9 @@ const IllType:React.SFC<{data:any[]}> = ({data})=>{
 
 				typeIllArr.map(val=>{
 
-					 const path = { pathname: '/ill_type' , query:{type: val.id }};
+				//	 const path = { pathname: '/ill_type' , query:{type: val.id }};
 
-						return <Link to={path} key={val.id}>{val.name}</Link>
+						return <Link to={"/ill_type/"+val.id} key={val.id}>{val.name}</Link>
 
 				})
 			}
@@ -139,7 +139,7 @@ class IllSearch extends React.PureComponent<props,state>{
 	componentDidMount(){
 
 
-			fetch("/69276/getOrg").then(res=>{
+			fetch("/11/getOrg").then(res=>{
 					return res.json();
 			}).then(data=>{
 

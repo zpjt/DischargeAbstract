@@ -1,0 +1,67 @@
+$h:38px;
+$normal:#e3e3e3;
+$error: #ff0000;
+$active:#acb1fe;
+
+%shadow{
+	box-shadow: 0px 1px 8px 0px 
+		rgba(0, 160, 233, 0.3);
+
+	border-color: #acb1fe;
+}
+
+#acive{
+
+}
+.combobox{
+	$bg:#ffffff;
+	 position: relative;
+	.m-combo-inp{
+		display: flex;
+		height: $h;
+		cursor: pointer;
+		border:1px solid;	
+		border-radius: 4px;
+		border-color: $normal;
+		align-items: center;
+		background-color:$bg;
+
+	  .m-inp{
+	  	flex: auto;
+	  	height: 100%;
+	  	box-sizing: border-box;
+	  	border:none;
+	  	outline: none;
+	  }	
+	  .j-slide{
+	  	padding: 0 8px;
+	  }
+
+	}
+	.m-drop{
+		  position: absolute;
+		  display: none;
+		  box-sizing: border-box;
+	  	width:100%;
+			background-color: $bg;
+			border-radius: 4px;
+			border: solid 1px #ececec;
+			margin-top: 10px;
+			padding: 8px;
+			.m-combo-item{
+				padding: 8px;
+				cursor: pointer;
+			}
+	 }
+	 .m-combo-item.active{
+				background-color: #acb1fe;
+				border-radius: 2px;
+		}
+}
+.combobox.active{
+	
+	.m-combo-inp{
+		@extend %shadow;
+	}
+}
+
