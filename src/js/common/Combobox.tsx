@@ -27,17 +27,15 @@ const ItemCombo:React.SFC<ItemComboProp> = ({id,text,clickFn,active})=>{
 }
 
 type props = {
-		config?:{
-			idField:string;
-			textField:string;
-			icon:string;
-			clickCallback:(node:itemObj)=>itemObj;
-			multiply:boolean;
-			defaultVal:string[];
-			width:number;
-			maxHeight:number;
-		}
-		data:itemObj[];
+			idField?:string;
+			textField?:string;
+			icon?:string;
+			clickCallback?:(node:itemObj)=>itemObj;
+			multiply?:boolean;
+			defaultVal?:string[];
+			width?:number;
+			maxHeight?:number;
+			data:itemObj[];
 }
 
 type state = {
@@ -49,7 +47,6 @@ type state = {
 export default class Combobox  extends React.PureComponent<props,state>{
 
 	 static defaultProps = {
-	 		config:{
 	 				idField:"id",
 					textField:"text",
 					icon:"fa fa-circle",
@@ -60,7 +57,6 @@ export default class Combobox  extends React.PureComponent<props,state>{
 					defaultVal:[],
 					width:240,
 					maxHeight:300,
-	 		}
 	 	
 	 }
 
@@ -97,10 +93,11 @@ export default class Combobox  extends React.PureComponent<props,state>{
 
 	  singleClickItem=(id:string):void=>{
 
-	  	  const {slected} = this.state;
+	  	  const {slected,drop} = this.state;
 
 	  	  !slected.includes(id) ? this.setState({
 	  			slected:slected.clear().push(id),
+	  			drop:!drop,
 	  		}):null;
 
 	  }
@@ -121,22 +118,19 @@ export default class Combobox  extends React.PureComponent<props,state>{
 		render(){
 
 				const {drop,slected} = this.state;
-				const {data,config} = this.props;
 
-
-
-				const {idField,textField,icon,multiply,width,maxHeight} = config! ;
+				const {data,idField,textField,icon,multiply,width,maxHeight} = this.props;
 
 				const clickFn = multiply ? this.multiplyClickItem : this.singleClickItem;
 
-				const value = this.getValue(idField,textField,data,slected);
+				const value = this.getValue(idField!,textField!,data,slected);
 
-				return (<div className={"combobox "+(drop ? "active":"") } style={{width}}>
+				return (<div className={"combobox "+(drop ? "active ":"")+ (!value?"no-fill":"")} style={{width}}>
 									
 									
-									<div className="m-combo-inp">
-											<input type="text" className="m-inp" readOnly value={value} />
-											<span className="j-slide" onClick={this.toggleDrop}>
+									<div className="m-combo-inp" onClick={this.toggleDrop}>
+											<input type="text" className="m-inp" readOnly value={value} placeholder={multiply?"多选":"单选"}/>
+											<span className="j-slide" >
 												<i className={"fa " + (drop ? "fa-chevron-up":"fa-chevron-down")}></i>
 											</span>
 									</div>
@@ -144,10 +138,10 @@ export default class Combobox  extends React.PureComponent<props,state>{
 											<ul style={{maxHeight}} className="m-drop">
 													{
 														data.map(val=>{
-																	const id = val[idField];
-																	const text = val[textField];
+																	const id = val[idField!];
+																	const text = val[textField!];
 																	const active = slected.includes(id);
-																	return <ItemCombo active={active} id={id} icon={icon} text={text} clickFn={clickFn} key={id}/>
+																	return <ItemCombo active={active} id={id} icon={icon!} text={text} clickFn={clickFn} key={id}/>
 														})
 													}
 											</ul>

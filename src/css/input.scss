@@ -1,0 +1,37 @@
+@import "./scss/variables";
+
+.s-inp{
+	height: $inpHeight;
+	width: $inpWidth;
+	text-indent:.5em;
+	border:0;
+	outline:0;
+	box-sizing:border-box;
+}
+
+.normal{
+    cursor: pointer;
+    border: 1px solid;
+    border-radius: 4px;
+    border-color: #e3e3e3;
+    background-color: #ffffff;
+}
+
+.s-inp.no-fill{
+	
+	border-color:$error;
+}
+
+
+/* radio */
+.m-radio{
+	height: $inpHeight;
+	display: flex;
+	align-items: center;
+	.lab-radio{
+		margin: 0 10px;
+	}
+	.lab-tit{
+		padding: 0 6px;
+	}
+}

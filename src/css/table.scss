@@ -1,0 +1,54 @@
+@import "./scss/variables";
+
+.s-table{
+	height: calc(100% - 42px);
+	padding-top: 18px;
+	table{
+		width: 100%;
+	}
+
+	td{
+		padding: 6px;
+		text-align: left;
+		height: 30px;
+	}
+
+	th{
+		padding: 10px;
+		text-align: left;
+	}
+
+	.tHead{
+			border-bottom:1px solid $themeColor;
+	}
+	tr{
+
+		border-bottom: 1px solid #e5e6fe;
+	}
+
+	@at-root{
+		.g-pageCode{
+			margin-top: 18px;
+			display: flex;
+			justify-content: space-between;
+			.m-page-total{
+				&>span{
+					margin: 0 8px;
+				}
+			}
+			.j-jump-page{
+				margin-left: 10px;
+				width: 60px;
+				height: 30px;
+				outline: 1px solid $normal;
+				border:none;
+				text-align: center;
+			}
+			.m-code-number{
+
+			}
+		}
+	}
+
+	
+}

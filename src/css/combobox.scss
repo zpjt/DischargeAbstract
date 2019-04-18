@@ -7,12 +7,10 @@ $active:#acb1fe;
 	box-shadow: 0px 1px 8px 0px 
 		rgba(0, 160, 233, 0.3);
 
-	border-color: #acb1fe;
+	border-color: $active;
 }
 
-#acive{
 
-}
 .combobox{
 	$bg:#ffffff;
 	 position: relative;
@@ -32,6 +30,8 @@ $active:#acb1fe;
 	  	box-sizing: border-box;
 	  	border:none;
 	  	outline: none;
+	  	cursor: pointer;
+	  	text-indent: .5em;
 	  }	
 	  .j-slide{
 	  	padding: 0 8px;
@@ -64,4 +64,22 @@ $active:#acb1fe;
 		@extend %shadow;
 	}
 }
+.combobox.no-fill{
+	
+	.m-combo-inp{
+		border-color: $error;
+	}
+}
 
+
+// 下拉框布局
+.item-inp{
+	display: flex;
+	align-items: center;
+	.m-inp-tit{
+		padding-right: 8px;
+		&:after{
+			content:"："
+		}
+	}
+}

@@ -1,5 +1,15 @@
 $parColor:#535be9;
 $childColor:#6f77fc;
+
+%shadow{
+	background-color: #ffffff;
+	box-shadow: 1px 1px 6px 0px 
+	rgba(0, 0, 0, 0.16);
+	border-radius: 4px;
+}
+
+
+
 .g-ill{
 	width: 90%;
 	margin: auto;
@@ -64,22 +74,16 @@ $childColor:#6f77fc;
 
 }
 
-.m-item[data-lev="1"]{
-	.m-item-title{
-				width: 260px;
-		}
-}
-.m-item[data-lev="2"]{
-	.m-item-title{
-				width: 120px;
-		}
-}
-.m-item[data-lev="3"]{
-	.m-item-title{
-				width: 60px;
-		}
-}
+$widthArr:260px, 120px, 60px;
 
+@each $var in $widthArr{
+	$index:index($widthArr, $var);
+	.m-item[data-lev="#{$index}"]{
+		.m-item-title{
+					width: $var;
+			}
+	}
+}
 
 
 .m-ul-childs[data-lev="1"]{
@@ -148,3 +152,29 @@ $childColor:#6f77fc;
 
 		
 	}
+
+.g-layout{
+	display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-sizing: border-box;
+}
+.g-illtype-head{	
+	@extend %shadow;
+	position: relative;
+	z-index: 2;
+	padding: 16px;
+	margin-bottom: 16px;
+	.g-condition{	
+		margin-top: 10px;
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;	
+	}
+}
+
+.g-result{
+	@extend %shadow;
+	flex: auto;
+	padding: 16px;
+}
