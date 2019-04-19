@@ -6,7 +6,7 @@
 	text-indent:.5em;
 	border:0;
 	outline:0;
-	box-sizing:border-box;
+	//box-sizing:border-box;
 }
 
 .normal{
@@ -29,9 +29,43 @@
 	display: flex;
 	align-items: center;
 	.lab-radio{
-		margin: 0 10px;
+		margin: 0 6px;
+		display: flex;
+		align-items: center;
+		cursor: pointer;	
+		input[type=checkbox],
+	  input[type=radio] {
+	    position: relative;
+	    -webkit-appearance: none;
+    	-moz-appearance: none;
+   		 appearance: none;
+	    width: 1em;
+	    margin: 0;
+	    outline: none;
+	    font: normal normal normal 22px/1 FontAwesome;
+	    color: $themeColor;
+	    transition: 300ms ease-out;
+	    cursor: pointer;	
+	    &:after {
+	      content: '\f10c'; // circle
+	      display: inline-block;
+	      text-align: center;
+	      width: 1em;
+	    }
+	    &:checked:after {
+	       content: '\f28e'; // circle
+	    }
+	    &:active {
+	      transform: scale(.6);
+	    }
+	  }
 	}
 	.lab-tit{
 		padding: 0 6px;
 	}
 }
+
+
+
+
+

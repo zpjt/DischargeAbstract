@@ -1,7 +1,5 @@
-$h:38px;
-$normal:#e3e3e3;
-$error: #ff0000;
-$active:#acb1fe;
+@import "./scss/variables";
+
 
 %shadow{
 	box-shadow: 0px 1px 8px 0px 
@@ -16,7 +14,7 @@ $active:#acb1fe;
 	 position: relative;
 	.m-combo-inp{
 		display: flex;
-		height: $h;
+		height: $inpHeight;
 		cursor: pointer;
 		border:1px solid;	
 		border-radius: 4px;

@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import Combobox from "@js/common/Combobox";
+import Table from "@js/common/Table";
 
 
 
@@ -23,11 +24,10 @@ class HeadInp extends React.PureComponent<HeadProp,HeadState>{
 		const data= [{id:"1",text:"方法1"},{id:"2",text:"方法2"},{id:"3",text:"方法3"}]
 
 		return (<div className="g-illtype-head">
-							<h3>
-
-								<b className="fa fa-reply">&nbsp;&nbsp;</b>
-								<span>病种查询</span>
-							</h3>
+							<div style={{"display":"flex",justifyContent:"space-between"}}>
+								<h3>病种查询</h3>
+								<button className="s-btn normal-btn"><i className="fa fa-reply">&nbsp;</i>返回</button>
+							</div>
 							<div className="g-condition">
 								 <span className="item-inp">
 								 		<span className="m-inp-tit">科室名称</span>
@@ -46,7 +46,7 @@ class HeadInp extends React.PureComponent<HeadProp,HeadState>{
 								 		<span className="m-radio">
 									 		<label className="lab-radio">
 									 				<span className="lab-tit">男</span>
-									 				<input type="radio" className="" name="sex" />
+									 				<input type="radio" className="" name="sex"  defaultChecked />
 									 			</label>
 									 			<label className="lab-radio">
 									 				<span className="lab-tit">女</span>
@@ -66,7 +66,11 @@ class HeadInp extends React.PureComponent<HeadProp,HeadState>{
 }
 
 type itemObj = {
-
+		org:string;
+		sex:string;
+		id:string;
+		name:string;
+		illNmae:string;
 }
 
 
@@ -74,11 +78,39 @@ type ResultProp ={
 		data:itemObj[];
 }
 const ResultSearch:React.SFC<ResultProp>=({data})=>{
-			data ;
+
+		const column = [
+						{
+							text:"科室名称",
+							field:"org",
+						},
+						{
+							text:"病种名称",
+							field:"illNmae",
+						},
+						{
+							text:"姓名",
+							field:"name",
+						},
+							{
+							text:"性别",
+							field:"sex",
+							width:80,
+						},
+						{
+							text:"操作",
+							field:"opt",
+							width:180,
+							formatter:function(){
+
+									return (<button className="s-btn normal-btn">查看</button>)
+							}
+						}
+					]
+
 			return (<div className="g-result">
 				
 					<div className="m-search">
-							
 							<span className="m-inp-val">
 								<input type="text"  className="s-inp" placeholder="搜索查询的结果..." />
 								<span className="m-search-close"><i className="fa fa-times fa-lg"></i></span>
@@ -86,49 +118,8 @@ const ResultSearch:React.SFC<ResultProp>=({data})=>{
 							<button className="s-btn normal-btn">
 								<span className="fa fa-search"></span>
 							</button>
-
 					</div>
-
-					<div className="s-table">
-							<table>
-								<thead className="tHead">
-										<th>序号</th>
-										<th>科室名称</th>
-										<th>病种名称</th>
-										<th>姓名</th>
-										<th>性别</th>
-										<th>操作</th>
-								</thead>
-								<tbody>
-									<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-									<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-									<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-									<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-									<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-								</tbody>
-								<tbody></tbody>
-							</table>
-							<div className="g-pageCode">
-									<div className="m-page-total">
-										 <span>共5页</span>
-										 <span>40条</span>
-										 <span  style={{marginLeft:"40px"}}>
-										 		<span >跳转到</span>
-										 		<input className="j-jump-page" type="number"/>
-										 </span>
-									</div>
-									<div className="m-code-number">
-										<button className="s-btn normal-btn"><i className="fa fa-chevron-left "></i></button>
-										<span className="g-page-nums">
-												<span>1</span>
-												<span>2</span>
-												<span>3</span>
-										</span>
-										<button className="s-btn normal-btn"><i className="fa fa-chevron-right "></i></button>
-									</div>
-
-							</div>
-					</div>
+					<Table data={data} column={column} />
 			</div>)
 }
 
@@ -143,7 +134,7 @@ type props={
 };
 type state={
 
-	data:itemObj;
+	data:itemObj[];
 
 }
 export default class IllType extends React.Component<props,state>{
@@ -153,7 +144,14 @@ export default class IllType extends React.Component<props,state>{
 			data:[]
 	}
 	componentDidMount(){
+			fetch("/11/getIllRes").then(res=>res.json()).then(res=>{
 
+					if(res && res.data){
+							this.setState({
+								data:res.data
+							})
+					}
+			})
 	}
 
 	render(){
@@ -166,6 +164,7 @@ export default class IllType extends React.Component<props,state>{
 		return (
 				<div className="g-padding g-layout">
 						<HeadInp />
+
 						<ResultSearch data={data} />
 				</div>
 			

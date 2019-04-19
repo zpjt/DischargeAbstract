@@ -46,6 +46,7 @@ const IllType:React.SFC<{data:any[]}> = ({data})=>{
 		</>)
 }
 
+
 const ChildItem:React.SFC<itemProps> = ({node,lev})=>{
 
 const {dim_name} = node ;
@@ -152,6 +153,7 @@ class IllSearch extends React.PureComponent<props,state>{
 			
 					
 			});
+
 	}
 
 	

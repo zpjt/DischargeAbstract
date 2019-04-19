@@ -1,7 +1,6 @@
 @import "./scss/variables";
 
 .s-btn{
-  margin: 0 8px;
   color: #fff;
   display: inline-block;
 	border:none;
@@ -26,5 +25,11 @@
 	height:$inpHeight; 
 	display: flex;
 	align-items: center;
+	.s-btn{
+		margin:0 10px;
+	}
+	.s-btn:last-child{
+		margin:0;
+	}
 }
 
