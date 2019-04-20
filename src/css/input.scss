@@ -23,18 +23,20 @@
 }
 
 
-/* radio */
-.m-radio{
+%inpbox{
 	height: $inpHeight;
 	display: flex;
 	align-items: center;
-	.lab-radio{
+	.m-label{
 		margin: 0 6px;
-		display: flex;
+	}
+}
+.m-label{
+		
+		display: inline-flex;
 		align-items: center;
 		cursor: pointer;	
-		input[type=checkbox],
-	  input[type=radio] {
+	  input[type="radio"], input[type="checkbox"]{
 	    position: relative;
 	    -webkit-appearance: none;
     	-moz-appearance: none;
@@ -42,28 +44,57 @@
 	    width: 1em;
 	    margin: 0;
 	    outline: none;
-	    font: normal normal normal 22px/1 FontAwesome;
+	    font: normal normal normal 20px/1 FontAwesome;
 	    color: $themeColor;
 	    transition: 300ms ease-out;
 	    cursor: pointer;	
 	    &:after {
-	      content: '\f10c'; // circle
 	      display: inline-block;
 	      text-align: center;
 	      width: 1em;
 	    }
-	    &:checked:after {
-	       content: '\f28e'; // circle
-	    }
+	  
 	    &:active {
 	      transform: scale(.6);
 	    }
 	  }
-	}
-	.lab-tit{
-		padding: 0 6px;
+}
+.lab-tit{
+	padding: 0 6px;
+}
+
+.m-lab-radio{
+	input{
+		&:after {
+	      content: '\f10c'; // circle
+    }
+    &:checked:after {
+       content: '\f28e'; // circle
+    }
 	}
 }
+
+.m-lab-checkbox{
+	input{
+		&:after {
+	      content: '\f096'; // circle
+    }
+    &:checked:after {
+       content: '\f046'; // circle
+    }
+	}
+}
+
+/* radio */
+.m-radio{
+	@extend %inpbox;
+}
+
+.m-checkbox{
+	@extend %inpbox;
+	
+}
+
 
 
 

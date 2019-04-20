@@ -2,8 +2,8 @@ import * as React from "react";
 
 import Combobox from "@js/common/Combobox";
 import Table from "@js/common/Table";
-
-
+import Search from "@js/common/SearchCom";
+import {Radio} from "@js/common/InputBtn";
 
 type HeadProp = {
 
@@ -43,17 +43,13 @@ class HeadInp extends React.PureComponent<HeadProp,HeadState>{
 								 </span>
 								 <span className="item-inp">
 								 		<span className="m-inp-tit">性别</span>
-								 		<span className="m-radio">
-									 		<label className="lab-radio">
-									 				<span className="lab-tit">男</span>
-									 				<input type="radio" className="" name="sex"  defaultChecked />
-									 			</label>
-									 			<label className="lab-radio">
-									 				<span className="lab-tit">女</span>
-									 				<input type="radio" className="" name="sex" />
-									 			</label>
-								 		</span>
-								 	
+									 		<Radio changeHandle={()=>console.log(1)} 
+									 		 	data={[
+										 		 		{value:"1",tit:"男"},
+										 		 		{value:"2",tit:"女"}
+									 		 		]}
+									 		 		nameFiled="sex"
+									 		 />
 								 </span>
 								  <span className="m-optBtn">
 								 		<button className="s-btn normal-btn"><i className="fa fa-refresh">&nbsp;</i>重 置</button>
@@ -110,15 +106,8 @@ const ResultSearch:React.SFC<ResultProp>=({data})=>{
 
 			return (<div className="g-result">
 				
-					<div className="m-search">
-							<span className="m-inp-val">
-								<input type="text"  className="s-inp" placeholder="搜索查询的结果..." />
-								<span className="m-search-close"><i className="fa fa-times fa-lg"></i></span>
-							</span>
-							<button className="s-btn normal-btn">
-								<span className="fa fa-search"></span>
-							</button>
-					</div>
+					<Search searchHandle={(key:string)=>console.log(key)}  closeHandle={()=>console.log(2)}/>
+
 					<Table data={data} column={column} />
 			</div>)
 }

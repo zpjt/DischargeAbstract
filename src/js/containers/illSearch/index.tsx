@@ -1,6 +1,7 @@
 import * as React from "react";
 import "@css/illSearch.scss";
 import {Link} from "react-router-dom";
+import ComTreebox from "@js/common/ComTreebox";
 
 type props = {
 
@@ -156,14 +157,21 @@ class IllSearch extends React.PureComponent<props,state>{
 
 	}
 
-	
+	/*dim_id: "2"
+dim_name: "深圳市南山医"
+dim_value: "200"
+par_id: "-2"
+sub: [{dim_id: "2", dim_name: "职能科室", type: "0", dim_value: "201", par_id: "200",…},…]
+type: "0"*/
 
 	
 	render(){
 
 		return (
-				
+					<>
+					<ComTreebox data={this.state.orgs} idField="dim_value" childField="sub" textFiled="dim_name" />
 					<div className="g-ill">
+						
 						<ul >
 							{
 								this.state.orgs.map((val:orgItemObj)=>{
@@ -186,7 +194,7 @@ class IllSearch extends React.PureComponent<props,state>{
 						</ul>
 						
 					</div>
-					
+					</>
 			)
 
 

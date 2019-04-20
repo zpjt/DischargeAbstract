@@ -130,12 +130,11 @@ body,html{
 
 /* 搜索框 */
 .m-search{
-	width: 40%;
 	position: relative;
 	display: flex;
 	.m-search-close	{
 		position: absolute;
-		margin-left: -30px;
+		margin-left: -20px;
 		color:$themeColor;
 		top:50%;
 		transform: translate(0,-50%);

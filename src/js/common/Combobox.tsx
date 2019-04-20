@@ -16,12 +16,11 @@ type ItemComboProp = {
 		active:boolean;
 		clickFn:(id:string)=>void;
 }
-const ItemCombo:React.SFC<ItemComboProp> = ({id,text,clickFn,active})=>{
+const ItemCombo:React.SFC<ItemComboProp> = ({id,text,clickFn,icon,active})=>{
 
 
 	return (<li onClick={()=>clickFn(id)} className={"m-combo-item " + (active ? "active" : "")}>
-					 <span ></span>
-					 <span></span>
+					{ icon ? <span className={icon}></span>:""}
 					 <span>{text}</span>
 				 </li>)
 }
@@ -49,7 +48,7 @@ export default class Combobox  extends React.PureComponent<props,state>{
 	 static defaultProps = {
 	 				idField:"id",
 					textField:"text",
-					icon:"fa fa-circle",
+					icon:"",
 					clickCallback:function(node:itemObj){
 							return node ;
 					},
