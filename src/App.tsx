@@ -4,7 +4,7 @@ import {Provider} from "react-redux"
 import {createStore,applyMiddleware,compose} from "redux";
 import {logger} from "redux-logger" ;
 import  thunk from "redux-thunk" ;
-import  rootRecuders from "./js/reducers/index" ;
+import  rootRecuders from "@js/actions/rootReducer";
 import * as React from "react";
 import * as ReactDom from "react-dom" ;
 
@@ -50,9 +50,9 @@ if(module.hot){
 
 		//热替换redux
 
-		module.hot.accept("./js/reducers/index",()=>{
+		module.hot.accept("@js/actions/rootReducer",()=>{
 
-					import("./js/reducers/index").then((module:any)=>{
+					import("@js/actions/rootReducer").then((module:any)=>{
 						const nextRootReducers = module.default;
 						store.replaceReducer(nextRootReducers);
 					});

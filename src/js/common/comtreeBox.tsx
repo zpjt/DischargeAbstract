@@ -6,10 +6,11 @@ import Search from "@js/common/SearchCom";
 import "@css/combobox.scss";
 import {Checkbox} from "@js/common/InputBtn";
 
-Checkbox
+
+
 
 type Parprops={
-	selected:NonNullable<props["selected"]>;
+	selected?:states["selected"];
 	itemObj:{[key:string]:any};
 	idField:string;
 	childField:string;
@@ -25,8 +26,11 @@ type Parprops={
 type Parstates={
 
 		expand:boolean;
+		childSeletedNum:number;
 
 };
+
+
 
 const ChildCom:React.SFC<Parprops>=({lev,icon,itemObj,textFiled,idField,checkbox})=>{
 		return (<li>
@@ -43,10 +47,26 @@ const ChildCom:React.SFC<Parprops>=({lev,icon,itemObj,textFiled,idField,checkbox
 
 class ParCom extends React.PureComponent<Parprops,Parstates>{
 
-	state:Parstates={
-		expand:true,
-	}
+	
+	constructor(props:Parprops){
+		super(props);
 
+		this.state= {
+			expand:true,
+			childSeletedNum: 0,
+		}
+
+	}
+	toggleChecked=()=>{
+	
+
+		this.setState(preState=>{
+				let a = preState.childSeletedNum;
+			return {
+				childSeletedNum: a++
+			}
+		})
+	}
 	toggleExpand=()=>{
 
 		this.setState(preState=>{
@@ -119,7 +139,7 @@ class ParCom extends React.PureComponent<Parprops,Parstates>{
 
 type props={
 	data:any[];
-	selected?:Immutable.List<string>;
+	
 	idField?:string;
 	childField?:string;
 	textFiled?:string;
@@ -133,7 +153,7 @@ type props={
 
 
 type states={
-
+		selected:Immutable.List<string>;
 		drop:boolean;
 
 };
@@ -143,7 +163,6 @@ type states={
 export default class ComTreeBox extends React.PureComponent<props,states>{
 
 	static defaultProps={
-		selected:Immutable.List([]),
 		idField:"id",
 		childField:"children",
 		textFiled:"text",
@@ -155,6 +174,7 @@ export default class ComTreeBox extends React.PureComponent<props,states>{
 
  	state:states = {
  		drop:false,
+ 		selected:Immutable.List([]),
  	}
 
  	static CheckBox= (id:string)=><Checkbox.Item value={id} tit={""} nameFiled="org" />;
@@ -175,14 +195,14 @@ export default class ComTreeBox extends React.PureComponent<props,states>{
 
 	render(){
 
-		const {drop} = this.state;
-		const {checkbox,data,icon,textFiled,idField,childField,selected,width,maxHeight} = this.props;
+		const {drop,selected} = this.state;
+		const {checkbox,data,icon,textFiled,idField,childField,width,maxHeight} = this.props;
 
 		const checkBox =  checkbox ? ComTreeBox.CheckBox :ComTreeBox.noCheck ;
 
 		const value = "";
 
-		return (<div className={"comTreeBox "+(drop ? "active":"")} style={{width:width+"px"}}>
+		return (<div className={"comTreeBox "+(drop ? "active ":"") + (!value?"no-fill":"")} style={{width:width+"px"}}>
 
 							<div className="m-combo-inp" onClick={this.toggleDrop}  >
 											<input type="text" className="m-inp" readOnly value={value} placeholder={checkbox?"多选":"单选"}/>
@@ -207,7 +227,7 @@ export default class ComTreeBox extends React.PureComponent<props,states>{
 																											idField={idField!}
 																											childField={childField!}
 																											lev={0}
-																											selected={selected!}
+																											selected={selected}
 																											 />
 																	}
 

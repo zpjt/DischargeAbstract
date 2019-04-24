@@ -1,7 +1,8 @@
+import {Action} from "redux";
 
 
 
-export default (initState:any,actionHandle:{[key:string]:Function})=>{
+export default function createReducer<T>(initState:T,actionHandle:{[key:string]:(stat:T,action:Action<string>)=>T}){
 
 
 

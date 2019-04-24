@@ -1,26 +1,12 @@
 import * as React from "react";
 import "@css/illSearch.scss";
 import {Link} from "react-router-dom";
-import ComTreebox from "@js/common/ComTreebox";
 
-type props = {
+import {connect,MapStateToProps} from "react-redux";
+import {fetchPostOrgIfNeeded} from "@js/actions/index"
 
 
-}
-
-type state = {
-	orgs:orgItemObj[];
-	isFetch:boolean;
-}
-
-type orgItemObj = {
-	  sub:orgItemObj[];
-	  dim_id:  string;
-    dim_name: string;
-    type:  string;
-    dim_value: string;
-    par_id:string;
-}
+type orgItemObj = orgState["data"][0]
 
 type itemProps = {
 	 lev:number;
@@ -50,7 +36,7 @@ const IllType:React.SFC<{data:any[]}> = ({data})=>{
 
 const ChildItem:React.SFC<itemProps> = ({node,lev})=>{
 
-const {dim_name} = node ;
+	const {dim_name} = node ;
 
 	return (
 				<li className="m-li-child" >
@@ -70,41 +56,10 @@ const {dim_name} = node ;
 		);
 }
 
-/*class ParItem extends React.PureComponent<itemProps>{
-
-
-	render(){
-			let {node,lev} = this.props;
-		 const {dim_name,sub} = node ;
-			const _lev = ++lev;
-				return (<li className="m-child" >
-							<div className="m-item" data-lev={lev}>
-									<span className="m-item-title" >{dim_name}</span>
-							</div>
-							<ul className="m-ul-childs" data-lev={lev}>
-								 {
-
-								  sub.map(val=>{
-
-								 				const {sub:_sub,dim_value} = val ;
-
-								 				if(_sub.length){
-								 					return <ParItem lev={_lev} node={val} key={dim_value}  />
-								 				}else{
-								 					return <ChildItem node={val} key={dim_value} lev={_lev+1}  />
-								 				}
-								 	}) 
-								 }
-							</ul>
-						</li>	);
-
-	}
-}*/
-
 const ParItem:React.SFC<itemProps> = ({node,lev})=>{
 
-		 const {dim_name,sub} = node ;
-			const _lev = ++lev;
+		const {dim_name,sub} = node ;
+		const _lev = ++lev;
 
 		return (<li className="m-child" >
 							<div className="m-item" data-lev={lev}>
@@ -128,53 +83,35 @@ const ParItem:React.SFC<itemProps> = ({node,lev})=>{
 			</li>	);
  }
 
+type props =  {
+	dispatch:Function;
+}
 
-class IllSearch extends React.PureComponent<props,state>{
+type state = {
+	orgs:orgItemObj[];
+	isFetch:boolean;
+}
 
+class IllSearch extends React.PureComponent<props & reduxProps,state>{
 	
-
-	state={
-		orgs:[],
-		isFetch:false,
-	}
 
 	componentDidMount(){
 
-
-			fetch("/11/getOrg").then(res=>{
-					return res.json();
-			}).then(data=>{
-
-				if(Array.isArray(data)){
-						this.setState({
-								orgs:data,
-								isFetch:false,
-						});
-				}
-			
-					
-			});
+			this.props.dispatch(fetchPostOrgIfNeeded());
 
 	}
-
-	/*dim_id: "2"
-dim_name: "深圳市南山医"
-dim_value: "200"
-par_id: "-2"
-sub: [{dim_id: "2", dim_name: "职能科室", type: "0", dim_value: "201", par_id: "200",…},…]
-type: "0"*/
 
 	
 	render(){
 
+		const {orgs} = this.props;
+
 		return (
-					<>
-					<ComTreebox data={this.state.orgs} idField="dim_value" childField="sub" textFiled="dim_name" />
 					<div className="g-ill">
 						
 						<ul >
 							{
-								this.state.orgs.map((val:orgItemObj)=>{
+								orgs.map((val:orgItemObj)=>{
 						
 										const {sub,dim_value} = val ;
 						
@@ -192,9 +129,7 @@ type: "0"*/
 								})
 							}
 						</ul>
-						
 					</div>
-					</>
 			)
 
 
@@ -202,9 +137,23 @@ type: "0"*/
 
 }
 
+type reduxProps = {
+		orgs:orgState["data"];
+		isFetch:boolean;
+}
+
+const mapStateToProps:MapStateToProps<reduxProps,props,appStore> = (state)=>{
+	
+	const {orgs} = state;
+
+	return {
+		orgs:orgs.get("data"),
+		isFetch:orgs.get("isFetch"),
+	}
+}
 
 
 
-export default IllSearch;
+export default connect(mapStateToProps)(IllSearch);
 
       
