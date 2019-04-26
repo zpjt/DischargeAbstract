@@ -4,22 +4,23 @@ import * as Immutable from "immutable";
 import {VelocityComponent} from "velocity-react";
 import Search from "@js/common/SearchCom";
 import "@css/combobox.scss";
-import {Checkbox} from "@js/common/InputBtn";
+import {Checkbox,ComboInp} from "@js/common/InputBtn";
 
 
 
 
 type Parprops={
-	selected?:states["selected"];
-	itemObj:{[key:string]:any};
+	itemObj:Immutable.Map<string,any>;
 	idField:string;
 	childField:string;
 	textFiled:string;
 	icon:string;
 	lev:number;
-	checkbox:(id:string)=>React.ReactChild;
-
+	checkBoxCom:DropProps["checkBoxCom"];
+	updateSelectList:DropProps["updateSelectList"];
 	formatter?:(node:any)=>React.ElementType;
+	childCheckHandle?:DropProps["updateSelectList"];
+	parCheckHandle?:()=>void;
 }
 
 
@@ -32,18 +33,23 @@ type Parstates={
 
 
 
-const ChildCom:React.SFC<Parprops>=({lev,icon,itemObj,textFiled,idField,checkbox})=>{
+const ChildCom:React.SFC<Parprops>=({lev,icon,itemObj,textFiled,idField,checkBoxCom,updateSelectList})=>{
+		
+		const text = itemObj.get(textFiled);
+
+
 		return (<li>
 								<div  className="m-combo-item" >
 									 <span className="g-item-text" style={{paddingLeft:lev+"em"}}>
-									 			{checkbox(itemObj[idField])}
+									 			{checkBoxCom(itemObj.get(idField),text,updateSelectList,false)}
 											 	<i className={icon}>&nbsp;</i>
-											 	<span>{itemObj[textFiled]}</span>
+											 	<span>{text}</span>
 									 </span>
 						  </div>
 					</li>)
 
 }
+
 
 class ParCom extends React.PureComponent<Parprops,Parstates>{
 
@@ -60,13 +66,29 @@ class ParCom extends React.PureComponent<Parprops,Parstates>{
 	toggleChecked=()=>{
 	
 
-		this.setState(preState=>{
-				let a = preState.childSeletedNum;
-			return {
-				childSeletedNum: a++
-			}
-		})
+		console.log("par")
+
+
 	}
+
+	childToggleCheck=(id:string,text:string)=>{
+	
+		console.log("child");
+
+		this.setState((preState)=>{
+				let num = preState.childSeletedNum;
+						num++;
+			return {
+				childSeletedNum:num
+			}
+		});
+
+		this.props.updateSelectList(id,text);
+
+	}
+
+
+
 	toggleExpand=()=>{
 
 		this.setState(preState=>{
@@ -74,21 +96,27 @@ class ParCom extends React.PureComponent<Parprops,Parstates>{
 			return {
 				expand:!preState.expand
 			}
-		})
+		});
+
+		
 	}
 
 	render(){
 
-			const {idField,childField,itemObj,textFiled,icon,lev,checkbox,selected} =this.props;
-			const {expand} = this.state;
+			const {idField,childField,itemObj,textFiled,icon,lev,checkBoxCom,updateSelectList} =this.props;
+			const {expand,childSeletedNum} = this.state;
 			let _lev = lev;
 					_lev++ ;
-		return (<li key={itemObj[idField]}>
+			const text = itemObj.get(textFiled);
+
+			const isChecked = childSeletedNum === itemObj.get(childField).size;
+
+		return (<li key={itemObj.get(idField)}>
 								  <div  className="m-combo-item" >
 										 <span className="g-item-text" style={{paddingLeft:lev+"em"}}>
-										 			{checkbox(itemObj[idField])}
+										 			{checkBoxCom(itemObj.get(idField),text,this.toggleChecked,isChecked)}
 												 	<span className="fa fa-folder-o">&nbsp;</span>
-												 	<span>{itemObj[textFiled]}</span>
+												 	<span>{text}</span>
 										 </span>
 										 <span className="j-slide" onClick={this.toggleExpand}>
 													<i className={"fa " + (expand ? "fa-chevron-up":"fa-chevron-down")}></i>
@@ -98,32 +126,35 @@ class ParCom extends React.PureComponent<Parprops,Parstates>{
 									  	 <ul>
 											  	{
 
-											  		itemObj[childField].map((val:any)=>{
+											  		itemObj.get(childField).map((val:Immutable.Map<string,any>)=>{
 
-											  				const sub = val[childField];
+											  				const sub = val.get(childField) as Immutable.List<Immutable.Map<string,any>>;
 
-											  				if(sub.length){
-											  					return <ParCom 			key={val[idField]}
-											  															checkbox={checkbox} 
+											  				if(sub.size){
+											  					return <ParCom 			key={val.get(idField)}
+											  															checkBoxCom={checkBoxCom} 
 																											itemObj={val} 
 																											icon={icon} 
 																											textFiled={textFiled} 
 																											idField={idField}
 																											childField={childField}
 																											lev={_lev}
-																											selected={selected}
+																											childCheckHandle={this.childToggleCheck}
+																											parCheckHandle={this.toggleChecked}
+																											updateSelectList={updateSelectList}
 																											 />
 											  				}else{
 
-											  					return <ChildCom 		key={val[idField]}
-											  															checkbox={checkbox} 
+											  					return <ChildCom 		key={val.get(idField)}
+											  															checkBoxCom={checkBoxCom} 
 																											itemObj={val} 
 																											icon={icon} 
 																											textFiled={textFiled} 
 																											idField={idField}
 																											childField={childField}
 																											lev={_lev}
-																											selected={selected}
+																											updateSelectList={updateSelectList}
+																											childCheckHandle={this.childToggleCheck}
 											  										/>
 											  				}
 											  		})
@@ -136,10 +167,65 @@ class ParCom extends React.PureComponent<Parprops,Parstates>{
 }
 
 
+type DropProps = {
+
+	data:Immutable.List<Immutable.Map<string,any>>;
+	idField:string;
+	childField:string;
+	textFiled:string;
+	isParField?:string;
+	icon:string;
+	formatter?:(node:any)=>React.ElementType;
+	updateSelectList:(id:string,text:string)=>void;
+	checkBoxCom:(id:string,text:string,handler:Function,isChecked:boolean)=>React.ReactChild;
+}
+
+type DropState = {
+
+
+}
+
+
+class DropCom  extends  React.PureComponent<DropProps,DropState>{
+
+
+	
+ 
+	render(){
+
+		const {data,childField,icon,textFiled,idField,updateSelectList,checkBoxCom,} = this.props;
+	
+
+		return (<>
+									{
+										data.map(val=>{
+
+													if(val.get(childField!).size){
+															return <ParCom 	key={val.get(idField!)}
+																							checkBoxCom={checkBoxCom} 
+																							itemObj={val} 
+																							icon={icon!} 
+																							textFiled={textFiled!} 
+																							idField={idField!}
+																							childField={childField!}
+																							lev={0}
+																							updateSelectList={updateSelectList}
+																							 />
+														
+													}
+										})
+									}
+						</>)
+	}
+
+
+
+}
+
+
 
 type props={
 	data:any[];
-	
 	idField?:string;
 	childField?:string;
 	textFiled?:string;
@@ -153,9 +239,9 @@ type props={
 
 
 type states={
-		selected:Immutable.List<string>;
+		selected:Immutable.List<{text:string;id:string;}>;
 		drop:boolean;
-
+		treeData:Immutable.List<Immutable.Map<string,any>>
 };
 
 
@@ -172,14 +258,42 @@ export default class ComTreeBox extends React.PureComponent<props,states>{
 		maxHeight:300,
 	}
 
- 	state:states = {
- 		drop:false,
- 		selected:Immutable.List([]),
+ 	constructor(props:props){
+ 		super(props);
+		this.state = {
+		 		drop:false,
+		 		selected:Immutable.List([]),
+		 		treeData:Immutable.fromJS(props.data),
+	 	}
+
  	}
 
- 	static CheckBox= (id:string)=><Checkbox.Item value={id} tit={""} nameFiled="org" />;
+ 	static CheckBox= (id:string,text:string,handler:Function,isChecked:boolean)=>{
+ 		return <Checkbox.Item  tit={""} nameFiled="org" checked={isChecked} changeHandle={handler.bind(null,id,text)}/>
+ 	};
+
  	static noCheck= ()=>"";
 
+ 	updateSelectList = (id:string,text:string)=>{
+
+
+ 		console.log(id,text);
+
+ 			this.setState(preState=>{
+ 					const selectList = preState.selected;
+					const index = selectList.findIndex(val=>val.id===id);
+					console.log(index,text);
+			 		if(index > -1){
+			 				return {
+								selected:selectList.remove(index),
+							};
+			 		}else{
+							return{
+								selected:selectList.push({id,text})
+							}
+			 		}
+ 			});
+ 	}
 
  	toggleDrop=()=>{
 
@@ -192,49 +306,55 @@ export default class ComTreeBox extends React.PureComponent<props,states>{
 
  	}
 
+ 	
+ 	  getValue(){
+
+			 const {selected} = this.state;
+	  	 const arr = selected.map(val=>{
+	  	 			return val.text ;
+	  	 });
+	  	 return arr.join(",");
+
+	  }
+		searchHandle=()=>{
+
+			console.log(3)
+		}
+
+		closeHandle=()=>{
+			console.log(3)
+		}
 
 	render(){
 
-		const {drop,selected} = this.state;
-		const {checkbox,data,icon,textFiled,idField,childField,width,maxHeight} = this.props;
+		const {drop,treeData} = this.state;
+		const {checkbox,icon,textFiled,idField,childField,width,maxHeight} = this.props;
 
-		const checkBox =  checkbox ? ComTreeBox.CheckBox :ComTreeBox.noCheck ;
-
-		const value = "";
+		
+		const checkBoxCom =  checkbox ? ComTreeBox.CheckBox :ComTreeBox.noCheck ;
+		const value = this.getValue();
 
 		return (<div className={"comTreeBox "+(drop ? "active ":"") + (!value?"no-fill":"")} style={{width:width+"px"}}>
-
-							<div className="m-combo-inp" onClick={this.toggleDrop}  >
-											<input type="text" className="m-inp" readOnly value={value} placeholder={checkbox?"多选":"单选"}/>
-											<span className="j-slide" >
-												<i className={"fa " + (drop ? "fa-chevron-up":"fa-chevron-down")}></i>
-											</span>
-							</div>
+							<ComboInp multiply={checkbox} value={value} toggleDrop={this.toggleDrop}  drop={drop}/>
 							<VelocityComponent animation={drop?"slideDown":"slideUp"}>
-									<div className="m-drop" >
-											 <Search closeHandle={()=>console.log(3)} searchHandle={()=>console.log(3)}/>
+								<div className="m-drop" >
+									<Search closeHandle={this.closeHandle} searchHandle={this.searchHandle}/>
+									<ul className="m-tree" style={{maxHeight:maxHeight+"px"}}>
 										
-												<ul className="m-tree" style={{maxHeight:maxHeight+"px"}}>
-													{
-														data.map(val=>{
-
-																	if(val[childField!].length){
-																			return <ParCom 	key={val[idField!]}
-																											checkbox={checkBox} 
-																											itemObj={val} 
-																											icon={icon!} 
-																											textFiled={textFiled!} 
-																											idField={idField!}
-																											childField={childField!}
-																											lev={0}
-																											selected={selected}
-																											 />
-																	}
-
-														})
-													}
-											</ul>
-									</div>
+										<DropCom  data={treeData}
+															icon={icon!} 
+															textFiled={textFiled!} 
+															idField={idField!}
+															childField={childField!}
+															checkBoxCom={checkBoxCom}
+															updateSelectList={this.updateSelectList}
+														 />
+														}
+														
+									</ul>	
+									
+								</div>
+							
 							</VelocityComponent>
 						</div>);
 
@@ -242,3 +362,4 @@ export default class ComTreeBox extends React.PureComponent<props,states>{
 	}
 
 }
+

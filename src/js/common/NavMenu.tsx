@@ -152,10 +152,6 @@ class NavMenu extends React.PureComponent<props,state>{
 			}
 	}
 
-	chageState=()=>{
-
-		this.setState(prevState=>({test:!prevState.test}));
-	}
 
 	render(){
 		const {data,config=NavMenu.defaultConfig,expand} = this.props;

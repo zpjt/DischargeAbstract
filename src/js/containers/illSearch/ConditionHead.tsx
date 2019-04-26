@@ -6,7 +6,6 @@ import ComTreebox from "@js/common/ComTreebox";
 import {Radio} from "@js/common/InputBtn";
 
 
-
 type props = {
 	
 }
@@ -71,6 +70,8 @@ class HeadInp extends React.PureComponent<props & reduxProps & Dispatch,HeadStat
 	}
 
 }
+
+
 
 type reduxProps = {
 		orgs:orgState["data"];

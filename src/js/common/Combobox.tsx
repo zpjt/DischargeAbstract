@@ -3,6 +3,7 @@ import * as React from "react";
 import * as Immutable from "immutable" ;
 import "@css/combobox.scss";
 import {VelocityComponent} from "velocity-react";
+import {ComboInp} from "@js/common/InputBtn";
 
 type itemObj = {
 	[key:string]:any;
@@ -14,16 +15,55 @@ type ItemComboProp = {
 		text:string;
 		icon:string;
 		active:boolean;
-		clickFn:(id:string)=>void;
+		clickFn:(id:string,text:String,active:boolean)=>void;
 }
-const ItemCombo:React.SFC<ItemComboProp> = ({id,text,clickFn,icon,active})=>{
+
+type DropProp={
+	data:itemObj[];
+	maxHeight:number;
+	idField:string;
+	textField:string;
+	clickHande:ItemComboProp["clickFn"];
+	icon:string;
+	slected:state["slected"];
+}
+
+type DropState={
+
+}
 
 
-	return (<li onClick={()=>clickFn(id)} className={"m-combo-item " + (active ? "active" : "")}>
-					{ icon ? <span className={icon}></span>:""}
-					 <span>{text}</span>
-				 </li>)
+class DropCom extends React.PureComponent<DropProp,DropState>{
+
+		static ItemCombo:React.SFC<ItemComboProp> = ({id,text,clickFn,active,icon})=>{
+
+						return (<li onClick={()=>{clickFn(id,text,active)}}   className={"m-combo-item " + (active ? "active" : "")}>
+										{ icon ? <span className={icon}></span>:""}
+										 <span>{text}</span>
+									 </li>)
+					}
+
+		render(){
+
+			const {data,maxHeight,idField,textField,clickHande,icon,slected} = this.props;
+
+			return (<ul style={{maxHeight}} className="m-drop" >
+									{
+										data.map(val=>{
+													const id = val[idField!];
+													const text = val[textField!];
+													const active = slected.findIndex(val=>val.id===id) > -1;
+													return <DropCom.ItemCombo active={active} id={id} icon={icon!} text={text} clickFn={clickHande} key={id}/>
+										})
+									}
+							</ul>)
+		}
+
+
 }
+
+
+
 
 type props = {
 			idField?:string;
@@ -39,7 +79,7 @@ type props = {
 
 type state = {
 	drop:boolean;
-	slected:Immutable.List<string>;
+	slected:Immutable.List<{id:string,text:string}>;
 
 }
 
@@ -59,9 +99,27 @@ export default class Combobox  extends React.PureComponent<props,state>{
 	 	
 	 }
 
-	  state:state = {
-	  	drop:false,
-	  	slected: Immutable.fromJS([]),
+
+	  constructor(props:props){
+
+	  	super(props);
+
+	  	const {defaultVal,data,idField,textField} = props;
+	  
+	  	const defaultNode = defaultVal!.map(val=>{
+	  		const node = data.find(node=>(node[idField!]===val))!
+	  		return {
+	  			id:val,
+	  			text:node[textField!]
+	  		}
+
+
+	  	})
+	  	
+	  	this.state ={
+		  	drop:false,
+		  	slected: Immutable.List(defaultNode),
+		  }
 	  }
 
 	  toggleDrop = ()=>{
@@ -75,14 +133,12 @@ export default class Combobox  extends React.PureComponent<props,state>{
 
 	  }
 
-	  getValue(idField:string,textField:string,data:props["data"],slected:state["slected"]){
+	  getValue(){
 
-	  	 const arr = slected.map(id=>{
+			 const {slected} = this.state;
 
-	  	 			const node = data.find(val=>val[idField]===id)!;
-
-	  	 			return node[textField]
-
+	  	const arr = slected.map(node=>{
+	  	 			return node.text;
 	  	 });
 
 
@@ -90,28 +146,31 @@ export default class Combobox  extends React.PureComponent<props,state>{
 
 	  }
 
-	  singleClickItem=(id:string):void=>{
+	  singleClickItem=(id:string,text:string,active:boolean):void=>{
 
 	  	  const {slected,drop} = this.state;
 
-	  	  !slected.includes(id) ? this.setState({
-	  			slected:slected.clear().push(id),
+	  	  !active ? this.setState({
+	  			slected:slected.clear().push({id,text}),
 	  			drop:!drop,
 	  		}):null;
 
 	  }
 
-	  multiplyClickItem=(id:string):void=>{
+	  multiplyClickItem=(id:string,text:string,active:boolean):void=>{
 
 	  		const {slected} = this.state;
-	  		const index = slected.indexOf(id);
 
-	  		index >-1 ? this.setState({
-	  			slected:slected.remove(index),
-	  		}) : this.setState({
-	  				slected:slected.push(id),
-	  		});
-
+	  		if(active){
+						const index = slected.findIndex(val=>val.id===id);
+						this.setState({
+			  			slected:slected.remove(index),
+			  		});
+	  		}else{
+	  				this.setState({
+			  				slected:slected.push({id,text}),
+			  		});
+	  		}
 	  }
 
 		render(){
@@ -122,31 +181,14 @@ export default class Combobox  extends React.PureComponent<props,state>{
 
 				const clickFn = multiply ? this.multiplyClickItem : this.singleClickItem;
 
-				const value = this.getValue(idField!,textField!,data,slected);
+				const value = this.getValue();
 
 				return (<div className={"combobox "+(drop ? "active ":"")+ (!value?"no-fill":"")} style={{width}}>
 									
-									
-									<div className="m-combo-inp" onClick={this.toggleDrop}>
-											<input type="text" className="m-inp" readOnly value={value} placeholder={multiply?"多选":"单选"}/>
-											<span className="j-slide" >
-												<i className={"fa " + (drop ? "fa-chevron-up":"fa-chevron-down")}></i>
-											</span>
-									</div>
+									<ComboInp multiply={multiply!} toggleDrop={this.toggleDrop} value={value} drop={drop} />
 									<VelocityComponent duration={300} animation={drop?"slideDown":"slideUp"}>
-											<ul style={{maxHeight}} className="m-drop">
-													{
-														data.map(val=>{
-																	const id = val[idField!];
-																	const text = val[textField!];
-																	const active = slected.includes(id);
-																	return <ItemCombo active={active} id={id} icon={icon!} text={text} clickFn={clickFn} key={id}/>
-														})
-													}
-											</ul>
+											<DropCom icon={icon!} maxHeight={maxHeight!} data={data} idField={idField!} textField={textField!} clickHande={clickFn} slected={slected}/>
 									</VelocityComponent >
-									
-
 								</div>);
 
 		}
