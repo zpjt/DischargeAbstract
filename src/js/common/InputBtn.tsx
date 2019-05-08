@@ -33,7 +33,7 @@ class  Radio extends React.PureComponent<props>{
 									{
 											data.map(({value,tit})=>{
 
-												return <Radio.Item  value={value} tit={tit} nameFiled={nameFiled} />
+												return <Radio.Item  key={value} value={value} tit={tit} nameFiled={nameFiled} />
 
 											})
 									}
@@ -48,7 +48,9 @@ type itemCheckObj={
 	changeHandle:()=>void;
 	checked:boolean;
 	value?:string;
+	hasChecked?:boolean
 }
+
 
 type checkProps = {
 	changeHandle:()=>void;
@@ -65,12 +67,12 @@ class  Checkbox extends React.PureComponent<checkProps,checkState>{
 
 				
 
-				static Item:React.SFC<itemCheckObj & {nameFiled:string}> = ({tit,nameFiled,changeHandle,checked})=>{
+				static Item:React.SFC<itemCheckObj & {nameFiled:string}> = ({tit,nameFiled,changeHandle,checked,hasChecked})=>{
 
 					return (<label className="m-label m-lab-checkbox" >
-													 			{	tit ? (<span className="lab-tit">{tit}</span>) : null }
-													 				<input type="checkbox"  name={nameFiled} checked={checked} onChange={changeHandle!}  />
-												 		  	</label>)
+													 				<input type="checkbox" className={hasChecked?"has-check":""} name={nameFiled} checked={checked} onChange={changeHandle!}  />
+													 				{	tit ? (<span className="lab-tit">{tit}</span>) : null }
+					 		  	</label>)
 				}
 
 				render(){

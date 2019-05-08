@@ -1,6 +1,56 @@
 import * as React from "react" ;
+import {Checkbox} from "@js/common/InputBtn";
+import * as Immutable from "immutable";
 
 
+type TableProps ={
+		data:any[];
+		hasPageNums?:boolean;
+		column:columnItem[],
+		idField?:string;
+		hasOrder?:boolean;
+		checkbox?:boolean,
+}
+
+type  columnItem= {
+		text:string;
+		width?:number;
+		field:string;
+		formatter?:(node:any)=>React.ReactChild;
+}
+
+type TableState = {
+		perNums:number;
+		tableH:string;
+		curPage:number;
+		tableData:Immutable.List<Immutable.Map<string,any>>;
+		pageCheckAll:boolean;
+}
+
+type PageProps ={
+	total:number;	
+	jumpPage:(size:number)=>void;
+	curPage:number;
+}
+
+type PageState = {
+	
+}
+
+
+type TBodyTrProps ={
+		CheckBoxFn: ((order:string,checked:boolean,index:number,changeHandle:TBodyTrProps["changeHandle"])=>React.ReactChild);
+		column:columnItem[];
+		dataItem:Immutable.Map<string,any>;
+		idField:string;
+		index:number;
+		startIndex:number;
+		changeHandle:(index:number)=>void;
+}
+
+type TBodyTrState = {
+	
+}
 
 const PageSize:React.SFC<{pageNum:number,jumpPage:PageProps["jumpPage"],curPage:number}> = ({jumpPage,pageNum,curPage})=>{
 
@@ -18,15 +68,7 @@ const PageSize:React.SFC<{pageNum:number,jumpPage:PageProps["jumpPage"],curPage:
 					</>)
 }
 
-type PageProps ={
-	total:number;	
-	jumpPage:(size:number)=>void;
-	curPage:number;
-}
 
-type PageState = {
-	
-}
 class TablePage extends React.PureComponent<PageProps,PageState>{
 		state:PageState={
 
@@ -92,39 +134,36 @@ class TablePage extends React.PureComponent<PageProps,PageState>{
 }
 
 
+class TBodyTr  extends React.PureComponent<TBodyTrProps,TBodyTrState>{
 
 
+	render(){
 
-type TableProps ={
-		data:any[];
-		hasPageNums?:boolean;
-		column:columnItem[],
-		idField?:string;
-		hasOrder?:boolean;
-		checkbox?:false,
-}
-
-type  columnItem= {
-				text:string;
-				width?:number;
-				field:string;
-				formatter?:(node:any)=>React.ReactChild;
-			}
-
-type TableState = {
-		perNums:number;
-		tableH:string;
-		curPage:number;
+			const {CheckBoxFn,column,dataItem,idField,index,startIndex,changeHandle} = this.props;
+			const order = startIndex+1+index+"" ;
+			const checked = dataItem.get("checkStatus");
+			return (<>
+								<tr  key={dataItem.get(idField)}>
+									<td style={{width:"60px"}}>
+									{CheckBoxFn(order,checked,index,changeHandle)}
+									</td>
+									{
+										column.map((node)=>{
+												const {width,field,formatter} = node ;
+												const wObj = width ? {width:width+"px"} : {} ;
+												const text = formatter ? formatter(node): dataItem.get(field);
+												return <td key={field} style={wObj}>{text}</td>
+										})
+									}
+								</tr>
+							</>)
+	}
 }
 
 
 export default class Table extends React.PureComponent<TableProps,TableState>{
 
-	state:TableState={
-			perNums:20,
-			tableH:"auto",
-			curPage:1
-	}
+
 
 	static defaultProps = {
 			hasPageNums:true,
@@ -133,13 +172,49 @@ export default class Table extends React.PureComponent<TableProps,TableState>{
 			checkbox:false,
 	}
 
-	static CheckCom =()=>(<label className="m-label m-lab-checkbox" >
-								 				<input type="checkbox"  name="org" className={hasChecked?"has-check":""} checked={isChecked} onChange={()=>{
-								 							handler(method,path);
-								 				}}  />
-				 		  			</label>)
+	static CheckBoxFn = (order:string,checked:boolean,index:number,changeHandle:(index:number)=>void)=>{
 
+			return <Checkbox.Item 
+								changeHandle={()=>{changeHandle(index)}}
+								checked={checked}
+								nameFiled="user"
+								tit={order}
+								/>
+	};
+
+	static NoCheckBoxFn = (...arg:any[])=>{
+		const [order] =arg;
+		return order;
+};
+
+	constructor(props:TableProps){
+			super(props);
+			this.state={
+					perNums:20,
+					tableH:"auto",
+					curPage:1,
+					tableData:this.addStaTusField(props.data),
+					pageCheckAll:false,
+			}
+
+	}
+	addStaTusField(data:TableProps["data"]){
+			const dataCopy = JSON.parse(JSON.stringify(data)).map((val:any)=>{
+					val.checkStatus = false;
+					return val;
+			});
+			return Immutable.fromJS(dataCopy);
+	}
 	TableContainer:React.RefObject<HTMLDivElement>=React.createRef();
+	componentWillReceiveProps(nextProps:TableProps){
+
+		if(nextProps.data !== this.props.data){
+				this.setState({
+					tableData:this.addStaTusField(nextProps.data),
+				})
+		}
+
+	}
 	componentDidMount(){
 
 		  const tableH = this.TableContainer.current!.clientHeight+"";
@@ -155,33 +230,79 @@ export default class Table extends React.PureComponent<TableProps,TableState>{
 			})
 
 	}
+	checkAll=(status:boolean)=>{
+
+			const {perNums,tableData,curPage} = this.state;
+			const rest = curPage*perNums - tableData.size
+			const num =  rest > 0 ? perNums - rest :20 ;
+			let newData = tableData;
+			Array.from({length:num}).forEach((...args)=>{
+						const [,index] = args;
+						newData = newData.updateIn([index+(curPage-1)*20],val=>{
+							return val.set("checkStatus",!status)
+						})
+
+			})
+
+			this.setState({
+				tableData:newData
+			})
+	}
+
+	countTotalStatus(total:number,curData:TableState["tableData"]){
+
+			const checkedNum = curData.count(val=>{
+															return val.get("checkStatus")
+													});
+			const rest = total - checkedNum
+			const hasChecked = rest > 0 && rest < curData.size;
+			const isAllChecked = !hasChecked && rest===0 ;
+
+			return {hasChecked,isAllChecked}
+
+	}
+	checkItem = (index:number) =>{
+			const {curPage} = this.state;
+			this.setState(preState=>{
+
+
+				return {
+					tableData:preState.tableData.updateIn([index+(curPage-1)*20],(val:Immutable.Map<string,any>)=>{
+							const status = !val.get("checkStatus");
+							return  val.set("checkStatus",status);
+					})
+				}
+			})
+	}
+
+
 	render(){
 
-			const {data,hasPageNums,column,idField} = this.props;
-			const {tableH,perNums,curPage} = this.state;
-			
+			const {data,hasPageNums,column,idField,checkbox} = this.props;
+			const {tableH,perNums,curPage,tableData} = this.state;
 			const startIndex = (curPage-1)*20;
-		
-			const curData = hasPageNums ?  data.slice(startIndex,startIndex+20) : data;
-
-			const has_pageNum = hasPageNums && data.length > perNums ;
+			const curData = hasPageNums ?  tableData.slice(startIndex,startIndex+20) : tableData;
+			const has_pageNum = hasPageNums && tableData.size > perNums ;
 			
 			let tabOver = "";
 			let h:any ;
+
+			const total = curData.size;
 			
 			if(tableH !="auto"){
 				
 				const pageh = has_pageNum && 50 || 0 ;
 				h = (+tableH - 40 - pageh );
 
-				tabOver = curData.length * 43 > h ? "tab-over" :"";
+				tabOver =  total* 43 > h ? "tab-over" :"";
 
 				 h +="px";
 			};
-
 			
+			const CheckBoxFn =  checkbox ? Table.CheckBoxFn : Table.NoCheckBoxFn;
+			const checkAllStataus = this.countTotalStatus(total,curData)
 
-			
+
 
 			return (	<div className="g-table" ref={this.TableContainer}>
 
@@ -189,7 +310,17 @@ export default class Table extends React.PureComponent<TableProps,TableState>{
 											<table >
 												<thead >
 														<tr>
-															<th style={{width:"60px"}}>序号</th>
+															<th style={{width:"60px"}}>
+
+																{checkbox ? <Checkbox.Item 
+																								changeHandle={()=>this.checkAll(checkAllStataus.isAllChecked)}
+																								checked={checkAllStataus.isAllChecked}
+																								nameFiled="user"
+																								tit="序号"
+																								hasChecked={checkAllStataus.hasChecked}
+
+																								/> : "序号"}
+															</th>
 														{
 															column.map(({width,text,field})=>{
 																	const wObj = width ? {width:width+"px"} : {} ;
@@ -206,20 +337,16 @@ export default class Table extends React.PureComponent<TableProps,TableState>{
 												<tbody>
 													{
 														curData.map((dataItem,index)=>{
-
-																return (
-																		<tr  key={dataItem[idField!]}>
-																			<td style={{width:"60px"}}>{startIndex+1+index}</td>
-																			{
-																				column.map((node)=>{
-																						const {width,field,formatter} = node ;
-																						const wObj = width ? {width:width+"px"} : {} ;
-																						const text = formatter ? formatter(node): dataItem[field];
-																						return <td key={field} style={wObj}>{text}</td>
-																				})
-																			}
-																		</tr>
-																	)
+																return <TBodyTr 
+																					CheckBoxFn={CheckBoxFn}
+																					column={column}
+																					idField={idField!}
+																					dataItem={dataItem}
+																					index={index}
+																					startIndex={startIndex}	
+																					changeHandle={this.checkItem}
+																					key={dataItem.get(idField!)}
+																				/>
 														})
 													}
 												</tbody>

@@ -125,7 +125,7 @@ const ResultSearch:React.SFC<ResultProp>=({data})=>{
 						}
 					]
 
-			return <Table data={data} column={column} />
+			return <Table data={data} column={column}  checkbox={true} />
 			
 }
 
@@ -134,7 +134,7 @@ export default class Usermanage extends React.PureComponent<props,state>{
 	
 
 	state={
-			data:[]
+			data:[],
 	}
 	componentDidMount(){
 			fetch("/11/getIllRes").then(res=>res.json()).then(res=>{
