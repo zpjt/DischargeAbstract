@@ -11,7 +11,9 @@ type props = {
 }
 
 type HeadState = {
-
+ 	isSearch:boolean;
+ 	orgSel:string[];
+ 	
 }
 
 type Dispatch = {
@@ -21,9 +23,33 @@ type Dispatch = {
 
 class HeadInp extends React.PureComponent<props & reduxProps & Dispatch,HeadState>{
 
+	state={
+		isSearch:false,
+		orgSel:[],
+	}
 
 	componentDidMount(){
 			this.props.dispatch(fetchPostOrgIfNeeded());
+	}
+	getER<T>(d:T){
+			console.log(d)
+	}
+	searchHandle=()=>{
+
+		this.setState((preState)=>{
+			return {
+				 isSearch:!preState.isSearch,
+			}
+		});
+
+	}
+
+	setParams=(files:"orgSel",data:any)=>{
+
+		this.setState({
+				[files]:data
+		})
+
 	}
 
 	render(){
@@ -31,13 +57,14 @@ class HeadInp extends React.PureComponent<props & reduxProps & Dispatch,HeadStat
 		const data= [{id:"1",text:"方法1"},{id:"2",text:"方法2"},{id:"3",text:"方法3"}];
 
 		const {orgs} = this.props;
+		const {isSearch} = this.state;
 
 		return (<div className="g-illtype-head">
 							<div style={{"display":"flex",justifyContent:"space-between"}}>
 								<h3>病种查询</h3>
 								<span className="m-optBtn">
 								 		<button className="s-btn normal-btn"><i className="fa fa-refresh">&nbsp;</i>重 置</button>
-								 		<button className="s-btn normal-btn"> <i className="fa fa-search">&nbsp;</i>查 询</button>
+								 		<button className="s-btn normal-btn" onClick={this.searchHandle}> <i className="fa fa-search">&nbsp;</i>查 询</button>
 								 		<button className="s-btn normal-btn"><i className="fa fa-reply">&nbsp;</i>返回</button>
 								 </span>	
 								
@@ -45,7 +72,7 @@ class HeadInp extends React.PureComponent<props & reduxProps & Dispatch,HeadStat
 							<div className="g-condition">
 								 <span className="item-inp">
 								 		<span className="m-inp-tit">科室名称</span>
-										<ComTreebox data={orgs} idField="dim_value" childField="sub" textFiled="dim_name" />
+										<ComTreebox data={orgs} idField="dim_value" childField="sub" textFiled="dim_name" getValStatus={isSearch} changeParState={this.setParams}/>
 								 </span>
 								 <span className="item-inp">
 								 		<span className="m-inp-tit">病种名称</span>

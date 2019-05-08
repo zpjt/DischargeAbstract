@@ -29,6 +29,7 @@ $bg:#ffffff;
 	  	outline: none;
 	  	cursor: pointer;
 	  	text-indent: .5em;
+	  	height: $inpHeight - 4 ;
 	  }	
 	  textarea.m-inp{
   	  resize: none;
@@ -63,6 +64,10 @@ $bg:#ffffff;
 				background-color: #acb1fe;
 				border-radius: 2px;
 		}
+		.m-combo-item.activeClick{
+				color:$themeColor;
+		}
+
 }
 
 .combobox{

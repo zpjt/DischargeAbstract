@@ -1,4 +1,5 @@
-@import "./input.scss" ,"./btn.scss" ,"./table.scss";
+@import "./input.scss" ,"./btn.scss" ,"./table.scss" ,"./modal.scss";
+@import "./scss/unit.scss";
 
 $themeColor:#535be9;
 $bg_slide:#535be9;
@@ -71,6 +72,7 @@ body,html{
 			.g-main{
 				overflow: auto;
 				height: calc(100% - #{$Head});
+				position: relative;
 			}
 			.g-sys_set{
 				font-size: 20px;
@@ -156,6 +158,34 @@ body,html{
     
 	}
 }
-
+/*容器样式  */
+.g-layout{
+	display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-sizing: border-box;
+}
+.g-result{
+	@extend %shadow;
+	flex: auto;
+	padding: 16px;
+	overflow: hidden;
+	.m-search{
+		width: 50%;
+	}
+}
+.g-illtype-head{	
+	@extend %shadow;
+	position: relative;
+	z-index: 2;
+	padding: 16px;
+	margin-bottom: 16px;
+	.g-condition{	
+		margin-top: 10px;
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;	
+	}
+}
 
 

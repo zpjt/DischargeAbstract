@@ -31,6 +31,7 @@ const Main = ()=>{
 											loader:()=>import( /*webpackChunkName: "illType" */"./containers/illSearch/illType"),
 											loading:()=><div>loading...</div>
 									})}  />
+									<div className="g-modal" id="s-modal"></div>
 								</>
 				);
 }

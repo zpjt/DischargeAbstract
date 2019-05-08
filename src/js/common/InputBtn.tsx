@@ -27,7 +27,7 @@ class  Radio extends React.PureComponent<props>{
 		render(){
 
 			const {data,nameFiled} = this.props;
-						
+			
 			return	(<span className="m-radio">
 
 									{

@@ -83,6 +83,12 @@
        content: '\f046'; // circle
     }
 	}
+	input.has-check{
+		&:after {
+	      content: '\f192'; // circle- dot
+    }
+	}
+
 }
 
 /* radio */

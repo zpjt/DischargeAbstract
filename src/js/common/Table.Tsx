@@ -101,6 +101,7 @@ type TableProps ={
 		column:columnItem[],
 		idField?:string;
 		hasOrder?:boolean;
+		checkbox?:false,
 }
 
 type  columnItem= {
@@ -129,7 +130,14 @@ export default class Table extends React.PureComponent<TableProps,TableState>{
 			hasPageNums:true,
 			idField:"id",
 			hasOrder:true,
+			checkbox:false,
 	}
+
+	static CheckCom =()=>(<label className="m-label m-lab-checkbox" >
+								 				<input type="checkbox"  name="org" className={hasChecked?"has-check":""} checked={isChecked} onChange={()=>{
+								 							handler(method,path);
+								 				}}  />
+				 		  			</label>)
 
 	TableContainer:React.RefObject<HTMLDivElement>=React.createRef();
 	componentDidMount(){
@@ -149,7 +157,7 @@ export default class Table extends React.PureComponent<TableProps,TableState>{
 	}
 	render(){
 
-			const {data,hasPageNums,column,hasOrder,idField} = this.props;
+			const {data,hasPageNums,column,idField} = this.props;
 			const {tableH,perNums,curPage} = this.state;
 			
 			const startIndex = (curPage-1)*20;
@@ -181,7 +189,7 @@ export default class Table extends React.PureComponent<TableProps,TableState>{
 											<table >
 												<thead >
 														<tr>
-														{hasOrder ? (<th style={{width:"60px"}}>序号</th>) : null}
+															<th style={{width:"60px"}}>序号</th>
 														{
 															column.map(({width,text,field})=>{
 																	const wObj = width ? {width:width+"px"} : {} ;
