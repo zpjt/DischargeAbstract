@@ -1,10 +1,59 @@
+@import "./scss/variables";
+$M_width:300px;
+$Tit_H:40px;
 .g-modal{
-	z-index: 10;
-	position: absolute;
-	top: 0;
-	left: 0;
-	height: 100%;
-	width: 100%;
-	background: red;
-	display: none;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.m-Mask{
+		background-color: rgba(0,0,0,0.3);
+		 height: 100%;
+    width: 100%;
+    position: absolute;
+}
+.m-Modal{
+	z-index: 2;
+	min-width: $M_width;
+	.m-Mtit{
+		height: $Tit_H;
+		background-color: #f1f2f2;
+		border-radius: 4px 4px 0px 0px;
+		display: flex;
+		position: relative;
+		justify-content: center;
+		align-items: center;
+		cursor: move;
+	}
+	.tit-name ,{
+		color:$themeColor;
+	}
+	.m-Mclose{
+		color:#cfcfcf;
+		position: absolute;
+		right: 10px;
+		cursor: pointer;
+
+	}	
+	.m-Mbody{
+		background: white;
+		padding: 10px;
+	}
+
+	.m-Mfooter{
+		background: white;
+		display: flex;
+		justify-content: flex-end;
+		padding: 10px;
+		.s-btn{
+			margin-right:10px;
+		}
+	}
 }
