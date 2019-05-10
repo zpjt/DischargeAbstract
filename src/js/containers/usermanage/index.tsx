@@ -98,12 +98,14 @@ class HeadOpt extends React.PureComponent<HeadOptProp,HeadOptState>{
 		render(){
 			const {showUserM,showOptM,initOptM,initUserM} = this.state;
 			return (<>
-								<h3 style={{paddingBottom:"14px"}}>用户管理</h3>
-								<div style={{display:"flex",justifyContent:"space-between"}}>
-									<Search searchHandle={(key:string)=>console.log(key)}  closeHandle={()=>console.log(2)}/>
-									<div className="m-optBtn">
-										<button className="s-btn normal-btn" onClick={this.toggleShow1}><i className="fa fa-cogs">&nbsp;</i>批量操作</button>
-										<button className="s-btn normal-btn" onClick={this.toggleShow}> <i className="fa fa-user-plus">&nbsp;</i>新增用户</button>
+								<div>
+									<h3 style={{paddingBottom:"14px"}}>用户管理</h3>
+									<div style={{display:"flex",justifyContent:"space-between"}}>
+										<Search searchHandle={(key:string)=>console.log(key)}  closeHandle={()=>console.log(2)}/>
+										<div className="m-optBtn">
+											<button className="s-btn normal-btn" onClick={this.toggleShow1}><i className="fa fa-cogs">&nbsp;</i>批量操作</button>
+											<button className="s-btn normal-btn" onClick={this.toggleShow}> <i className="fa fa-user-plus">&nbsp;</i>新增用户</button>
+										</div>
 									</div>
 								</div>
 								{initUserM ?(<Modal 
@@ -188,8 +190,8 @@ export default class Usermanage extends React.PureComponent<props,state>{
 		const {data} = this.state;
 
 		return (
-				<div className="g-padding g-layout">
-							<div className="g-result">
+				<div className="g-padding " style={{height:"100%",boxSizing:"border-box"}}>
+							<div className="g-result g-layout">
 									<HeadOpt />
 									<ResultSearch data={data} />
 							</div>

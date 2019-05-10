@@ -1,0 +1,29 @@
+@import "./scss/variables.scss";
+
+
+.m-opt-tanslate{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 8px;
+	border-bottom: 2px solid $normal; 
+}
+
+.g-tanslate{
+	 display: flex;
+	 flex-direction: column;
+	 .m-tanslate{
+	 	display: flex;
+	 	flex:auto;
+
+	 }
+	.m-translate-item{
+		flex:1;
+		overflow: auto;	
+		height: 100%;
+		&:first-child{
+			border-right: 2px solid $normal; 
+		}
+	}
+	
+}

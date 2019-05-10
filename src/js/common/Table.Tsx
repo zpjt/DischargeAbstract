@@ -252,11 +252,13 @@ export default class Table extends React.PureComponent<TableProps,TableState>{
 	countTotalStatus(total:number,curData:TableState["tableData"]){
 
 			const checkedNum = curData.count(val=>{
-															return val.get("checkStatus")
+															return val!.get("checkStatus")
 													});
-			const rest = total - checkedNum
+			const rest = total - checkedNum;
+
 			const hasChecked = rest > 0 && rest < curData.size;
-			const isAllChecked = !hasChecked && rest===0 ;
+			
+			const isAllChecked = !hasChecked && total!==0 && rest===0 ;
 
 			return {hasChecked,isAllChecked}
 
@@ -281,7 +283,7 @@ export default class Table extends React.PureComponent<TableProps,TableState>{
 			const {data,hasPageNums,column,idField,checkbox} = this.props;
 			const {tableH,perNums,curPage,tableData} = this.state;
 			const startIndex = (curPage-1)*20;
-			const curData = hasPageNums ?  tableData.slice(startIndex,startIndex+20) : tableData;
+			const curData = (hasPageNums ?  tableData.slice(startIndex,startIndex+20) : tableData) as TableState["tableData"];
 			const has_pageNum = hasPageNums && tableData.size > perNums ;
 			
 			let tabOver = "";
@@ -292,7 +294,7 @@ export default class Table extends React.PureComponent<TableProps,TableState>{
 			if(tableH !="auto"){
 				
 				const pageh = has_pageNum && 50 || 0 ;
-				h = (+tableH - 40 - pageh );
+				h = (+tableH - 40  - pageh );// 表头 高40 ，离底部还要有距离
 
 				tabOver =  total* 43 > h ? "tab-over" :"";
 
@@ -341,11 +343,11 @@ export default class Table extends React.PureComponent<TableProps,TableState>{
 																					CheckBoxFn={CheckBoxFn}
 																					column={column}
 																					idField={idField!}
-																					dataItem={dataItem}
-																					index={index}
+																					dataItem={dataItem!}
+																					index={index!}
 																					startIndex={startIndex}	
 																					changeHandle={this.checkItem}
-																					key={dataItem.get(idField!)}
+																					key={dataItem!.get(idField!)}
 																				/>
 														})
 													}

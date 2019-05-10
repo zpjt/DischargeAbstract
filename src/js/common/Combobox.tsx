@@ -52,7 +52,7 @@ class DropCom extends React.PureComponent<DropProp,DropState>{
 										data.map(val=>{
 													const id = val[idField!];
 													const text = val[textField!];
-													const active = slected.findIndex(val=>val.id===id) > -1;
+													const active = slected.findIndex(val=>val!.id===id) > -1;
 													return <DropCom.ItemCombo active={active} id={id} icon={icon!} text={text} clickFn={clickHande} key={id}/>
 										})
 									}
@@ -138,7 +138,7 @@ export default class Combobox  extends React.PureComponent<props,state>{
 			 const {slected} = this.state;
 
 	  	const arr = slected.map(node=>{
-	  	 			return node.text;
+	  	 			return node!.text;
 	  	 });
 
 
@@ -162,7 +162,7 @@ export default class Combobox  extends React.PureComponent<props,state>{
 	  		const {slected} = this.state;
 
 	  		if(active){
-						const index = slected.findIndex(val=>val.id===id);
+						const index = slected.findIndex(val=>val!.id===id);
 						this.setState({
 			  			slected:slected.remove(index),
 			  		});

@@ -47,7 +47,7 @@ const ResultSearch:React.SFC<ResultProp>=({data})=>{
 						}
 					]
 
-			return (<div className="g-result">
+			return (<div className="g-result g-layout">
 				
 					<Search searchHandle={(key:string)=>console.log(key)}  closeHandle={()=>console.log(2)}/>
 

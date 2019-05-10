@@ -183,10 +183,10 @@ class DropCom  extends  React.PureComponent<DropProps,DropState>{
 									{
 										data.map((val,index)=>{
 
-													if(val.get(childField!).size){
-															return <ParCom 	key={val.get(idField!)}
+													if(val!.get(childField!).size){
+															return <ParCom 	key={val!.get(idField!)}
 																							checkBoxCom={checkBoxCom} 
-																							itemObj={val} 
+																							itemObj={val!} 
 																							icon={icon!} 
 																							textFiled={textFiled!} 
 																							idField={idField!}
@@ -302,7 +302,7 @@ export default class ComTreeBox extends React.PureComponent<props,states> implem
 
  	getArrId(){
 
- 		const idArr = this.state.selected.map(val=>val.id).toArray();
+ 		const idArr = this.state.selected.map(val=>val!.id).toArray();
  		this.props.changeParState!("orgSel",idArr);
 
  	}
@@ -446,11 +446,12 @@ export default class ComTreeBox extends React.PureComponent<props,states> implem
 	checkAllChild(sub:states["treeData"],childField:string,status:string,selected:any[]):states["treeData"]{
 
 		
+		
 
-		return sub.map(val=>{
-			const child = val.get(childField) as states["treeData"];
+		 const List  = sub.map(val=>{
+			const child = val!.get(childField) as states["treeData"];
 			
-			const node = val.set("checkStatus",status);
+			const node = val!.set("checkStatus",status);
 			if(child.size){
 				 const childArr =  this.checkAllChild(child,childField,status,selected);
 				 return node.set(childField,childArr) ;
@@ -463,7 +464,9 @@ export default class ComTreeBox extends React.PureComponent<props,states> implem
 				return node ;
 			}
 	
-		})
+		});
+
+		 return List as states["treeData"]
 
 	}
 
@@ -526,7 +529,7 @@ export default class ComTreeBox extends React.PureComponent<props,states> implem
  			const {idField,textFiled} = this.props;
 			const pathArr = this.getPath(path);
 			const id = this.state.treeData.getIn(pathArr.concat(idField!));
-			const has_id = this.state.selected.some(val=>val.id===id);
+			const has_id = this.state.selected.some(val=>val!.id===id);
 
 			if(has_id){
 				return ;
@@ -597,7 +600,7 @@ export default class ComTreeBox extends React.PureComponent<props,states> implem
  	}
 
  	updateSelectList = (selectList:states["selected"],id:string,text:string,is_sel:boolean)=>{
- 					const index = selectList.findIndex(val=>val.id===id);
+ 					const index = selectList.findIndex(val=>val!.id===id);
  					if(is_sel){
 
  						if(index>-1){
@@ -629,7 +632,7 @@ export default class ComTreeBox extends React.PureComponent<props,states> implem
 
 		 const {selected} = this.state;
   	 const arr = selected.map(val=>{
-  	 			return val.text ;
+  	 			return val!.text ;
   	 });
   	 return arr.join(",");
 
@@ -640,7 +643,7 @@ export default class ComTreeBox extends React.PureComponent<props,states> implem
 		const {data,textFiled,childField,idField} = this.props;
 		const {selected} = this.state;
 
-		const idArr = selected.map(val=>val.id).toArray();
+		const idArr = selected.map(val=>val!.id).toArray();
 
 		const dataCopy:any[]  =  JSON.parse(JSON.stringify(data),function(...args){
 		const [,val] = args;
@@ -728,7 +731,7 @@ export default class ComTreeBox extends React.PureComponent<props,states> implem
 	}
 
 	closeHandle=()=>{
-			const idArr = this.state.selected.map(val=>val.id).toArray();
+			const idArr = this.state.selected.map(val=>val!.id).toArray();
 			this.getInitPath(this.props.data,idArr[0]);
 			this.setState({
 		 			treeData:this.addStaTusField(this.props.data,idArr),
