@@ -466,7 +466,7 @@ export default class ComTreeBox extends React.PureComponent<props,states> implem
 	
 		});
 
-		 return List as states["treeData"]
+		 return List 
 
 	}
 
