@@ -4,6 +4,7 @@ import "@css/translate.scss";
 import BraftEditor from 'braft-editor';
 import 'braft-editor/dist/index.css';
 
+import { Chart, Geom, Axis, Tooltip, Legend} from 'bizcharts';
 
 type TranslateProp ={
 		
@@ -60,6 +61,20 @@ class Translate extends React.PureComponent<TranslateProp,TranslateState>{
 
 	render(){
 
+		const data = [
+				  { genre: 'Sports', sold: 275, income: 2300 },
+				  { genre: 'Strategy', sold: 115, income: 667 },
+				  { genre: 'Action', sold: 120, income: 982 },
+				  { genre: 'Shooter', sold: 350, income: 5271 },
+				  { genre: 'Other', sold: 150, income: 3710 }
+				];
+
+				// 定义度量
+				const cols = {
+				  sold: { alias: '销售量' },
+				  genre: { alias: '游戏种类' }
+				};
+
 			return (<div className="g-result g-tanslate" style={{padding:0}}>
 									<div className="m-opt-tanslate">
 										 <div>
@@ -79,7 +94,17 @@ class Translate extends React.PureComponent<TranslateProp,TranslateState>{
 
 									</div>
 									<div className="m-tanslate">
-											<div className="m-translate-item"></div>
+											<div className="m-translate-item">
+												
+													<Chart width={600} height={400} data={data} scale={cols}>
+											      <Axis name="genre" title/>
+											      <Axis name="sold" title/>
+											    	<Legend />
+											      <Tooltip />
+											      <Geom type="interval" position="genre*sold" color="genre" />
+											    </Chart>
+
+											</div>
 											<div className="m-translate-item">
 												<Editor />
 											</div>

@@ -13,6 +13,33 @@ type orgItem = {
 
 
 
+/*type AllowedValue =
+  string |
+  number |
+  boolean |
+  AllowedMap |
+  AllowedList |
+  TypedMap<any> |
+  undefined;
+
+interface AllowedList extends Immutable.List<AllowedValue> {}
+
+interface AllowedMap extends Immutable.Map<string, AllowedValue> {}
+
+export type MapTypeAllowedData<DataType> = {
+  [K in keyof DataType]: AllowedValue;
+};
+
+export interface TypedMap<DataType extends MapTypeAllowedData<DataType>> extends Immutable.Map<keyof DataType, AllowedValue> {
+  toJS(): DataType;
+  get<K extends keyof DataType>(key: K, notSetValue?: DataType[K]): DataType[K];
+  set<K extends keyof DataType>(key: K, value: DataType[K]): this;
+}
+
+const createTypedMap = <DataType extends MapTypeAllowedData<DataType>>(data: DataType): TypedMap<DataType> => Immutable.Map(data) as any;*/
+
+
+
 /*declare function Immutable<T>(o: T): Immutable<T>;
 
 interface Immutable<T> {

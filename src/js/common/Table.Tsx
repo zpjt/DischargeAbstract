@@ -149,10 +149,9 @@ class TBodyTr  extends React.PureComponent<TBodyTrProps,TBodyTrState>{
 									</td>
 									{
 										column.map((node)=>{
-												const {width,field,formatter} = node ;
-												const wObj = width ? {width:width+"px"} : {} ;
+												const {field,formatter} = node ;
 												const text = formatter ? formatter(node): dataItem.get(field);
-												return <td key={field} style={wObj}>{text}</td>
+												return <td key={field} >{text}</td>
 										})
 									}
 								</tr>
@@ -277,6 +276,18 @@ export default class Table extends React.PureComponent<TableProps,TableState>{
 			})
 	}
 
+	getColgroupCom(column:columnItem[]){
+
+				return (<colgroup>
+											<col style={{width:"80px"}} />
+											{
+													column.map(({width,field})=>{
+															const wObj = width ? {width:width+"px"} : {} ;
+															return <col key={field} style={wObj} />
+													})
+											}	
+								</colgroup>)
+	}
 
 	render(){
 
@@ -304,15 +315,17 @@ export default class Table extends React.PureComponent<TableProps,TableState>{
 			const CheckBoxFn =  checkbox ? Table.CheckBoxFn : Table.NoCheckBoxFn;
 			const checkAllStataus = this.countTotalStatus(total,curData)
 
+			const colgroupCom = this.getColgroupCom(column);
 
 
 			return (	<div className="g-table" ref={this.TableContainer}>
 
 										<div className={"m-fixTabHead "+tabOver}>
 											<table >
+												{colgroupCom}
 												<thead >
 														<tr>
-															<th style={{width:"60px"}}>
+															<th >
 
 																{checkbox ? <Checkbox.Item 
 																								changeHandle={()=>this.checkAll(checkAllStataus.isAllChecked)}
@@ -324,9 +337,8 @@ export default class Table extends React.PureComponent<TableProps,TableState>{
 																								/> : "序号"}
 															</th>
 														{
-															column.map(({width,text,field})=>{
-																	const wObj = width ? {width:width+"px"} : {} ;
-																	return <th key={field} style={wObj}>{text}</th>
+															column.map(({text,field})=>{
+																	return <th key={field}>{text}</th>
 															})
 														}
 														</tr>
@@ -336,6 +348,7 @@ export default class Table extends React.PureComponent<TableProps,TableState>{
 
 										<div className="m-fixTabBody" style={{"height":h}}>
 											<table >
+												{colgroupCom}
 												<tbody>
 													{
 														curData.map((dataItem,index)=>{

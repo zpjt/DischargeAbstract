@@ -35,7 +35,7 @@ class SlideMenu extends React.PureComponent{
 		this.setState({
 				isFetch:true,
 		});
-		fetch("/11/getMenu").then(res=>{
+		fetch("http://127.0.0.1:3033/mock/11/getMenu").then(res=>{
 				return res.json();
 		}).then(data=>{
 

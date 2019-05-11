@@ -8,7 +8,7 @@ import  ReduceCreate from "./createReucer";
 
 const REQUEST_POSTS_ORG = "REQUEST_POSTS_ORG";
 const RECEIVE_POSTS_ORG = "RECEIVE_POSTS_ORG";
-const GET_ORG_URL = "/11/getOrg";
+const GET_ORG_URL = "http://127.0.0.1:3033/mock/11/getOrg";
 
 
 const requestPostOrg = function(){

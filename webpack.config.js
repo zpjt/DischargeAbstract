@@ -13,6 +13,7 @@ module.exports = env =>{
 	  devtool: id_dev ? "eval-source-map" : "source-map",
 		entry:{
 			main:path.join(__dirname,"src/App.tsx"),
+		/*	vendor:["react","react-dom","react-loadable","react-redux","react-router","react-router-dom","redux","redux-logger","redux-thunk","velocity-react","immutable"],*/
 		},
 		output:{
 			path:path.join(__dirname,"dist"),
@@ -127,23 +128,27 @@ module.exports = env =>{
 	      maxInitialRequests: 3,
 	      name: id_dev,
 	      cacheGroups: {
-	        vendors: {
-     						test: /node_modules/,
-				        chunks:"all" ,
-				        name: "vendor",
-				        priority: 10,
-				        enforce: true
+	        common: {//检查异步加载的公共代码
+				        name: "common",
+				        chunks: 'async', 
+						    priority: 4,
+						    minChunks: 2, 
 	        },
-	        /*vendors: {
-	          test: /[\\/]node_modules[\\/]/,
-	          priority: -10
+	        asyncVendors: { //异步加载的第三方库
+				        name: "asyncVendors",
+			         	test: /[\\/]node_modules[\\/]/,
+				        chunks: 'async', //检查异步加载的
+						    priority: 4,
+						    minChunks: 1, 
 	        },
-	        default: {
-	          minChunks: 2,
-	          priority: -20,
-	          reuseExistingChunk: true
-	        }*/
- 
+	         vendors: {//检查初始化的，同步加载的第三方库 (也就是entry里的js第一次加载时引入的)
+   						 test: /[\\/]node_modules[\\/]/,
+			         chunks:"initial" , 
+				       name: "vendor",
+				       priority: 2,
+				   //    enforce: true,//强制检查打包，不管最小或最大的chunk限制
+			         minChunks: 1,
+	        },
 	      },
     	}
 
@@ -161,7 +166,7 @@ module.exports = env =>{
 						inject:"body",
 						hash:true,
 						template:path.join(__dirname,"src/index.html"),
-						chunks:["manifest","vendor","main"]
+						chunks:["manifest","main","vendor"]
 				}),
 				new CopyWebpackPlugin([
 					{ from: './src/assert', to: './assert' },
