@@ -71,7 +71,7 @@ module.exports = env =>{
 				},
 				{
 		      test: /\.(jpg|png|ico|jpeg|gif)$/,
-		      exclude: /assert/, // 排除不处理的目录
+		     // exclude: /assert/, // 排除不处理的目录
 		      use: [{
 		        loader: "url-loader",
 		        options: {

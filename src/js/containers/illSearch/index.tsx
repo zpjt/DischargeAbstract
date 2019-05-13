@@ -24,7 +24,7 @@ const IllType:React.SFC<{data:any[]}> = ({data})=>{
 
 				//	 const path = { pathname: '/ill_type' , query:{type: val.id }};
 
-						return <Link to={"/ill_type/"+val.id} key={val.id}>{val.name}</Link>
+						return <Link to={"/index/ill_type/"+val.id} key={val.id}>{val.name}</Link>
 
 				})
 			}
