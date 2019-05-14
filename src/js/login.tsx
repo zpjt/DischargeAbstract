@@ -1,52 +1,38 @@
-import * as React  from "react";
-import {withRouter ,RouteComponentProps ,Redirect} from "react-router-dom";
 import "@css/login.scss";
+import * as React  from "react";
+import {Redirect} from "react-router-dom";
+import {connect,MapStateToProps,MapDispatchToProps} from "react-redux";
+import {fetchPostLoginIfNeeded} from "@js/actions/index";
 
 
 
 
-type LoginProp = {};
+type LoginProp = {
+
+};
 
 type LoginState = {
-
-	login:boolean;
+	
 };
 
 
- class Login extends React.PureComponent<LoginProp & RouteComponentProps<{}>,LoginState>{
+ class Login extends React.PureComponent<LoginProp & LoginReduxProps & dispatchProp ,LoginState>{
 
 	userDom:React.RefObject<HTMLInputElement> = React.createRef();
 	psdDom:React.RefObject<HTMLInputElement> = React.createRef();
-	state={
-		login:false,
+
+	loginHandle=()=>{
+
+		const user = (this.userDom.current!).value;
+		const pwd = (this.psdDom.current!).value;
+
+		this.props.login(user,pwd);
+
 	}
-	//使用 重定向跳转
-	set = ()=>{
-
-		this.setState({
-			login:true,
-		})
-	}
-	//使用withRouter跳转,注意使用withRouter时，注意组件的props类型要加 RouteComponentProps<{}>
-	login = ()=>{
-
-		const user = (this.userDom.current)!.value;
-		const psd = (this.userDom.current)!.value;
-
-		if(!user || !psd){
-			return;
-		}
-
-		console.log(this.context)
-		this.props.history.push("/index");
-		//window.location.href="/index"
-	}
-
-
 	render(){
-		const {login} = this.state;
+		const {isFetching,isLogin} = this.props;
 
-		return !login ?(
+		return !isLogin ?(
 				<div className="g-login">
 						<div className="m-login">
 								<div className="login-title">
@@ -66,7 +52,10 @@ type LoginState = {
 												</div>
 										</div>
 										<div className="submit-btn">
-														<button className="s-btn login-btn" onClick={this.set}>登 录</button>
+														<button className="s-btn login-btn" onClick={this.loginHandle}>
+															{isFetching?<span style={{paddingRight:20}}><i className="fa fa-spinner fa-pulse fa-lg fa-fw"></i></span>:null}
+															<b>登 录</b>
+														</button>
 										</div>
 								</div>
 								<div className="login-footer">
@@ -82,6 +71,35 @@ type LoginState = {
 	}
 
 
+};
+
+
+type LoginReduxProps = Pick<app,"isFetching" | "isLogin">
+const mapStateToProp:MapStateToProps<LoginReduxProps,LoginProp,appStore>  = ({app})=>{
+
+	return {
+		isFetching:app.get("isFetching"),
+		isLogin:app.get("isLogin"),
+
+	}
+
 }
 
-export default withRouter(Login);
+type dispatchProp = {
+		login:(user:string,pwd:string)=>void;
+}
+const mapDispatchToProp:MapDispatchToProps<dispatchProp,LoginProp>= (dispatch:any)=>{
+
+	return {
+			login:(user,pwd)=>{
+				console.log(user,pwd)
+				dispatch(fetchPostLoginIfNeeded());
+
+			}
+	}
+
+}
+
+const LoginConnect = connect(mapStateToProp,mapDispatchToProp)(Login);
+
+export default LoginConnect;

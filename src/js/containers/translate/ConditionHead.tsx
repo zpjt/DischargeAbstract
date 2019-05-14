@@ -2,6 +2,7 @@ import * as React from "react";
 import {connect ,MapStateToProps} from "react-redux";
 import {fetchPostOrgIfNeeded} from "@js/actions/index";
 import ComTreebox from "@js/common/ComTreebox";
+import {InpBox} from "@js/common/InputBtn";
 
 
 type props = {
@@ -11,7 +12,9 @@ type props = {
 type HeadState = {
  	isSearch:boolean;
  	orgSel:string[];
- 	
+ 	sickNum:string;
+ 	sickName:string;
+ 	licenseNum:string;
 }
 
 type Dispatch = {
@@ -24,6 +27,9 @@ class HeadInp extends React.PureComponent<props & reduxProps & Dispatch,HeadStat
 	state={
 		isSearch:false,
 		orgSel:[],
+		sickNum:"",
+		sickName:"",
+		licenseNum:"",
 	}
 
 	componentDidMount(){
@@ -53,7 +59,7 @@ class HeadInp extends React.PureComponent<props & reduxProps & Dispatch,HeadStat
 	render(){
 
 		const {orgs} = this.props;
-		const {isSearch} = this.state;
+		const {isSearch,sickName,sickNum,licenseNum} = this.state;
 
 		return (<div className="g-illtype-head">
 							<div style={{"display":"flex",justifyContent:"space-between"}}>
@@ -66,18 +72,31 @@ class HeadInp extends React.PureComponent<props & reduxProps & Dispatch,HeadStat
 							</div>
 							<div className="g-condition">
 
-								<span className="item-inp">
-								 		<span className="m-inp-tit">病人号</span>
-								 		<input type="text" className="s-inp normal no-fill"/>
-								 </span>
-								 <span className="item-inp">
-								 		<span className="m-inp-tit">姓名</span>
-								 		<input type="text" className="s-inp normal no-fill"/>
-								 </span>
-								 <span className="item-inp">
-								 		<span className="m-inp-tit">证件号</span>
-								 		<input type="text" className="s-inp normal no-fill"/>
-								 </span>
+								<InpBox 
+										type="text" 
+										styleType="normal" 
+										title="病人号"
+										changeHandle={this.setParams}
+										field = "sickNum"
+										value={sickNum}
+									/>
+									<InpBox 
+										type="text" 
+										styleType="normal" 
+										title="姓名"
+										changeHandle={this.setParams}
+										field = "sickName"
+										value={sickName}
+									/>
+									<InpBox 
+										type="text" 
+										styleType="normal" 
+										title="证件号"
+										changeHandle={this.setParams}
+										field = "licenseNum"
+										value={licenseNum}
+									/>
+							
 								 <span className="item-inp">
 								 		<span className="m-inp-tit">科室</span>
 										<ComTreebox data={orgs} idField="dim_value" childField="sub" textFiled="dim_name" getValStatus={isSearch} changeParState={this.setParams}/>

@@ -1,5 +1,5 @@
 import * as React from "react";
-
+import Loading from "@js/common/Loading";
 
 
 const ConSearch = ()=>{
@@ -8,6 +8,7 @@ const ConSearch = ()=>{
 		
 			<div>
 				conSearch
+				<Loading.LoadingCom />
 			</div>
 			
 	)

@@ -123,8 +123,51 @@ class ComboInp extends React.PureComponent<CominpProps,CominpState>{
 	}
 }
 
+
+
+type InpBoxProp ={
+	type:string;
+	title:string;
+	styleType:string;
+	value?:string;
+	changeHandle:(field:string,value:string)=>void;
+	field:string;
+}
+
+type InpBoxState = {
+
+}
+
+class InpBox extends React.PureComponent<InpBoxProp,InpBoxState>{
+
+
+
+	changeHandle=(e:React.ChangeEvent<HTMLInputElement>)=>{
+
+		 const {changeHandle,field} = this.props;
+		 const value = e.target.value.trim();
+		 changeHandle(field,value);
+
+	}
+
+	render(){
+		const {type,title,styleType,value} = this.props;
+
+		const fillStatus = value ? "" : " no-fill ";
+
+		return (
+				<div className="item-inp">
+				 		<span className="m-inp-tit">{title}</span>
+				 		<input type={type} className={"s-inp " + fillStatus + styleType}  value={value} onChange={this.changeHandle} />
+				 </div>
+			) 
+
+	}
+}
+
 export {
 	Radio,
 	Checkbox,
-	ComboInp
+	ComboInp,
+	InpBox,
 }

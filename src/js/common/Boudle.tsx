@@ -60,7 +60,7 @@ export default (callfn:BoundleProp["asyncLoad"])=>(props:React.Props<{}>)=>(
 		<Boundle asyncLoad={callfn}>
 			
 			{
-			  (Comp:any) => (Comp ? <Comp.default {...props} /> : <Loading />)
+			  (Comp:any) => (Comp ? <Comp.default {...props} /> : <Loading.LoadingCom />)
 			}
 
 		</Boundle>

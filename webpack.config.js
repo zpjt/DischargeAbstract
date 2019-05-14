@@ -197,6 +197,7 @@ module.exports = env =>{
 		        },
 		        clientLogLevel: "none", // cancel console client log
 		        port: '8034', //设置端口号
+		        openPage:"login",//导航页面
 		        proxy: {
 		             '/11': {
 		                target: 'http://127.0.0.1:3033/mock',

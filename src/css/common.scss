@@ -188,4 +188,28 @@ body,html{
 	}
 }
 
+/* loading */
+.g-loading{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top:0;
+	left: 0;
+	background: rgba(#000, .3);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	.m-loading{
+		width:100px;
+		height:100px;
+		background: url("../assert/imgs/loading.svg") center no-repeat;
+		line-height: 180px;
+		text-align: center;
+	}
+	.loading-text{
+		letter-spacing: .1em;
+	}
+}
+
+
 

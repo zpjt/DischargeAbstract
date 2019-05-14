@@ -8,7 +8,16 @@ import Head from "@js/containers/Head";
 import MainRouter from "@js/Router" ;
 import DefaultRouter from "./containers/defaultRouter" ;
 
-class App extends React.Component{
+
+
+type appProps = {
+
+}
+
+type appState={
+
+}
+class App extends React.PureComponent<appProps,appState>{
 	
 
 	render(){
@@ -33,6 +42,8 @@ class App extends React.Component{
 					)
 	}
 }
+
+
 
 
 
