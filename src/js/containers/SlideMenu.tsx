@@ -40,19 +40,14 @@ class SlideMenu extends React.PureComponent< SlideMenuProp & reduxProp,SlideMenu
 		const {roleId}  = this.props;
 
 		axios({
-			url:"/main/getLeftMenu",
-			 params:{roleId},
+			url:"/summary/getMenu",
+			params:{role_id:roleId},
 		}).then(res=>{
-			console.log(res);
-			const data = res.data;
-			if(data && data.data.length){
-				this.setState({
-							data:data.data,
-							isFetch:false,
-					});
-			}else{
-				alert("获取不到菜单");
-			}
+			this.setState({
+						data:res.data,
+						isFetch:false,
+				});
+			
 		})
 		
 	}
@@ -101,10 +96,10 @@ type reduxProp ={
 
 const mapStateToProp:MapStateToProps<reduxProp,SlideMenuProp,appStore>=({app})=>{
 
-
+	const roleId = app.get("role_ids")[app.get("role_index")];
 	return {
 
-		roleId:(app.get("userInfo").roleId)![0],
+		roleId,
 
 	}
 }

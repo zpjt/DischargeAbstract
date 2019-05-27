@@ -10,8 +10,17 @@
 		 window.getSession = (
 			function(){
 				const session = {
-					getPath:"http://localhost:8035/DischargSummary",
-					getSession:{}
+					getPath:"http://localhost:8035/DischargSummary/",
+					getUser:{
+						org_ids: [216],
+						org_names: ["设备科"],
+						role_ids: [3201, 3202],
+						role_index: 0,
+						role_names:["主任", "医生"],
+						status: "",
+						user_id: 10,
+						user_name: "demo",
+					}
 				};
 
 				return function(key){

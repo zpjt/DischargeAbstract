@@ -8,24 +8,12 @@ const Main = ()=>{
 
 			return (
 								<>
-									<Route path="/index/report" component={loadable({
-											loader:()=>import( /*webpackChunkName: "report" */"./containers/report/index"),
+									<Route path="/summary" component={loadable({
+											loader:()=>import( /*webpackChunkName: "summary" */"./containers/summary/index"),
 											loading:()=><Loading.LoadingCom  />
 									})}  />
-									<Route path="/index/my_report" component={loadable({
-											loader:()=>import( /*webpackChunkName: "myReport" */"./containers/myReport/index"),
-											loading:()=><Loading.LoadingCom  />
-									})}  />
-									<Route path="/index/my_back" component={loadable({
-											loader:()=>import( /*webpackChunkName: "myBack" */"./containers/myBack/index"),
-											loading:()=><Loading.LoadingCom  />
-									})}  />
-									<Route path="/index/my_analysis" component={loadable({
-											loader:()=>import( /*webpackChunkName: "myAnalysis" */"./containers/myAnalysis/index"),
-											loading:()=><Loading.LoadingCom  />
-									})}  />
-									<Route path="/index/my_inspector" component={loadable({
-											loader:()=>import( /*webpackChunkName: "myInspector" */"./containers/myInspector/index"),
+									<Route path="/gdsummary" component={loadable({
+											loader:()=>import( /*webpackChunkName: "gdsummary" */"./containers/gdsummary/index"),
 											loading:()=><Loading.LoadingCom  />
 									})}  />
 									<div  id="s-modal"></div>

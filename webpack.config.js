@@ -13,6 +13,7 @@ module.exports = env =>{
 	  devtool: id_dev ? "eval-source-map" : "source-map",
 		entry:{
 			main:path.join(__dirname,"src/App.tsx"),
+			login:path.join(__dirname,"src/Login.tsx"),
 		},
 		output:{
 			path:path.join(__dirname,"static"),
@@ -152,7 +153,15 @@ module.exports = env =>{
 				       priority: 2,
 				   //    enforce: true,//强制检查打包，不管最小或最大的chunk限制
 			         minChunks: 1,
-	        },
+					},
+					commonMain:{
+							test: /src/,
+			         chunks:"initial" , 
+				       name: "commonMain",
+				       priority: 2,
+			         minChunks: 2,
+						
+					}
 	      },
     	}
 
@@ -165,13 +174,22 @@ module.exports = env =>{
 			      chunkFilename: id_dev ? 'css/[id].css' : 'css/[id].[hash].css',
 			    }),
 				new htmlWebpackPlugin({
-						title:"ts-react",
+						title:"出院小结",
 						filename:"index.html",
 						inject:"body",
 						hash:true,
 						template:path.join(__dirname,"src/index.html"),
-						chunks:["manifest","main","vendor"]
+						chunks:["manifest","main","vendor","commonMain"]
 				}),
+				new htmlWebpackPlugin({
+						title:"登录",
+						filename:"login.html",
+						inject:"body",
+						hash:true,
+						template:path.join(__dirname,"src/login.html"),
+						chunks:["manifest","login","vendor","commonMain"]
+				}),
+
 				new CopyWebpackPlugin([
 					{ from: './src/assert', to: './assert' },
 				]),
@@ -202,7 +220,7 @@ module.exports = env =>{
 		        },
 		        clientLogLevel: "none", // cancel console client log
 		        port: '8035', //设置端口号
-		        openPage:"index",//导航页面
+		        openPage:"login.html",//导航页面
 		        proxy: {
 		             '/DischargSummary': {
 		                target: 'http://localhost:8080',

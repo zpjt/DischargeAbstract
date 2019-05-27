@@ -13,4 +13,18 @@
 	}
 }
 
+.g-summary{
+	height: 100%;
+	box-sizing:border-box;
+	display:flex;
+	flex-direction: column;
+	.m-filter-box{
+		display: flex;
+		&>div{
+			margin-right: 16px;
+		}
+	}
+
+}
+
 

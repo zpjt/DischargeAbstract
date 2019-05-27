@@ -1,8 +1,6 @@
 import {combineReducers} from "redux";
-import {orgReducer} from "./orgAction";
-import {loginReducer} from "./LoginAction";
+import {userInfo} from "./appAction";
 
 export default combineReducers({
-	orgs:orgReducer,
-	app:loginReducer,
+	app:userInfo,
 })

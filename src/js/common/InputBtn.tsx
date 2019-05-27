@@ -98,6 +98,7 @@ type CominpProps={
 	value:string;
 	drop:boolean;
 	hasSlideIcon?:boolean;
+	placeholder?:string;
 }
 
 type CominpState={
@@ -109,10 +110,10 @@ class ComboInp extends React.PureComponent<CominpProps,CominpState>{
 
 	render(){
 
-		const {multiply,toggleDrop,value,drop,hasSlideIcon} = this.props;
+		const {multiply,toggleDrop,value,drop,hasSlideIcon,placeholder} = this.props;
 
 		return (<div className="m-combo-inp" onClick={toggleDrop}>
-												{ !multiply ?	<input type="text" className="m-inp" readOnly value={value} placeholder="单选"/>: (<textarea value={value} className="m-inp" readOnly  placeholder="多选"/>)
+												{ !multiply ?	<input type="text" className="m-inp" readOnly value={value} placeholder={placeholder ? placeholder:"单选"}/>: (<textarea value={value} className="m-inp" readOnly  placeholder={placeholder? placeholder :"多选"}/>)
 																				}
 											{hasSlideIcon ?(<span className="j-slide" >
 														<i className={"fa " + (drop ? "fa-chevron-up":"fa-chevron-down")}></i>

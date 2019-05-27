@@ -1,42 +1,22 @@
-import {fetchPostOrgIfNeeded} from "./orgAction";
-import {fetchPostLoginIfNeeded,fetchPostsLoginOut} from "./LoginAction";
-import * as Immutable from "immutable";
-
-
-type orgItem = {
-			dim_id: string;
-			dim_name: string;
-			dim_value: string;
-			par_id:string;
-			sub: orgItem[];
-			type: string;
-}
-
-
 
 declare global{
 
-	interface orgState {
-				isFetch:boolean;
-				data:orgItem[];
-
-	}
-
 	interface app {
-		isLogin:boolean;
-		isFetching:boolean;
-		userInfo:{
-			roleId?:string[];
-			orgName?:string[];
-		} & {[key:string]:any};
-
+			org_ids: string[];
+			org_names: string[];
+			role_ids: string[];
+			role_index:number ;
+			role_names:string[];
+			status: string;
+			user_id: string;
+			user_name: string;
 	}
 
 	interface appStore {
 			app:TypedMap<app>,
-			orgs:Immutable.Map<string,any>,
 	}
 
 }
+const a = "3";
 
-export {fetchPostOrgIfNeeded,fetchPostLoginIfNeeded,fetchPostsLoginOut};
+export {a};
