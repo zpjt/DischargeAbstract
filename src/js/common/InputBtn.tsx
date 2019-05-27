@@ -13,7 +13,6 @@ type props = {
 }
 
 
-
 class  Radio extends React.PureComponent<props>{
 
 		static Item:React.SFC<itemObj & {nameFiled:string}> = ({value,tit,nameFiled})=>{
@@ -95,9 +94,10 @@ class  Checkbox extends React.PureComponent<checkProps,checkState>{
 
 type CominpProps={
 	multiply:boolean;
-	toggleDrop:()=>void;
+	toggleDrop:(e:React.MouseEvent<HTMLElement>)=>void;
 	value:string;
 	drop:boolean;
+	hasSlideIcon?:boolean;
 }
 
 type CominpState={
@@ -109,14 +109,14 @@ class ComboInp extends React.PureComponent<CominpProps,CominpState>{
 
 	render(){
 
-		const {multiply,toggleDrop,value,drop} = this.props;
+		const {multiply,toggleDrop,value,drop,hasSlideIcon} = this.props;
 
 		return (<div className="m-combo-inp" onClick={toggleDrop}>
 												{ !multiply ?	<input type="text" className="m-inp" readOnly value={value} placeholder="单选"/>: (<textarea value={value} className="m-inp" readOnly  placeholder="多选"/>)
 																				}
-											<span className="j-slide" >
-												<i className={"fa " + (drop ? "fa-chevron-up":"fa-chevron-down")}></i>
-											</span>
+											{hasSlideIcon ?(<span className="j-slide" >
+														<i className={"fa " + (drop ? "fa-chevron-up":"fa-chevron-down")}></i>
+												</span>):null}
 						</div>)
 
 
@@ -157,7 +157,7 @@ class InpBox extends React.PureComponent<InpBoxProp,InpBoxState>{
 
 		return (
 				<div className="item-inp">
-				 		<span className="m-inp-tit">{title}</span>
+				 		<span className="m-inp-tit">{title}: </span>
 				 		<input type={type} className={"s-inp " + fillStatus + styleType}  value={value} onChange={this.changeHandle} />
 				 </div>
 			) 

@@ -33,4 +33,6 @@ declare global{
 const createTypedMap = <DataType extends MapTypeAllowedData<DataType>>(data: DataType):TypedMap<DataType> => Immutable.Map(data) as any;
 
 
+
+
 export {createTypedMap};

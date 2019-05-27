@@ -7,6 +7,7 @@ type ModalProps = {
 		shadeTransparent?:boolean; //遮罩层透明
 		container:HTMLDivElement;
 		tit:string;
+		className?:string;
 		confirmName:string;
 		cancelName:string;
 		onCancel:()=>void;
@@ -65,14 +66,14 @@ export default class Modal extends React.PureComponent<ModalProps,ModalState>{
 
 
 
-		const {children,container,tit,confirmName,cancelName,onCancel,onSure,show} = this.props;
+		const {children,container,tit,confirmName,cancelName,onCancel,onSure,show,className} = this.props;
 		let flag = container;
 
 		const {pointX,pointY} = this.state;
 		
 
 		return ReactDom.createPortal((
-				<div className="g-modal" 
+				<div className={"g-modal " +className }
 							ref={this.ModalDom} 
 							style={{display:(show ? "flex":"none")}}
 							onMouseUp={this.headMouseUp}

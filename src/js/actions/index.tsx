@@ -1,5 +1,5 @@
 import {fetchPostOrgIfNeeded} from "./orgAction";
-import {fetchPostLoginIfNeeded} from "./LoginAction";
+import {fetchPostLoginIfNeeded,fetchPostsLoginOut} from "./LoginAction";
 import * as Immutable from "immutable";
 
 
@@ -25,7 +25,11 @@ declare global{
 	interface app {
 		isLogin:boolean;
 		isFetching:boolean;
-		userInfo:{[key:string]:string; };
+		userInfo:{
+			roleId?:string[];
+			orgName?:string[];
+		} & {[key:string]:any};
+
 	}
 
 	interface appStore {
@@ -35,4 +39,4 @@ declare global{
 
 }
 
-export {fetchPostOrgIfNeeded,fetchPostLoginIfNeeded};
+export {fetchPostOrgIfNeeded,fetchPostLoginIfNeeded,fetchPostsLoginOut};

@@ -1,3 +1,16 @@
 @import "./normalize.css" ,"./common.scss";
 
+.m-sysOpt{
+	&>li{
+		padding: 4px 0;
+	}
+}
+
+.pwd-M{
+	.item-inp{
+		padding:10px;
+
+	}
+}
+
 

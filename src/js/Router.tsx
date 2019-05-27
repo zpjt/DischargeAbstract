@@ -1,5 +1,6 @@
 import {Route} from "react-router";
 import * as React from "react";
+import Loading from "@js/common/Loading";
 
 import * as loadable from "react-loadable";
 
@@ -7,29 +8,25 @@ const Main = ()=>{
 
 			return (
 								<>
-									<Route path="/index/ill_search" component={loadable({
-											loader:()=>import( /*webpackChunkName: "illSearch" */"./containers/illSearch/index"),
-											loading:()=><div>loading...</div>
+									<Route path="/index/report" component={loadable({
+											loader:()=>import( /*webpackChunkName: "report" */"./containers/report/index"),
+											loading:()=><Loading.LoadingCom  />
 									})}  />
-									<Route path="/index/con_search" component={loadable({
-											loader:()=>import( /*webpackChunkName: "conSearch" */"./containers/conSearch/index"),
-											loading:()=><div>loading...</div>
+									<Route path="/index/my_report" component={loadable({
+											loader:()=>import( /*webpackChunkName: "myReport" */"./containers/myReport/index"),
+											loading:()=><Loading.LoadingCom  />
 									})}  />
-									<Route path="/index/glob_search" component={loadable({
-											loader:()=>import( /*webpackChunkName: "globSearch" */"./containers/globSearch/index"),
-											loading:()=><div>loading...</div>
+									<Route path="/index/my_back" component={loadable({
+											loader:()=>import( /*webpackChunkName: "myBack" */"./containers/myBack/index"),
+											loading:()=><Loading.LoadingCom  />
 									})}  />
-									<Route path="/index/translate" component={loadable({
-											loader:()=>import( /*webpackChunkName: "translate" */"./containers/translate/index"),
-											loading:()=><div>loading...</div>
+									<Route path="/index/my_analysis" component={loadable({
+											loader:()=>import( /*webpackChunkName: "myAnalysis" */"./containers/myAnalysis/index"),
+											loading:()=><Loading.LoadingCom  />
 									})}  />
-									<Route path="/index/usermanage" component={loadable({
-											loader:()=>import( /*webpackChunkName: "usermanage" */"./containers/usermanage/index"),
-											loading:()=><div>loading...</div>
-									})}  />
-									<Route path="/index/ill_type/:type" component={loadable({
-											loader:()=>import( /*webpackChunkName: "illType" */"./containers/illSearch/illType"),
-											loading:()=><div>loading...</div>
+									<Route path="/index/my_inspector" component={loadable({
+											loader:()=>import( /*webpackChunkName: "myInspector" */"./containers/myInspector/index"),
+											loading:()=><Loading.LoadingCom  />
 									})}  />
 									<div  id="s-modal"></div>
 								</>

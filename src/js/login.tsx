@@ -1,14 +1,13 @@
 import "@css/login.scss";
 import * as React  from "react";
 import {Redirect} from "react-router-dom";
-import {connect,MapStateToProps,MapDispatchToProps} from "react-redux";
-import {fetchPostLoginIfNeeded} from "@js/actions/index";
-
 
 
 
 type LoginProp = {
-
+	isLogin:boolean;
+	login:(user:string,pwd:string)=>void;
+	isFetching:boolean;
 };
 
 type LoginState = {
@@ -16,7 +15,7 @@ type LoginState = {
 };
 
 
- class Login extends React.PureComponent<LoginProp & LoginReduxProps & dispatchProp ,LoginState>{
+ class Login extends React.PureComponent<LoginProp ,LoginState>{
 
 	userDom:React.RefObject<HTMLInputElement> = React.createRef();
 	psdDom:React.RefObject<HTMLInputElement> = React.createRef();
@@ -38,7 +37,7 @@ type LoginState = {
 								<div className="login-title">
 								 		<svg style={{width:"100%",height:"100%"}}>
 								 			<polygon points="20,0 280,0 300,40 280,80 20,80 0,40" fill="#00a0e9"></polygon>
-								 			<text x="150"  y="50" fill="white" textAnchor="middle">不良事件管理系统</text>
+								 			<text x="150"  y="50" fill="white" textAnchor="middle">出院小结管理系统</text>
 								 		</svg>
 								</div>
 								<div className="login-content">
@@ -74,32 +73,6 @@ type LoginState = {
 };
 
 
-type LoginReduxProps = Pick<app,"isFetching" | "isLogin">
-const mapStateToProp:MapStateToProps<LoginReduxProps,LoginProp,appStore>  = ({app})=>{
 
-	return {
-		isFetching:app.get("isFetching"),
-		isLogin:app.get("isLogin"),
 
-	}
-
-}
-
-type dispatchProp = {
-		login:(user:string,pwd:string)=>void;
-}
-const mapDispatchToProp:MapDispatchToProps<dispatchProp,LoginProp>= (dispatch:any)=>{
-
-	return {
-			login:(user,pwd)=>{
-				console.log(user,pwd)
-				dispatch(fetchPostLoginIfNeeded());
-
-			}
-	}
-
-}
-
-const LoginConnect = connect(mapStateToProp,mapDispatchToProp)(Login);
-
-export default LoginConnect;
+export default Login;

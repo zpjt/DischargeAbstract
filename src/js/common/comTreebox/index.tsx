@@ -5,20 +5,7 @@ import {VelocityComponent} from "velocity-react";
 import Search from "@js/common/SearchCom";
 import "@css/combobox.scss";
 import {ComboInp} from "@js/common/InputBtn";
-
-
-type Parprops={
-	itemObj:Immutable.Map<string,any>;
-	idField:string;
-	childField:string;
-	textFiled:string;
-	icon:string;
-	lev:number;
-	checkBoxCom:DropProps["checkBoxCom"];
-	formatter?:(node:any)=>React.ElementType;
-	oIndex:string;
-	handleFn:DropProps["handleFn"];
-}
+import Drop  from "./Drop";
 
 enum CheckStatus{
 	checked="checked",
@@ -27,43 +14,21 @@ enum CheckStatus{
 }
 
 
-type Parstates={
-
-	
-};
-
-type DropProps = {
-
-	data:Immutable.List<Immutable.Map<string,any>>;
-	idField:string;
-	childField:string;
-	textFiled:string;
-	isParField?:string;
-	icon:string;
-	formatter?:(node:any)=>React.ElementType;
-	handleFn:(methods:string,path:string)=>void;
-	checkBoxCom:(method:"childCheck"|"parCheck",path:string,handler:Function,isChecked:string)=>React.ReactChild;
-}
-
-type DropState = {
-
-
-}
-
 type props={
 	data:any[];
 	idField?:string;
 	childField?:string;
 	textFiled?:string;
-	isParField?:string;
 	icon?:string;
-	checkbox:boolean,
+	checkbox?:boolean,
 	formatter?:(node:any)=>React.ElementType;
 	width:number;
 	maxHeight:number;
-	defaultSelArr?:string[];
-	changeParState?:(params:string,idArr:string[])=>void;
-	getValStatus?:boolean;
+	defaultSel?:string;
+	hasSlideIcon?:boolean;	
+	filed:string;
+	clickCallback?:Function;
+	pannelWidth?:number;
 }
 
 
@@ -73,145 +38,7 @@ type states={
 		treeData:Immutable.List<Immutable.Map<string,any>>
 };
 
-class ChildCom extends React.PureComponent<Parprops>{
-
-	render(){
-			const {lev,icon,itemObj,textFiled,checkBoxCom,handleFn,oIndex} = this.props;
-			const text = itemObj.get(textFiled);
-
-			const checkStatus = itemObj.get("checkStatus");
-
-			const checkCom = checkBoxCom("childCheck",oIndex,handleFn,checkStatus);
-
-			const activeName = !checkCom && checkStatus == CheckStatus["checked"]? "active"  : "" ;
-
-			const clickFn = !checkCom ?(()=>{
-				handleFn("clickItem",oIndex);
-			}) : undefined;
-
-			return (<li>
-								<div  className={"m-combo-item " + activeName} onClick={clickFn}>
-									 <span className="g-item-text" style={{paddingLeft:lev+"em"}}>
-									 				{checkCom}
-											 	<i className={icon}>&nbsp;</i>
-											 	<span>{text}</span>
-									 </span>
-						  </div>
-					</li>) 
-	}
-}
-
-class ParCom extends React.PureComponent<Parprops,Parstates>{
-
-	render(){
-
-			const {idField,childField,itemObj,textFiled,icon,lev,checkBoxCom,handleFn,oIndex} =this.props;
-			
-			let _lev = lev;
-					_lev++ ;
-
-			const text = itemObj.get(textFiled);
-			const  expand  = itemObj.get("state");
-			const checkStatus = itemObj.get("checkStatus");
-
-			const checkCom = checkBoxCom("parCheck",oIndex,handleFn,checkStatus);
-			const activeName = !checkCom && checkStatus !== CheckStatus["uncheck"]? "activeClick"  : "" ;
-
-		return (<li key={itemObj.get(idField)}>
-								  <div  className={"m-combo-item " + activeName} >
-										 <span className="g-item-text" style={{paddingLeft:lev+"em"}}>
-										 			{checkCom}
-												 	<span className={!expand ? "fa fa-folder-o ": "fa fa-folder-open-o"}>&nbsp;</span>
-												 	<span>{text}</span>
-										 </span>
-										 <span className="j-slide" onClick={()=>handleFn("expandToggle",oIndex)}>
-													<i className={"fa " + (expand ? "fa-chevron-up":"fa-chevron-down")}></i>
-										 </span>
-								  </div>
-								  <VelocityComponent animation={(expand ? "slideDown" :"slideUp")} duration={300}>
-									  	 <ul>
-											  	{
-
-											  		itemObj.get(childField).map((val:Immutable.Map<string,any>,index:number)=>{
-
-											  				const sub = val.get(childField) as Immutable.List<Immutable.Map<string,any>>;
-
-											  				if(sub.size){
-											  					return <ParCom 			key={val.get(idField)}
-											  															checkBoxCom={checkBoxCom} 
-																											itemObj={val} 
-																											icon={icon} 
-																											textFiled={textFiled} 
-																											idField={idField}
-																											childField={childField}
-																											oIndex={oIndex!+"@"+index}
-																											lev={_lev}
-																											handleFn={handleFn}
-																											 />
-																											
-											  				}else{
-
-											  					return <ChildCom 		key={val.get(idField)}
-											  															checkBoxCom={checkBoxCom} 
-																											itemObj={val} 
-																											icon={icon} 
-																											textFiled={textFiled} 
-																											idField={idField}
-																											childField={childField}
-																											lev={_lev}
-																											oIndex={oIndex!+"@"+index}
-																											handleFn={handleFn}
-											  										/>
-											  				}
-											  		})
-											  	}
-									  	</ul>
-								  </VelocityComponent>
-								 
-						</li>)
-	}
-}
-
-
-class DropCom  extends  React.PureComponent<DropProps,DropState>{
-
-	render(){
-
-		const {data,childField,icon,textFiled,idField,handleFn,checkBoxCom,} = this.props;
-
-		return (<>
-									{
-										data.map((val,index)=>{
-
-													if(val!.get(childField!).size){
-															return <ParCom 	key={val!.get(idField!)}
-																							checkBoxCom={checkBoxCom} 
-																							itemObj={val!} 
-																							icon={icon!} 
-																							textFiled={textFiled!} 
-																							idField={idField!}
-																							childField={childField!}
-																							lev={0}
-																							oIndex={index+""}
-																							handleFn={handleFn}
-																							 />
-														
-													}
-										})
-									}
-						</>)
-	}
-
-}
-
-interface ComTree {
-	searchHandle:(key:string)=>void;
-	getArrId:()=>void;
-	clickItem:(path:string)=>void;
-	prePath?:(number | string)[];
-
-}
-export default class ComTreeBox extends React.PureComponent<props,states> implements ComTree{
+export default class ComTreeBox extends React.PureComponent<props,states> implements ComTreeboxSpace.comTreeboxAPI{
 
 	static defaultProps={
 		idField:"id",
@@ -221,40 +48,18 @@ export default class ComTreeBox extends React.PureComponent<props,states> implem
 		checkbox:false,
 		width:300,
 		maxHeight:300,
-		defaultSelArr:["206"],
+		defaultSel:"",
+		hasSlideIcon:true,
 	}
 
-	componentWillReceiveProps(nexProp:props){
-
-			//父组件
-			if(nexProp.getValStatus != this.props.getValStatus){
-					this.getArrId();
-			}
-
-			
-	}
-
-	static CheckBox= (method:string,path:string,handler:(method:string,path:string)=>void,checkStatus:string)=>{
-
-				const isChecked = checkStatus === CheckStatus["checked"] ;
-				const hasChecked = checkStatus === CheckStatus["hasCheck"] ;
-
-		 		return (<label className="m-label m-lab-checkbox" >
-						 				<input type="checkbox"  name="org" className={hasChecked?"has-check":""} checked={isChecked} onChange={()=>{
-						 							handler(method,path);
-						 				}}  />
-				 		  	</label>)
- 	};
-
- 	static noCheck= ()=>"";
-
- 	public prePath?:(number | string)[];
-
- 	constructor(props:props){
+	constructor(props:props){
  		super(props);
 
 		let initSelectArr:any[] = [];
- 		const treeData = this.addStaTusField(props.data,props.defaultSelArr,initSelectArr);
+
+		const defaultSelArr = props.defaultSel!.split(",");
+
+ 		const treeData = this.addStaTusField(props.data,defaultSelArr,initSelectArr);
 
 		this.state = {
 		 		drop:false,
@@ -262,9 +67,72 @@ export default class ComTreeBox extends React.PureComponent<props,states> implem
 		 		treeData
 	 	}
 	 	
-	 	this.getInitPath(this.props.data,this.props.defaultSelArr![0]);
+	 	this.getInitPath(this.props.data,this.props.defaultSel!);
  	}
 
+	
+ 	public prePath?:(number | string)[];
+
+ 	getFieldVal = (field:ComTreeboxSpace.field)=>{
+
+ 		return this.props[field] as string;
+
+ 	}
+
+ 	getCommonMethod = <K extends ComTreeboxSpace.commonMethodName>(methodName:ComTreeboxSpace.commonMethodName):ComTreeboxSpace.comTreeboxAPI[K]=>{
+
+ 		return this[methodName];
+
+ 	}
+
+ 	getCheckBox=(checkStatus:string,path:string,is_par:boolean)=>{
+
+ 
+
+ 		const {checkbox} = this.props;
+
+ 		if(checkbox){
+ 	
+ 			const isChecked = checkStatus === CheckStatus["checked"] ;
+			const hasChecked = checkStatus === CheckStatus["hasCheck"] ;
+ 		
+ 			return (
+ 					<label className="m-label m-lab-checkbox" >
+				 				<input 
+				 					type="checkbox"  
+				 					className={hasChecked?"has-check":""} 
+				 					checked={isChecked} 
+				 					data-path={path}
+				 					onChange={is_par ? this.parCheck : this.childCheck}
+		 				  	/>
+	 		  	</label>
+
+ 				)
+ 		}else{
+
+ 			return ""
+ 		}
+
+ 	}
+ 
+
+	componentWillReceiveProps(nextProp:props){
+
+			//父组件
+			if(nextProp.data != this.props.data){
+					const initSlectedArr:any[] = [];
+					const treeData = this.addStaTusField(nextProp.data,nextProp.defaultSel!.split(","),initSlectedArr);
+					this.setState({
+						treeData,
+						selected:Immutable.List(initSlectedArr)
+					});
+
+					this.getInitPath(nextProp.data,nextProp.defaultSel!);
+
+			}
+
+			
+	}
  	getInitPath(data:any[],selectedId:string){
  		if(this.props.checkbox){
  			return ;
@@ -284,7 +152,7 @@ export default class ComTreeBox extends React.PureComponent<props,states> implem
  											parStatus && pathArr.push(index ,childField!);
  											return parStatus ;
  									}else{
- 											const status = val[idField!] === id ;
+ 											const status = val[idField!] == id ;
  											if(status){
  												pathArr.push(index ,childField!);
  											}
@@ -300,16 +168,13 @@ export default class ComTreeBox extends React.PureComponent<props,states> implem
  		 this.prePath = pathArr ;
  	}
 
- 	getArrId(){
-
- 		const idArr = this.state.selected.map(val=>val!.id).toArray();
- 		this.props.changeParState!("orgSel",idArr);
-
- 	}
- 	addStaTusField(data:any[],selected:props["defaultSelArr"],initSlectedArr?:any[]){
+ 	
+ 	addStaTusField(data:any[],selected:string[],initSlectedArr?:any[]){
 
 
  		const {idField,childField,textFiled} = this.props ;
+
+
  		const copyData = JSON.parse(JSON.stringify(data),function(...ars){
  				const [,val] = ars;
  				if(val && (Object.prototype.toString.call(val) === "[object Object]")){
@@ -319,7 +184,7 @@ export default class ComTreeBox extends React.PureComponent<props,states> implem
 
  					const sub:any[] = val[childField!];
 					if(sub.length===0){ //文件
-						const hasIndex = selected!.includes(val[idField!]);
+						const hasIndex = selected.findIndex(node=>node==val[idField!]) > -1;
  						val.checkStatus = hasIndex? "checked": "uncheck";
 
  						initSlectedArr && hasIndex && initSlectedArr.push({id:val[idField!],text:val[textFiled!]});
@@ -409,7 +274,13 @@ export default class ComTreeBox extends React.PureComponent<props,states> implem
 			return pathArr;
  	}
 
- 	childCheck(path:string){
+ 	childCheck=(e:React.ChangeEvent<HTMLInputElement>)=>{
+
+		const path = e.currentTarget.dataset.path;
+
+		if(!path){
+			return ;
+		}
 		const pathArr = this.getPath(path);
 		const {idField,textFiled}= this.props;
 
@@ -470,7 +341,13 @@ export default class ComTreeBox extends React.PureComponent<props,states> implem
 
 	}
 
-	parCheck(path:string){
+	parCheck=(e:React.ChangeEvent<HTMLInputElement>)=>{
+
+				const path = e.currentTarget.dataset.path;
+
+				if(!path){
+					return ;
+				}
 
 				const {childField} = this.props;
 				const pathArr = this.getPath(path);
@@ -509,7 +386,12 @@ export default class ComTreeBox extends React.PureComponent<props,states> implem
  				})
 	} 
 
- 	expandToggle(path:string){
+ 	expandToggle=(e:React.MouseEvent<HTMLElement>)=>{
+		const path = e.currentTarget.dataset.path;
+		if(!path){
+			return ;
+		}
+
 
  		this.setState(preState=>{
 			const pathArr = this.getPath(path);
@@ -525,7 +407,14 @@ export default class ComTreeBox extends React.PureComponent<props,states> implem
  			
  	}
 
- 	clickItem(path:string){
+ 	clickItem=(e:React.MouseEvent<HTMLElement>)=>{
+
+ 		  const path = e.currentTarget.dataset.index;
+
+ 		  if(!path){
+ 		  		return ;
+ 		  }
+
  			const {idField,textFiled} = this.props;
 			const pathArr = this.getPath(path);
 			const id = this.state.treeData.getIn(pathArr.concat(idField!));
@@ -594,11 +483,7 @@ export default class ComTreeBox extends React.PureComponent<props,states> implem
 	
  	}
 
- 	handleFn = (method:"childCheck"|"parCheck"|"expandToggle"|"clickItem",path:string)=>{
-
- 			 this[method](path);
- 	}
-
+ 
  	updateSelectList = (selectList:states["selected"],id:string,text:string,is_sel:boolean)=>{
  					const index = selectList.findIndex(val=>val!.id===id);
  					if(is_sel){
@@ -742,27 +627,22 @@ export default class ComTreeBox extends React.PureComponent<props,states> implem
 	render(){
 
 		const {drop,treeData} = this.state;
-		const {checkbox,icon,textFiled,idField,childField,width,maxHeight} = this.props;
-
-		
-		const checkBoxCom =  checkbox ? ComTreeBox.CheckBox :ComTreeBox.noCheck ;
+		const {checkbox,width,maxHeight,hasSlideIcon,pannelWidth} = this.props;
 		const value = this.getValue();
 
+
 		return (<div className={"comTreeBox "+(drop ? "active ":"") + (!value?"no-fill":"")} style={{width:width+"px"}}>
-							<ComboInp multiply={checkbox} value={value} toggleDrop={this.toggleDrop}  drop={drop}/>
+							<ComboInp multiply={checkbox!} value={value} toggleDrop={this.toggleDrop}  drop={drop} hasSlideIcon={hasSlideIcon}/>
 							<VelocityComponent animation={drop?"slideDown":"slideUp"}>
-								<div className="m-drop" >
+								<div className="m-drop" style={{width:(pannelWidth ? pannelWidth :"100%")}}>
 									<Search closeHandle={this.closeHandle} searchHandle={this.searchHandle}/>
 									<ul className="m-tree" style={{maxHeight:maxHeight+"px"}}>
 										
-										<DropCom  data={treeData}
-															icon={icon!} 
-															textFiled={textFiled!} 
-															idField={idField!}
-															childField={childField!}
-															checkBoxCom={checkBoxCom}
-															handleFn = {this.handleFn}
-														 />
+										<Drop  
+												data={treeData}
+												getFieldVal={this.getFieldVal}
+												getCommonMethod={this.getCommonMethod}
+									 	/>
 									</ul>	
 									
 								</div>

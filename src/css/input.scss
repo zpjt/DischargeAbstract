@@ -2,7 +2,7 @@
 
 .s-inp{
 	height: $inpHeight;
-	width: $inpWidth;
+	//width: $inpWidth;
 	text-indent:.5em;
 	border:0;
 	outline:0;
@@ -20,6 +20,31 @@
 .s-inp.no-fill{
 	
 	border-color:$error;
+}
+
+.require{
+	&:before{
+		content:"*";
+		color:red;
+
+	}
+}
+
+.input-file-m{
+	position: relative;
+	margin-top:10px;
+	input{
+		position: absolute;
+		left: 0;
+		width: 80px;
+		opacity: 0;
+	}
+	span{
+		color: red;
+		padding:4px;
+		border-bottom: 1px solid red;
+	}
+	
 }
 
 

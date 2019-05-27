@@ -1,0 +1,159 @@
+@import "./scss/variables";
+
+$borderColor:black;
+
+.page-report{
+	 display: flex;
+	 flex-direction: column;			
+	 box-sizing: border-box;
+	 height: 100%;
+	.g-theme{
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding:10px 20px;
+		color:$themeColor;
+		border-bottom: 2px solid $themeColor;
+	}
+	.g-report{
+		flex: 1;
+		overflow: auto;
+	}
+	.reportSeason-txtItem{
+		display: flex;
+		padding-left: 2em;
+		margin:  8px 0;
+		&>span{
+			padding-top: 3px;
+		}
+		.txtInp{
+			height: 60px;
+			flex: 1;
+			padding: 0;
+			text-indent:1em;
+		}	
+	}
+}
+
+.report-article{
+	width: 790px;
+  margin: 20px auto;
+  position: relative;
+  .report-container{
+
+  }
+  .report-content{
+  	 height: 100%;
+  }
+	
+	%pageBtn{
+		text-align: center;
+		position: absolute;
+		top:40%;
+		cursor: pointer;
+		color:$themeColor;
+	}
+
+  .pre-btn{
+		left:-50px;
+			@extend %pageBtn;
+	}
+  	.next-btn{
+			right:-50px;
+			@extend %pageBtn;
+			
+  }
+}
+
+ .report-content{
+		$h:33px;
+  	table{
+	    width: 100%;
+	    border:1px solid $borderColor;
+	    border-spacing: 0;   
+	  }
+	  tr {border-bottom: 1px solid $borderColor}
+	  td{
+  		padding: 8px 10px;
+			vertical-align:top;
+	  }
+	  .item-tr{
+	  	position: relative;
+	  	//z-index: auto;
+	  }
+	  .detail{
+
+			margin:4px;
+			display: inline-flex;
+  	  align-items: center;
+  	  .m-combo-inp ,.s-inp{
+  	  	border:none;
+  	  	border-bottom: 1px solid $borderColor;
+ 			 	border-radius: 0;
+  	  }
+  	  .calendar-inpTxt{
+  	  	text-indent: .5em;
+  	  }
+  	  
+
+			.calendar-inp-icon{
+					display: none;
+			}
+		}
+	  .footer{
+			text-align: right;
+			margin-top: 6px;
+		}
+		.txtInp{
+			height: 100%;
+			width: 100%;
+			text-indent: 2rem;
+			line-height: 1.5rem;
+	    padding: 8px;
+	    border:none;
+	    resize: none;
+			box-sizing: border-box;
+		}
+		.txtInp.no-fill{
+			border:1px solid $error;
+		}
+		.inp{
+			border:none;
+			border-bottom: 1px solid $borderColor;
+			height: $h;
+		}
+		.inp.no-fill{
+			border-color: $error;
+		}
+
+		
+		.select{
+			border: none;
+	    border-bottom: 1px solid $borderColor;
+	    height: $h;
+		}
+	 	.main-tit{
+	 		padding: 8px 0
+	 	}
+	 	.main-tit-2{
+			padding: 8px 3em;
+	 	}
+		.underline{
+			display: inline-block;
+			height: $h;
+			border-bottom: 1px solid $borderColor;
+			line-height: $h;
+		}
+		.btn{
+			text-align: center; 
+			color: #fff; 
+			background-color: #3297db; 
+			border: 0; 
+			cursor: pointer; 
+			padding: 0 8px; 
+			height: 28px; 
+			line-height: 28px; 
+			border-radius: 4px;
+		} 
+  }
+

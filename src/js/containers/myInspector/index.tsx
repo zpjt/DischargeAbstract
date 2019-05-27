@@ -1,5 +1,4 @@
 import * as React from "react";
-import HeadInp from "./ConditionHead";
 import "@css/translate.scss";
 import BraftEditor from 'braft-editor';
 import 'braft-editor/dist/index.css';
@@ -150,7 +149,6 @@ export default class IllType extends React.Component<props,state>{
 
 		return (
 				<div className="g-padding g-layout">
-						<HeadInp />
 						<Translate />
 				</div>
 			)

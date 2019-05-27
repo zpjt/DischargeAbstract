@@ -4,6 +4,25 @@
 	<meta charset="UTF-8">
 	<title>	</title>
 	<link rel="stylesheet" href="./assert/font/font-awesome-4.7.0/css/font-awesome.min.css">
+	<script type="text/javascript" src="./assert/js/md5.js"></script> 
+	<script>
+		
+		 window.getSession = (
+			function(){
+				const session = {
+					getPath:"http://localhost:8035/DischargSummary",
+					getSession:{}
+				};
+
+				return function(key){
+
+
+					return session[key]
+				}
+			}
+		)();
+	
+	</script>
 </head>
 <body>
 	<div id="app" class="page"></div>

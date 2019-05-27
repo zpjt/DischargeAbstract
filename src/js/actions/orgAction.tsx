@@ -29,7 +29,7 @@ const receivePostOrg = function(json:orgState["data"]){
 const shouldPost = (state:appStore)=>{
 
 		
-			if(state.orgs.get("isFetch")){
+			if(state.orgs.get("isFetching")){
 				return false ;
 			}	
 
@@ -75,7 +75,7 @@ const defaultOrgState:Immutable.Map<string, boolean | orgState["data"]>=Immutabl
 
 const orgReducer = ReduceCreate(defaultOrgState,{
 	[REQUEST_POSTS_ORG]:function(state){
-			return state.set("isFetch",false)
+			return state.set("isFetching",false)
 	},
 	[RECEIVE_POSTS_ORG]:function(state,action:NonNullable<ReturnType<typeof receivePostOrg>>){
 			return state.set("isFetching",true).set("data",action.json)
