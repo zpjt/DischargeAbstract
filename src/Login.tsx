@@ -29,7 +29,10 @@ class Login extends React.PureComponent<LoginProp, LoginState>{
         axions({
             url:"login/logVal",
             method:"post",
-            data:{name,pwd:window.hex_md5(window.hex_md5(pwd))}
+            data:{name,pwd:window.hex_md5(window.hex_md5(pwd))},
+            headers:{
+                "Content-Type":"application/json",
+            }
         }).then((res:any)=>{
 
          

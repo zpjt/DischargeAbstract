@@ -51,7 +51,6 @@ $bg:#ffffff;
 			background-color: $bg;
 			border-radius: 4px;
 			border: solid 1px #ececec;
-			margin-top: 10px;
 			padding: 8px;
 			z-index: 10;
 			.m-combo-item{
@@ -61,6 +60,12 @@ $bg:#ffffff;
 					color:$themeColor;
 				}
 			}
+	 }
+	 .m-drop.direction-up{
+		bottom: 44px;
+	 }
+	.m-drop.direction-down{
+		margin-top: 10px;
 	 }
 	 .m-combo-item.active{
 				background-color: #acb1fe;

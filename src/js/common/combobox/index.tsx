@@ -23,6 +23,7 @@ type props = {
 	inpShowField?: string;
 	require?: boolean;
 	placeholder?: string;
+	dirctionUp?:boolean;
 }
 
 
@@ -206,7 +207,7 @@ export default class Combobox extends React.PureComponent<props, state>{
 
 		const { drop, data } = this.state;
 
-		const { multiply, width, maxHeight, hasSlideIcon, pannelWidth, require, placeholder } = this.props;
+		const { multiply, width, maxHeight, hasSlideIcon, pannelWidth, require, placeholder ,dirctionUp} = this.props;
 
 
 
@@ -225,7 +226,7 @@ export default class Combobox extends React.PureComponent<props, state>{
 				hasSlideIcon={hasSlideIcon}
 			/>
 			<VelocityComponent duration={300} animation={drop ? "slideDown" : "slideUp"}>
-				<ul style={{ maxHeight, width: (pannelWidth ? pannelWidth : "100%") }} className="m-drop" >
+				<ul style={{ maxHeight, width: (pannelWidth ? pannelWidth : "100%") }} className={"m-drop " + (dirctionUp && "direction-up" || "direction-down")} >
 
 					<DropCom data={data} getPropFieldVal={this.getPropFieldVal} clickHande={this.clickFn} />
 

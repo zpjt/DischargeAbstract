@@ -1,4 +1,6 @@
+@import "./scss/variables" , "./scss/unit";
 @import "./normalize.css" ,"./common.scss";
+
 
 .m-sysOpt{
 	&>li{
@@ -13,18 +15,89 @@
 	}
 }
 
-.g-summary{
-	height: 100%;
-	box-sizing:border-box;
+%flex-column{
 	display:flex;
 	flex-direction: column;
+	height: 100%;
+	box-sizing: border-box;
+}
+
+.g-summary{
+	@extend %flex-column;	
 	.m-filter-box{
 		display: flex;
 		&>div{
 			margin-right: 16px;
 		}
 	}
+	.g-table{
+		@extend %shadow;
+		padding: 10px 16px;
+	}
 
+}
+
+.g-gdsummary{
+	@extend %flex-column;
+	.g-translate-box{
+		flex:1;
+		display: flex;
+		flex-direction: column;	
+		@extend %shadow;
+	}
+	.g-translate{
+		display: flex;
+		flex:1;
+		border-top:1px solid $normal;
+	}
+	.m-translate{
+		width:50%;
+		padding: 16px;
+		height: 100%;
+		box-sizing: border-box;
+		display: flex;
+		flex-direction: column;
+		&:first-child{
+			border-right: 1px solid $normal;
+		}
+	}
+	.m-tit{
+		font-size: 20px;
+		font-weight: bolder;
+		text-align: center;
+	}
+	.g-translate-header{
+		padding: 16px 0;
+		border-bottom: 1px solid $normal;
+	}
+	.g-tanslate-content{
+
+		overflow: auto;
+		flex: 1;
+	}
+	.translate-item{
+		margin:16px 16px;
+	}
+	.m-right-tit{
+		text-align: right;
+		display: inline-block;
+		width: 70px;
+	}
+	.m-right-tit1{
+		text-align: right;
+		display: inline-block;
+		width: 60px;
+	}
+	.m-right-tit4{
+		text-align: right;
+		display: inline-block;
+		width: 150px;
+	}
+	.m-right-tit3{
+		text-align: right;
+		display: inline-block;
+		width: 200px;
+	}
 }
 
 

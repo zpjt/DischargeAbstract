@@ -2,8 +2,8 @@ import * as React from "react";
 import MenuNav from "@js/common/NavMenu";
 import ErrorBoundary from "@js/common/ErrorBoundary";
 import * as Velocity from "velocity-react";
-import axios from "@js/common/AxiosInstance";
 import {connect,MapStateToProps} from "react-redux";
+import  Api from "@api/main";
 
 
 type slideMenu={
@@ -39,10 +39,7 @@ class SlideMenu extends React.PureComponent< SlideMenuProp & reduxProp,SlideMenu
 
 		const {roleId}  = this.props;
 
-		axios({
-			url:"/summary/getMenu",
-			params:{role_id:roleId},
-		}).then(res=>{
+		Api.getMenu({role_id:roleId}).then(res=>{
 			this.setState({
 						data:res.data,
 						isFetch:false,

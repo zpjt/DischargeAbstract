@@ -3,7 +3,7 @@ import {RouteComponentProps} from "react-router-dom";
 import HeadOpt from "./ConditionHead";
 import ResultSearch from "./CaseTable";
 import {connect,MapStateToProps} from "react-redux";
-import axions from "@js/common/AxiosInstance";
+import Api from "@api/summary";
 
 
 
@@ -18,9 +18,11 @@ type CaseState={
 	pageNum:string;
 	pageSize:string;
 	status:string;
-	fsex:"男"|"女"|null;
-	fage:string|null;
-	lrdata:string|null;
+	fsex:string;
+	fage:string;
+	lrdata:string;
+	fdept:string; //科室
+	gddata:string; //归档时间
 }
 
 
@@ -33,36 +35,21 @@ type CaseState={
 		pageNum:"1",
 		pageSize:"4",
 		status:"0",
-		fsex:"男",
-		fage:null,
-		lrdata:null,
+		fsex:"0",
+		fage:"",
+		lrdata:"",
+		fdept:"",
+		gddata:"",
 	}
 
 	componentDidMount(){
 
-		// const {data,...obj} = this.state;
-		// const {roleId} = this.props;
+		 const {data,...obj} = this.state;
+		 const {roleId} = this.props;
 		
+		const paramsObj = Object.assign(obj,{role_id:roleId})
 
-		
-		axions({
-		
-			url:"summary/getAllSummaryCaseByStatus",
-			params:{
-				pageNum:"1",
-				pageSize:"4",
-				role_id:"3202",
-				status:"0",
-				fdept:"",
-				fsex:"男",
-				fage:null,
-				lrdata:null,
-			},
-
-			
-			
-			
-		}).then(res=>{
+		Api.getAllSummaryCaseByStatus(paramsObj).then(res=>{
 
 			console.log(res);
 
@@ -71,8 +58,8 @@ type CaseState={
 			})
 
 
-		})
-
+		});
+		
 
 
 	}

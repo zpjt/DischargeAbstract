@@ -2,6 +2,13 @@ import axions from "axios";
 
 const instance = axions.create({
 		baseURL:window.getSession("getPath"),
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded',
+			'X-Requested-With': 'XMLHttpRequest',
+			'X-Custom-Header': 'foobar'
+		},
+		
+
 });
 
 instance.interceptors.response.use(function (response) {
@@ -17,6 +24,7 @@ instance.interceptors.response.use(function (response) {
   }, function (error) {
    	
     return Promise.reject(error);
-  });
+	});
+	
 
 export default instance ;
