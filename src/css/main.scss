@@ -69,6 +69,7 @@
 	.g-translate-header{
 		padding: 16px 0;
 		border-bottom: 1px solid $normal;
+		
 	}
 	.g-tanslate-content{
 
@@ -98,6 +99,32 @@
 		display: inline-block;
 		width: 200px;
 	}
+	.add-opt-box{
+		width: 50%;
+		padding-top: 20px;
+		text-align: center;
+	}
+	
 }
+.g-add-translate{
+	.m-add-item{
+		display: flex;
+		justify-content: space-between;
+		margin:10px 0;
 
+	}
+	.m-right-tit{
+		vertical-align: top;
+	}
+	.translate-item{
+		display: flex;
+		textarea{
+			flex:1;
+			border-radius: 4px;
+			border-color: $normal;
+		}
+	}
+
+
+}
 

@@ -1,21 +1,17 @@
 import {Route} from "react-router";
 import * as React from "react";
-import Loading from "@js/common/Loading";
-
-import * as loadable from "react-loadable";
+import Summary from "./containers/summary/index";
+import AddCaseModal from "./containers/summary/AddCaseModal";
+import Gdsummary from "./containers/gdsummary/index";
 
 const Main = ()=>{
 
 			return (
 								<>
-									<Route path="/summary" component={loadable({
-											loader:()=>import( /*webpackChunkName: "summary" */"./containers/summary/index"),
-											loading:()=><Loading.LoadingCom  />
-									})}  />
-									<Route path="/gdsummary" component={loadable({
-											loader:()=>import( /*webpackChunkName: "gdsummary" */"./containers/gdsummary/index"),
-											loading:()=><Loading.LoadingCom  />
-									})}  />
+									<Route path="/summary" component={Summary}/>
+									<Route path="/gdsummary" component={Summary}  />
+									<Route path="/translate" component={Gdsummary}  />
+									<Route path="/addCaseModal" component={AddCaseModal}  />
 									<div  id="s-modal"></div>
 								</>
 				);

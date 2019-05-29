@@ -9,6 +9,15 @@ export default {
 
 
     },
+    addChSummaryCase:function (obj:any) {
+
+        return  axios.post("summary/addChSummaryCase",obj,{
+            headers:{
+                "Content-Type":"application/json"
+            }
+        });
+        
+    }
 
 
 
