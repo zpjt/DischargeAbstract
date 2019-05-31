@@ -8,7 +8,6 @@ import  Api from "@api/main";
 
 type slideMenu={
 	expand:boolean;
-	isFetch:boolean;
 	data:any[];
 };
 
@@ -26,23 +25,17 @@ class SlideMenu extends React.PureComponent< SlideMenuProp & reduxProp,SlideMenu
 
 	state:slideMenu = {
 		expand:true,
-		isFetch:false,
 		data:[],
 	}
   
 
-	getMenu(){
+	getMenu(role_id:string){
 
-		this.setState({
-				isFetch:true,
-		});
+		
+		Api.getMenu({role_id}).then(res=>{
 
-		const {roleId}  = this.props;
-
-		Api.getMenu({role_id:roleId}).then(res=>{
 			this.setState({
 						data:res.data,
-						isFetch:false,
 				});
 			
 		})
@@ -50,7 +43,13 @@ class SlideMenu extends React.PureComponent< SlideMenuProp & reduxProp,SlideMenu
 	}
 
 	componentDidMount(){
-			this.getMenu();
+			this.getMenu(this.props.roleId);
+	}
+	componentWillReceiveProps(nextProps:reduxProp){
+		if(nextProps.roleId!=this.props.roleId){
+			this.getMenu(nextProps.roleId);
+		}
+			
 	}
 	expandHandle=()=>{
 

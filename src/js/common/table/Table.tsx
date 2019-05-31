@@ -86,6 +86,7 @@ class TablePage extends React.PureComponent<PageProps, PageState>{
 			return;
 		}
 
+
 		const pageNum = Math.ceil(total / 20);
 
 		jumpPage(Math.min(pageNum, +val))
@@ -122,6 +123,8 @@ class TablePage extends React.PureComponent<PageProps, PageState>{
 						onClick={() => {
 
 							jumpPage(Math.min(curPage + 1, pageNum));
+
+						
 
 						}}
 					><i className="fa fa-chevron-right "></i></span>

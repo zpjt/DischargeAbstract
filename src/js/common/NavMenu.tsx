@@ -200,6 +200,19 @@ class NavMenu extends React.PureComponent<props,state>{
 
 	}
 
+	componentWillReceiveProps(nextProp:props){
+
+		if(nextProp.data!==this.props.data){
+			this.setState({
+				data:Immutable.fromJS(this.addFieldToData(nextProp.data)),
+				preIndex:[],
+			})
+		}
+
+	}
+
+
+
 	restPreSel(pre:state){
 
 
@@ -318,6 +331,9 @@ class NavMenu extends React.PureComponent<props,state>{
 		</ul>
 	}
 }
+
+
+
 
 
 export default NavMenu ;

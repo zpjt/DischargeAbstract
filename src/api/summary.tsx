@@ -17,7 +17,25 @@ export default {
             }
         });
         
+    },
+    getSummaryCaseByUserid:function(user_id:string) {
+
+        return axios.get("summary/getSummaryCaseByUserid?user_id="+user_id)
+        
+    },
+    saveChSummaryCase:function(data:any) {
+
+        return axios.post("summary/saveChSummaryCase",data,{
+            headers:{
+                "Content-Type":"application/json"
+            }
+        })
+        
+    },
+    delSummaryCaseById:function(id:string){
+        return  axios.post("summary/delSummaryCaseById",qs.stringify({id}));
     }
+
 
 
 

@@ -104,6 +104,14 @@
 		padding-top: 20px;
 		text-align: center;
 	}
+	.paitent-info{
+		padding: 16px;
+		.s-inp{
+			border:none;
+			border-bottom: 1px solid $normal;
+			border-radius: 0;
+		}
+	}
 	
 }
 .g-add-translate{

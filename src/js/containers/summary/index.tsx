@@ -3,8 +3,7 @@ import { RouteComponentProps } from "react-router-dom";
 import HeadOpt from "./ConditionHead";
 import ResultSearch from "./CaseTable";
 import { connect, MapStateToProps } from "react-redux";
-
-
+import Api from "@api/summary";
 
 type caseProps = {
 
@@ -21,6 +20,8 @@ type CaseState = {
 	lrdata: string;
 	fdept: string; //科室
 	gddata: string; //归档时间
+	checkArr:string;
+	data:any;
 }
 
 
@@ -37,16 +38,55 @@ class CaseManage extends React.PureComponent<RouteComponentProps<caseProps> & re
 		lrdata: "",
 		fdept: "",
 		gddata: "",
+		checkArr:"",
+		data:null,
 	}
 
+    componentDidMount() {
+		this.getTableData(this.props.roleId);
+	}
+
+	componentWillReceiveProps(nextProp:reduxProp){
+
+
+		if(nextProp.roleId!==this.props.roleId){
+			this.getTableData(nextProp.roleId)
+		}
+
+
+
+	}
+	//  componentWillUpdate(nextProp:reduxProp,nextState:CaseState){
+
+
+	//  	console.log(nextProp,nextState,"will")
+		
+    // }
 	
+	getTableData(role_id:string){
+
+		const {checkArr,data, ...obj } = this.state;
+		
+		Api.getAllSummaryCaseByStatus(Object.assign({role_id},obj)).then(res => {
+			this.setState({
+				data: res.data
+			})
+		});
 
 
-	changeState = (filed: "pageSize", value: string) => {
+	}
+
+
+    
+
+
+	changeState = (filed: "checkArr" , value: string) => {
 
 
 			this.setState({
 			[filed]:value
+			},()=>{
+				filed !=="checkArr" && this.getTableData(this.props.roleId);
 			})
 
 
@@ -54,27 +94,18 @@ class CaseManage extends React.PureComponent<RouteComponentProps<caseProps> & re
 
 	render() {
 
-		const { location: { state: { text } } ,roleId} = this.props;
-		const {pageNum,pageSize,lrdata,fdept,fage,fsex,status,gddata} = this.state;
+		const { location: { state: { text } } } = this.props;
+		const {data,checkArr} = this.state;
 
 		return (
 			<div className="g-padding g-summary" >
 
 				<p style={{ paddingBottom: 16 }}>{text}</p>
-				<HeadOpt />
-				<ResultSearch  
-
-					changeHandle={this.changeState} 
-					role_id={roleId}
-					pageNum={pageNum}
-					fsex={fsex}
-					pageSize={pageSize}
-					lrdata={lrdata}
-					fdept={fdept}
-					fage={fage}
-					status={status}		
-					gddata={gddata}		
-				/>
+				<HeadOpt checkArr={checkArr} />
+				{data ?  <ResultSearch  
+					data={data}
+				    changeHandle={this.changeState} 
+				/> : null}
 
 
 			</div>

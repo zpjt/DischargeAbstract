@@ -1,7 +1,6 @@
 import * as React from "react";
 import Table from "@js/common/table/index";
 import {NavLink} from "react-router-dom";
-import Api from "@api/summary";
 //请求参数： pageNum：第几页 pageSize：每页几条 role_id：角色id status:状态默认筛选值0； status是筛选值,status_name是对应中文 主任角色可选筛选值：3：提交（未审核）5：已审核；6：报错 医生角色可选筛选值：1:未翻译，2：已翻译，4：驳回 fdept：科室 默认空字符串 fsex：性别 默认空字符串 fage：年龄 默认空字符串 lrdata：录入日期 默认空字符串 gddata：归档日期 默认空字符串 返回值： code：状态码 200为正常状态 message：状态信息 data： total：总条数 list：需要显示的数据 pageNum：当前第几页 pageSize：每页条数 prePage：上一页页码 nextPage：下一页页码 navigatepageNums：页码数组
 
 type ListItem = {
@@ -47,7 +46,18 @@ type caseData = {
     total:number;
 }
 
+let registEvent:(id:string)=>void = function(){
 
+}
+
+const fireEvent = function(e:React.MouseEvent<HTMLButtonElement>){
+
+    const id = e.currentTarget!.name;
+
+    registEvent(id);
+
+
+}
 
  const column = [
         {
@@ -84,9 +94,9 @@ type caseData = {
             field: "status",
             formatter:function(node:any){
 
-                
+                // 主任角色可选筛选值 3：5：；6： 医生角色可选筛选值：1:，2：，4：
 
-                return node.status; 
+                return ["","未翻译","已翻译","提交（未审核）","驳回","已审核","报错"][node.status]; 
 
             }
         },
@@ -105,12 +115,12 @@ type caseData = {
                 }
 
                 return (<>
-                        <button className="s-btn normal-btn">
+                        <button className="s-btn normal-btn" >
                             <NavLink to={pathObj} >查看</NavLink>
                             
                         </button>
                         &nbsp;
-                        <button className="s-btn normal-btn">删去</button>
+                        <button className="s-btn normal-btn" name={node.id} onClick={fireEvent}>删去</button>
                         </>
                         )
             }
@@ -120,46 +130,23 @@ type caseData = {
    
 type ResultProp = {
     changeHandle(field:any,value:string):void;
-    pageNum: string;
-	pageSize: string;
-	status: string;
-	fsex: string;
-	fage: string;
-	lrdata: string;
-	fdept: string; //科室
-    gddata: string; //归档时间
-    role_id:string;
-}
-
+    data:caseData;
+} 
 type ResultState={
-    data:caseData | null ;
 }
 
 class ResultSearch extends React.PureComponent<ResultProp,ResultState>{
 
 
     state={
-        data:null,
+  
     }
-   componentDidMount() {
-		const { changeHandle, ...obj } = this.props;
-		Api.getAllSummaryCaseByStatus(obj).then(res => {
-			this.setState({
-				data: res.data
-			})
-		});
-    }
-    componentWillReceiveProps(){
-        const { changeHandle, ...obj } = this.props;
-		Api.getAllSummaryCaseByStatus(obj).then(res => {
-			this.setState({
-				data: res.data
-			})
-		});
-    }
+    componentDidMount(){
 
+
+    }
     render(){
-        const {data} = this.state;
+        const {data} = this.props;
 
         if(!data){
             return "";

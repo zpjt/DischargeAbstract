@@ -62,10 +62,8 @@ body,html{
 					rgba(51, 51, 51, 0.3);
 				.m-theme{
 					padding-left: 20px;
-					font:{
-						size:24px;
-						weight:bolder;
-					}
+					font-size: 24px;
+					font-weight: bolder;
 				}
 				
 			}
@@ -84,13 +82,17 @@ body,html{
 					margin: 0 20px;
 					padding-right: 10px;
 				}
-				.g-user-opt{
+				.g-user-opt,.g-role-sys{
 					position:relative;
 					cursor: pointer;	
 					&:hover{
 						.m-sysOpt{
 							display: block;
 						}
+					}
+					li.active{
+						background: $themeColor;
+						color:white
 					}
 				}
 				.m-sysOpt{

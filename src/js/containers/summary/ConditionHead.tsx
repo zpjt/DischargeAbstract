@@ -3,10 +3,11 @@ import Search from "@js/common/SearchCom";
 import Calendar from "@js/common/calendar/index";
 import Combobox from "@js/common/combobox/index";
 import {Link} from "react-router-dom";
+import Api from "@api/summary"
 
 
 type HeadOptProp = {
-
+	checkArr:string;
 }
 
 type HeadOptState = {
@@ -48,6 +49,37 @@ export default class HeadOpt extends React.PureComponent<HeadOptProp, HeadOptSta
 	state = {
 	}
 
+	optHandle=(e:React.MouseEvent<HTMLButtonElement>)=>{
+
+
+		const type = e.currentTarget!.name;
+
+		const {checkArr} = this.props;
+
+		switch (type) {
+			case "refresh":
+				
+				break;
+			case "del":
+				 Api.delSummaryCaseById(checkArr).then(res=>{
+
+					console.log(res)
+
+
+				 });
+				break;
+			case "check":
+				
+				break;
+			case "patchDao":
+				
+				break;
+
+			default:
+				break;
+		}
+	}
+
 	render() {
 		return (<>
 			<div>
@@ -65,11 +97,11 @@ export default class HeadOpt extends React.PureComponent<HeadOptProp, HeadOptSta
 
 					<div className="m-optBtn">
 
-						<button className="s-btn normal-btn" ><i className="fa fa-refresh">&nbsp;</i>刷新</button>
-						<button className="s-btn normal-btn" ><i className="fa fa-refresh">&nbsp;</i>待审核</button>
-						<button className="s-btn normal-btn" ><i className="fa fa-refresh">&nbsp;</i>批量导出</button>
-						<button className="s-btn normal-btn" > <Link to="/addCaseModal"><i className="fa fa-plus">&nbsp;</i>添加病历</Link></button>
-						<button className="s-btn normal-btn" ><i className="fa fa-trash">&nbsp;</i>批量删除</button>
+						<button className="s-btn normal-btn" name="refresh"  onClick={this.optHandle}><i className="fa fa-refresh">&nbsp;</i>刷新</button>
+						<button className="s-btn normal-btn" name="check" onClick={this.optHandle}><i className="fa fa-refresh">&nbsp;</i>待审核</button>
+						<button className="s-btn normal-btn" name="patchDao" onClick={this.optHandle}><i className="fa fa-refresh">&nbsp;</i>批量导出</button>
+						<button className="s-btn normal-btn" ><Link to="/addCaseModal"><i className="fa fa-plus">&nbsp;</i>添加病历</Link></button>
+						<button className="s-btn normal-btn" onClick={this.optHandle} name="del"><i className="fa fa-trash">&nbsp;</i>批量删除</button>
 					</div>
 				</div>
 			</div>

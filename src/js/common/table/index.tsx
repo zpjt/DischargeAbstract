@@ -12,6 +12,7 @@ type TableProps = {
     navigatepageNums: number[];
     tableH: string;
     changeHandle(field: any, value: string): void;
+    
 }
 
 type columnItem = {
@@ -25,7 +26,7 @@ type columnItem = {
 type TableState = {
     tableH: number;
     checkArr: string[];
-    pageCheckAll: "checked" | "unchecked" | "haschecked";
+   // pageCheckAll: "checked" | "unchecked" | "haschecked";
 }
 
 
@@ -63,7 +64,6 @@ export default class Table extends React.PureComponent<TableProps, TableState>{
         checkbox: false,
         perNums: 15,
         tableH: "auto",
-        curPage: 1,
     }
 
     TableContainer: React.RefObject<HTMLDivElement> = React.createRef();
@@ -72,7 +72,7 @@ export default class Table extends React.PureComponent<TableProps, TableState>{
     state: TableState = {
         tableH: 0,
         checkArr: [],
-        pageCheckAll:"unchecked",
+     //   pageCheckAll:"unchecked",
     }
     componentDidMount() {
 
@@ -85,7 +85,7 @@ export default class Table extends React.PureComponent<TableProps, TableState>{
     jumpPage = (e: React.ChangeEvent<HTMLInputElement>) => {
 
         let num = +e.currentTarget!.value;
-        const { total, pageSize, changeHandle } = this.props;
+        const { total, pageSize, changeHandle ,pageNum} = this.props;
         const maxPage = Math.ceil(total / pageSize)
 
 
@@ -96,6 +96,10 @@ export default class Table extends React.PureComponent<TableProps, TableState>{
         }
 
         e.currentTarget!.value = num + "";
+
+        if(pageNum == num){
+            return ;
+        }
 
         changeHandle("pageNum", num + "");
 
@@ -119,15 +123,31 @@ export default class Table extends React.PureComponent<TableProps, TableState>{
                 checkAll = pre.checkArr.filter(val=>!total.includes(val));
 
             }
+
+           this.props.changeHandle("checkArr",checkAll.join(","));
             return {
                 checkArr:checkAll,
-                pageCheckAll: (status && "checked" || "unchecked")
+              //  pageCheckAll: (status && "checked" || "unchecked")
             }
         })
     }
 
-    countTotalStatus() {
+    countTotalStatus(checkAll:string[],list:any[]) {
 
+
+        const {idField} = this.props;
+        const total = list.map(val=>val[idField!]+"");
+        const hasAll = total.every(val=>checkAll.includes(val));
+        let hasCheck = false;
+
+        if(!hasAll){
+
+            hasCheck = checkAll.some(val=>total.includes(val));
+
+        }
+
+
+        return {hasAll,hasCheck}
 
 
     }
@@ -140,33 +160,21 @@ export default class Table extends React.PureComponent<TableProps, TableState>{
         const target = e.currentTarget!;
         const status = target.checked;
         const id = target.name;
-        const {list,idField} = this.props;
-        const total = list.map(val=>val[idField!]+"");
 
         this.setState(pre => {
 
-
             let checkAll:string[];
-            let pageCheckAll:TableState["pageCheckAll"];
 
             if (status) {
                  checkAll = pre.checkArr.concat(id); 
-
-                const hasAll = total.every(val=>checkAll.includes(val));
-                pageCheckAll = hasAll && "checked" || "haschecked";
-
-
             } else {
                 checkAll = pre.checkArr.filter(val=>val!==id);
-                const hasCheck = total.some(val=>checkAll.includes(val));
-                pageCheckAll = hasCheck && "haschecked" || "unchecked"
             }
 
-           
+           this.props.changeHandle("checkArr",checkAll.join(","));
 
             return {
                 checkArr:checkAll,
-                pageCheckAll:pageCheckAll
             }
         })
 
@@ -186,11 +194,42 @@ export default class Table extends React.PureComponent<TableProps, TableState>{
             }
         </colgroup>)
     }
+    controlMoveBtn=(e:React.MouseEvent<HTMLElement>)=>{
+
+        const type = e.currentTarget!.dataset.name as "pre"|"next"
+        const {navigatepageNums,pageNum,changeHandle} = this.props;
+        const totalPage = navigatepageNums.length;
+        let newPageNum= 0;
+        switch (type) {
+            case "next":
+                newPageNum = +pageNum + 1;
+                newPageNum = newPageNum > totalPage ? 1 : newPageNum;
+                break;
+        
+            default:
+                newPageNum = +pageNum - 1;
+                newPageNum = newPageNum < 1 ? totalPage : newPageNum;
+                break;
+        }
+        changeHandle("pageNum",newPageNum + ""); 
+    }
+    pageCodeHandle=(e:React.MouseEvent<HTMLElement>)=>{
+        const target = e.currentTarget!;
+        if(target.classList.contains("active")){
+            return ;
+        }
+
+        const num = target.dataset.num;
+
+        this.props.changeHandle("pageNum", num!);
+
+
+    }
 
     render() {
 
         const { list, column, idField, pageSize, total, navigatepageNums, pageNum } = this.props;
-        const { tableH, checkArr ,pageCheckAll} = this.state;
+        const { tableH, checkArr } = this.state;
 
         let tabOver = "";
         let h: any;
@@ -208,6 +247,8 @@ export default class Table extends React.PureComponent<TableProps, TableState>{
 
         const colgroupCom = this.getColgroupCom(column);
 
+        const checkStatus = this.countTotalStatus(checkArr,list);
+
         return (<div className="g-table" ref={this.TableContainer}>
 
             <div className={"m-fixTabHead " + tabOver}>
@@ -217,7 +258,7 @@ export default class Table extends React.PureComponent<TableProps, TableState>{
                         <tr>
                             <th >
                                 <label className="m-label m-lab-checkbox" >
-                                    <input type="checkbox" name="all" className={ pageCheckAll=="haschecked" && "has-check" || ""} checked={pageCheckAll == "checked" } onChange={this.checkAll} />
+                                    <input type="checkbox" name="all" className={ checkStatus.hasCheck && "has-check" || ""} checked={checkStatus.hasAll } onChange={this.checkAll} />
 
                                 </label>
                             </th>
@@ -273,7 +314,9 @@ export default class Table extends React.PureComponent<TableProps, TableState>{
                 <div style={{ display: "flex" }}>
                     <div className="m-code-number">
                         <span className="m-page-num"
-                            onClick={undefined}
+
+                                data-name="pre"
+                            onClick={this.controlMoveBtn}
                         ><i className="fa fa-chevron-left "></i></span>
                         <span>
                             {
@@ -281,7 +324,8 @@ export default class Table extends React.PureComponent<TableProps, TableState>{
 
                                     return (<span className={"m-page-num " + (val == pageNum ? "active" : "")}
                                         key={val}
-                                        onClick={undefined}
+                                        data-num={val}
+                                        onClick={this.pageCodeHandle}
                                     >{val}</span>)
                                 })
 
@@ -289,7 +333,8 @@ export default class Table extends React.PureComponent<TableProps, TableState>{
 
                         </span>
                         <span className="m-page-num"
-                            onClick={undefined}
+                                data-name="next"
+                            onClick={this.controlMoveBtn}
                         ><i className="fa fa-chevron-right "></i></span>
                     </div>
                     <span style={{ marginLeft: "20px" }}>

@@ -1,0 +1,23 @@
+@import "./scss/unit","./scss/variables";
+
+.g-alertInfo{
+    position: absolute;
+    @extend %shadow;
+    right: 20px;
+    top:30px;
+    z-index: 10;
+    padding: 10px;
+    .warn{
+        color:$warn;
+    }
+    .error{
+        color:$error;
+    }    
+    .success{
+        color:$success;
+    }
+    .m-alert-close{
+        padding-left: 10px;
+    }
+
+}
