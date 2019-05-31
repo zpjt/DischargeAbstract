@@ -137,7 +137,7 @@ export default class Table extends React.PureComponent<TableProps, TableState>{
 
         const {idField} = this.props;
         const total = list.map(val=>val[idField!]+"");
-        const hasAll = total.every(val=>checkAll.includes(val));
+        const hasAll = total.length ? total.every(val=>checkAll.includes(val)) :false;
         let hasCheck = false;
 
         if(!hasAll){

@@ -11,15 +11,6 @@ type caseProps = {
 
 
 type CaseState = {
-
-	pageNum: string;
-	pageSize: string;
-	status: string;
-	fsex: string;
-	fage: string;
-	lrdata: string;
-	fdept: string; //科室
-	gddata: string; //归档时间
 	checkArr:string;
 	data:any;
 }
@@ -28,16 +19,27 @@ type CaseState = {
 
 class CaseManage extends React.PureComponent<RouteComponentProps<caseProps> & reduxProp, CaseState>{
 
-
-	state: CaseState = {
+	params:{
+		pageNum: string;
+		pageSize: string;
+		status: string;
+		fsex: string;
+		fage: string;
+		lrdata: string;
+		fdept: string; //科室
+		gddata: string; //归档时间
+	}={
 		pageNum: "1",
 		pageSize: "10",
 		status: "0",
 		fsex: "0",
 		fage: "",
 		lrdata: "",
-		fdept: "",
-		gddata: "",
+		fdept: "", //科室
+		gddata: "", //归档时间
+	}
+
+	state: CaseState = {
 		checkArr:"",
 		data:null,
 	}
@@ -53,43 +55,32 @@ class CaseManage extends React.PureComponent<RouteComponentProps<caseProps> & re
 			this.getTableData(nextProp.roleId)
 		}
 
-
-
 	}
-	//  componentWillUpdate(nextProp:reduxProp,nextState:CaseState){
 
-
-	//  	console.log(nextProp,nextState,"will")
-		
-    // }
-	
 	getTableData(role_id:string){
-
-		const {checkArr,data, ...obj } = this.state;
-		
-		Api.getAllSummaryCaseByStatus(Object.assign({role_id},obj)).then(res => {
+		Api.getAllSummaryCaseByStatus(Object.assign({role_id},this.params)).then(res => {
 			this.setState({
 				data: res.data
 			})
 		});
-
-
 	}
 
+	refreshData=()=>{
 
-    
+		this.getTableData(this.props.roleId)
+	}
 
+	changeState = (filed: "checkArr" | keyof CaseManage["params"], value: string) => {
+		
+			if(filed==="checkArr"){
 
-	changeState = (filed: "checkArr" , value: string) => {
-
-
-			this.setState({
-			[filed]:value
-			},()=>{
-				filed !=="checkArr" && this.getTableData(this.props.roleId);
-			})
-
-
+				this.setState({
+					checkArr:value
+				})
+			}else{
+				this.params[filed] = value;
+				this.getTableData(this.props.roleId);
+			}
 	}
 
 	render() {
@@ -101,12 +92,16 @@ class CaseManage extends React.PureComponent<RouteComponentProps<caseProps> & re
 			<div className="g-padding g-summary" >
 
 				<p style={{ paddingBottom: 16 }}>{text}</p>
-				<HeadOpt checkArr={checkArr} />
+				<HeadOpt 
+				checkArr={checkArr} 
+				refreshHandle={this.refreshData} 
+				changeHandle={this.changeState} 
+				
+				/>
 				{data ?  <ResultSearch  
 					data={data}
 				    changeHandle={this.changeState} 
 				/> : null}
-
 
 			</div>
 

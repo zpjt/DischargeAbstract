@@ -3,11 +3,12 @@ import { VelocityComponent } from "velocity-react";
 
 
 type props = {
-	searchHandle: (keyword: string) => void;
-	closeHandle?: () => void;
+	searchHandle: (keyword: string,field?:string) => void;
+	closeHandle?: (field?:string) => void;
 	tip?: string;
 	width?:number;
 	hasBtn:boolean;
+	field?:string;
 }
 
 type state = {
@@ -34,11 +35,12 @@ export default class SearchCom extends React.PureComponent<props, state>{
 		if (!keyWord) {
 			return;
 		}
+		const {field} = this.props;
 		this.setState({
 			searching: true,
 		});
 
-		this.props.searchHandle(keyWord);
+		this.props.searchHandle(keyWord,field);
 
 
 
@@ -51,9 +53,9 @@ export default class SearchCom extends React.PureComponent<props, state>{
 		});
 		this.inpDom.current!.value = "";
 
-		const {closeHandle} = this.props;
+		const {closeHandle,field} = this.props;
 		
-		closeHandle && closeHandle();
+		closeHandle && closeHandle(field);
 	}
 
 	keyPress=(e:React.KeyboardEvent)=>{

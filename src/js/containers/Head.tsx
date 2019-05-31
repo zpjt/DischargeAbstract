@@ -12,6 +12,8 @@ type HeadProp = {
 type HeadState = {
 	initPasswordModal: boolean;
 	showPasswordModal: boolean;
+	initPasswordModal1: boolean;
+	showPasswordModal1: boolean;
 	password: string;
 }
 
@@ -19,13 +21,20 @@ class Head extends React.PureComponent<RouteComponentProps<HeadProp> & reduxStat
 
 	state: HeadState = {
 		initPasswordModal: false,
+		initPasswordModal1: false,
 		showPasswordModal: false,
+		showPasswordModal1: false,
 		password: "",
 	}
 
 	logOut = () => {
 
-		console.log("login")
+		console.log("login");
+
+		this.setState(pre => ({
+			initPasswordModal1: true,
+			showPasswordModal1: !pre.showPasswordModal1,
+		}))
 	}
 
 	togglePassword = () => {
@@ -54,7 +63,7 @@ class Head extends React.PureComponent<RouteComponentProps<HeadProp> & reduxStat
 	render() {
 
 		const { user_name, role_arr, role_index, role_ids } = this.props;
-		const { initPasswordModal, showPasswordModal, password } = this.state;
+		const { initPasswordModal, showPasswordModal, password,initPasswordModal1,showPasswordModal1 } = this.state;
 
 		const rootModalDom = document.getElementById("modal_root") as HTMLDivElement;
 
@@ -65,6 +74,34 @@ class Head extends React.PureComponent<RouteComponentProps<HeadProp> & reduxStat
 				tit={"修改密码"}
 				onCancel={this.togglePassword}
 				onSure={this.togglePassword}
+				className="pwd-M"
+
+			>
+				<InpBox
+					type="password"
+					styleType="normal"
+					field="password"
+					title="旧密码"
+					value={password}
+					changeHandle={this.changePassword}
+				/>
+				<InpBox
+					type="password"
+					styleType="normal"
+					field="password"
+					title="新密码"
+					value={password}
+					changeHandle={this.changePassword}
+				/>
+
+
+			</Modal>) : null}
+				{initPasswordModal1 ? (<Modal
+				show={showPasswordModal1}
+				container={rootModalDom!}
+				tit={"login"}
+				onCancel={this.logOut}
+				onSure={this.logOut}
 				className="pwd-M"
 
 			>

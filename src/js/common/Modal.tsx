@@ -5,7 +5,7 @@ import * as ReactDom from "react-dom";
 type ModalProps = {
 		ableMove?:boolean;
 		shadeTransparent?:boolean; //遮罩层透明
-		container:HTMLDivElement;
+		container:HTMLElement;
 		tit:string;
 		className?:string;
 		confirmName:string;

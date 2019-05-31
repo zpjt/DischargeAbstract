@@ -91,7 +91,7 @@ export default class Combobox extends React.PureComponent<props, state>{
 	componentWillReceiveProps(nextProp: props) {
 
 		//父组件
-		if (nextProp.data != this.props.data) {
+		if (nextProp.data != this.props.data || nextProp.defaultVal !=this.props.defaultVal) {
 			const _defaultVal = nextProp.defaultVal + "";
 			const _defaultNode = _defaultVal.split(",").map(val => {
 				const node = nextProp.data.find(node => (node[nextProp.idField!] == val))!

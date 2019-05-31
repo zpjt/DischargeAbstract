@@ -18,7 +18,7 @@ type alertState={
 
 
 
-export default class AlertInfo extends React.PureComponent<alertProp,alertState>{
+export default class AlertInfo extends React.Component<alertProp,alertState>{
 
 
 

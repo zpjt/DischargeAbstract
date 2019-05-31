@@ -4,13 +4,18 @@ import Calendar from "@js/common/calendar/index";
 import Combobox from "@js/common/combobox/index";
 import {Link} from "react-router-dom";
 import Api from "@api/summary"
-
+import {render} from "react-dom";
+import AlertInfo from "@js/common/AlertInfo";
 
 type HeadOptProp = {
 	checkArr:string;
+	refreshHandle():void;
+	changeHandle(field:string,value:string):void;
 }
 
 type HeadOptState = {
+	initPasswordModal: boolean;
+	showPasswordModal: boolean;
 }
 
 
@@ -25,7 +30,7 @@ const sexArr = [
 		text: "女"
 	},
 	{
-		id: "3",
+		id: "0",
 		text: "男、女"
 	}
 ];
@@ -39,7 +44,7 @@ const translateArr = [
 		text: "已翻译"
 	},
 	{
-		id: "3",
+		id: "0",
 		text: "所有病例"
 	}
 ];
@@ -47,6 +52,8 @@ const translateArr = [
 export default class HeadOpt extends React.PureComponent<HeadOptProp, HeadOptState>{
 
 	state = {
+	initPasswordModal: false,
+	showPasswordModal: false,
 	}
 
 	optHandle=(e:React.MouseEvent<HTMLButtonElement>)=>{
@@ -61,15 +68,19 @@ export default class HeadOpt extends React.PureComponent<HeadOptProp, HeadOptSta
 				
 				break;
 			case "del":
-				 Api.delSummaryCaseById(checkArr).then(res=>{
+				 Api.delSummaryCaseById(checkArr).then((res:AxiosInterfaceResponse)=>{
 
-					console.log(res)
+					console.log(res);
+					const a = render(<AlertInfo tit={res.message} type="success" />,document.getElementById("s-modal")!)
+
+					console.log(a);
+
+					this.props.refreshHandle();
 
 
 				 });
 				break;
 			case "check":
-				
 				break;
 			case "patchDao":
 				
@@ -80,18 +91,48 @@ export default class HeadOpt extends React.PureComponent<HeadOptProp, HeadOptSta
 		}
 	}
 
+	changeTime=(timeArr:string[],field:string)=>{
+
+
+		const value = timeArr[0]
+		this.props.changeHandle(field,value);
+
+	}
+
+	inputChange=(key:string,field:string)=>{
+
+		this.props.changeHandle(field,key);
+	}
+
+	closeInput=(field:string)=>{
+
+
+		this.props.changeHandle(field,"")
+
+	}
+
+	comboboxCallback=(slectedArr:Readonly<any[]>,field:string)=>{
+
+		this.props.changeHandle(field,slectedArr[0].id)
+
+
+	}
+
+	
+
 	render() {
+
 		return (<>
 			<div>
 
 				<div style={{ display: "flex", justifyContent: "space-between" }}>
 
 					<div className="m-filter-box">
-						<Search width={160} searchHandle={(key: string) => console.log(key)} hasBtn={false} tip="科室搜索..." closeHandle={() => console.log(2)} />
-						<Combobox data={sexArr} field="fsex" width={100} placeholder="性别..." defaultVal="3" />
-						<Search searchHandle={(key: string) => console.log(key)} hasBtn={false} width={80} tip="年龄搜索..." closeHandle={() => console.log(2)} />
-						<Calendar field="lrdata" width={160} placeholder="录入时间" />
-						<Combobox data={translateArr} field="status" width={120} placeholder="翻译类型" defaultVal="3" />
+						<Search width={160} searchHandle={this.inputChange} field="fdept" hasBtn={false} tip="科室搜索..." closeHandle={this.closeInput} />
+						<Combobox data={sexArr} field="fsex"  width={100} placeholder="性别..." defaultVal="0" clickCallback={this.comboboxCallback} />
+						<Search searchHandle={this.inputChange} field="fage" hasBtn={false} width={80} tip="年龄搜索..." closeHandle={this.closeInput} />
+						<Calendar ableClear={true} field="lrdata" width={160} placeholder="录入时间" clickBack={this.changeTime} />
+						<Combobox data={translateArr} field="status" clickCallback={this.comboboxCallback} width={120} placeholder="翻译类型" defaultVal="0" />
 					</div>
 
 

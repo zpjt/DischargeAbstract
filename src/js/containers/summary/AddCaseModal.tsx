@@ -4,8 +4,8 @@ import { Link, withRouter, RouteComponentProps } from "react-router-dom";
 import { connect, MapStateToProps } from "react-redux";
 import AlertInfo from "@js/common/AlertInfo";
 import {render} from "react-dom";
-
-
+import Combobox from "@js/common/combobox/index";
+import Calendar from "@js/common/calendar/index";
 
 type caseModalProps = {
 
@@ -33,6 +33,16 @@ type caseModalState = {
     fsumd: string;
     user_id: string;
 }
+
+
+const sexArr = [	{
+		id: "1",
+		text: "男"
+	}
+	, {
+		id: "2",
+		text: "女"
+	}];
 
 
 
@@ -133,6 +143,27 @@ class AddCaseModal extends React.PureComponent<RouteComponentProps<caseModalProp
 
     }
 
+    setSex=(seletArr:Readonly<any[]>)=>{
+
+
+        this.setState({
+
+            fsex:seletArr[0].id == "1" ?"男" :"女"
+
+        })
+
+
+
+
+    }
+
+    setCalendar=(timeArr:any[],field:"fcydata")=>{
+
+        this.setState({
+            [field]:timeArr[0]
+        });
+    }
+
     render() {
 
         const { fname, fage, fsex, fdeb, fdept, fprn, fryqk, fzljg, fcyyz, fcyqk, fcyzd, fsurvey, fcydata, frydata, fsumd } = this.state;
@@ -149,24 +180,30 @@ class AddCaseModal extends React.PureComponent<RouteComponentProps<caseModalProp
                             <div className="g-translate-header">
                                 <div className="m-add-item">
                                     <p >姓名：<br /><input type="text" name="fname" className="s-inp normal" value={fname} onChange={this.changeHandle} /></p>
-                                    <p >性别：<br /><input type="text" name="fsex" className="s-inp normal" value={fsex} onChange={this.changeHandle} /></p>
+                                    <div >性别：
+                                        <Combobox  field="fsex" defaultVal={fsex =="男" &&"1"||"2"} data={sexArr} clickCallback={this.setSex} width={180}/>
+                                    </div>
                                     <p >年龄：<br /><input type="text" name="fage" className="s-inp normal" value={fage} onChange={this.changeHandle} /></p>
                                 </div>
                                 <div className="m-add-item">
                                     <p >科室：<br /><input type="text" name="fdept" className="s-inp normal" value={fdept} onChange={this.changeHandle} /></p>
-                                    <p >床号：<br /><input type="text" name="fdeb" value={fdeb} className="s-inp normal" onChange={this.changeHandle} /></p>
+                                    <p >床号：<br /><input type="text" style={{width:180}} name="fdeb" value={fdeb} className="s-inp normal" onChange={this.changeHandle} /></p>
                                     <p >病案号：<br /><input type="text" name="fprn" value={fprn} className="s-inp normal" onChange={this.changeHandle} /></p>
                                 </div>
                             </div>
                             <div className=" g-tanslate-content">
                                 <p className="paitent-info">
                                     <span >患者：</span>
-                                    <span className="e">
+                                    <span >
                                         {fname}，{fsex}，{fage}，因
-                                        <input className="s-inp normal" value={fsurvey} style={{ width: 260 }} onChange={this.changeHandle} type="text" name="fsurvey" />，
-                                        于<input className="s-inp normal" name="frydata" style={{ width: 100 }} value={frydata} onChange={this.changeHandle} type="text" />入院，
-                                        于<input name="fcydata" value={fcydata} style={{ width: 100 }} onChange={this.changeHandle} type="text" className="s-inp normal" />出院，
-                                        共住院<input name="fsumd" style={{ width: 50 }} value={fsumd} width={60} onChange={this.changeHandle} type="text" className="s-inp normal" />天。</span>
+                                        <input className="s-inp normal" value={fsurvey} style={{ width: "calc(100% - 180px)" }} onChange={this.changeHandle} type="text" name="fsurvey" />， 于
+                                      
+                                        <Calendar width={120} field="frydata" clickBack={this.setCalendar} selTimeValArr={frydata} />
+                                        入院，于
+                                        <Calendar width={120} field="fcydata" clickBack={this.setCalendar} selTimeValArr={fcydata} />
+                                        出院，共住院
+                                        <input name="fsumd" style={{ width: 50 }} value={fsumd} width={60} onChange={this.changeHandle} type="text" className="s-inp normal" />
+                                        天。</span>
                                 </p>
                                 <p className="translate-item">
                                     <span className="m-right-tit">入院情况：</span>

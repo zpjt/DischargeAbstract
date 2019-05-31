@@ -6,7 +6,7 @@ $slectColor:#aee6ff;
 
 
 .g-calendar{
-	position: relative;
+	position: relative;//把他去掉，overflow 都不能保住它
 	.g-calendar-box{
 		margin-top:10px; 
 		width: 240px;
@@ -16,7 +16,7 @@ $slectColor:#aee6ff;
 	.m-clalendar-inpBox{
 		width: 100%;
 		color: $themeColor;
-	
+		position: relative;
 	
 	}
 }
@@ -34,6 +34,13 @@ $slectColor:#aee6ff;
     		left: 10px;
 			
 		}
+		.m-search-close{
+			position: absolute;
+			z-index: 5;
+			right:10px;
+			top:8px;
+			cursor: pointer;
+		}
 	
 	}
 
@@ -44,6 +51,24 @@ $slectColor:#aee6ff;
 		position: relative;
 		color: $themeColor;
 		font-weight: bold;
+	}
+	.m-rotate-drop{
+		padding: 8px;
+		position: absolute;
+		@extend %shadow;
+		z-index: 6;
+		margin-top:6px;
+		left: -6px;
+		cursor: pointer;
+		.active{
+			color:white;
+			background: $themeColor;
+		}
+
+		&>li{
+			padding: 6px;
+		}
+
 	}
 	
 	.m-viewOpt{
@@ -62,7 +87,8 @@ $slectColor:#aee6ff;
     .curViewType{
     	border-radius: 100%;
     	border:1px solid;
-    	padding: 4px 6px;
+		padding: 4px 6px;
+		cursor: pointer;
     }
   	.m-timeSel{
   		cursor: pointer;
@@ -85,6 +111,7 @@ $slectColor:#aee6ff;
 }	
 
 .m-calendar-view{
+	
 	.item-calendar-view{
 		width: 100%;
 		display: none;
@@ -136,9 +163,7 @@ $slectColor:#aee6ff;
 	.week-group{
 		display:flex;
 		color:black;
-		font:{
-			weight:bolder;
-		}
+		font-weight:bolder ;
 		&>li{
 			width:14.28% ;
 			text-align:center;
@@ -186,9 +211,7 @@ $slectColor:#aee6ff;
 	.calendar-today{
 		span{
 			color:$sel;
-			font:{
-				weight:bolder;
-			}
+			font-weight: bolder;
 		}
 	}
 	
