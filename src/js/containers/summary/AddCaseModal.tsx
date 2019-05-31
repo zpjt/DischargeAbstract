@@ -7,8 +7,8 @@ import {render} from "react-dom";
 import Combobox from "@js/common/combobox/index";
 import Calendar from "@js/common/calendar/index";
 
-type caseModalProps = {
 
+type caseModalProps = {
 };
 
 
