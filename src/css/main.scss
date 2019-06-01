@@ -50,6 +50,15 @@
 		flex:1;
 		border-top:1px solid $normal;
 	}
+	.m-tit{
+		font-size: 20px;
+		font-weight: bolder;
+		text-align: center;
+	}
+	.g-tanslate-content{
+		overflow: auto;
+		flex: 1;
+	}
 	.m-translate{
 		width:50%;
 		padding: 16px;
@@ -61,48 +70,82 @@
 			border-right: 1px solid $normal;
 		}
 	}
-	.m-tit{
-		font-size: 20px;
-		font-weight: bolder;
-		text-align: center;
-	}
-	.g-translate-header{
-		padding: 16px 0;
-		border-bottom: 1px solid $normal;
-		
-	}
-	.g-tanslate-content{
-
-		overflow: auto;
-		flex: 1;
-	}
-	.translate-item{
-		margin:16px 16px;
-	}
+	
 	.m-right-tit{
 		text-align: right;
 		display: inline-block;
-		width: 70px;
 	}
-	.m-right-tit1{
-		text-align: right;
-		display: inline-block;
-		width: 60px;
-	}
-	.m-right-tit4{
-		text-align: right;
-		display: inline-block;
-		width: 150px;
-	}
-	.m-right-tit3{
-		text-align: right;
-		display: inline-block;
-		width: 200px;
+	textarea{
+			flex:1;
+			border-radius: 4px;
+			border-color: $normal;
 	}
 	.add-opt-box{
 		width: 50%;
 		padding-top: 20px;
 		text-align: center;
+		.s-btn{
+			margin-left:10px;
+		}
+	}
+	.translate-footer-opt{
+		display: flex;
+		justify-content:flex-end;
+		padding: 8px 16px;
+		border-top: 1px solid $normal;
+		.s-btn{
+			margin-left:10px;
+		}
+	}
+}
+
+.g-add-modal{
+	.m-translate{
+		width: 100%;
+	}
+}
+
+// 病例头部的yangs
+.g-translate-header{
+	padding: 16px 0;
+	border-bottom: 1px solid $normal;
+	
+	.m-add-item{
+		display: flex;
+		justify-content: space-between;
+		margin:10px 0;
+		&>p{
+			width: 32%;
+		}
+	}
+	
+}
+.g-translate-ch{
+	.m-head-tit{
+		width: 60px;
+	}
+	.m-article-tit{
+		width: 80px;
+	}
+}
+.g-translate-en{
+	.m-head-tit{
+		width: 200px;
+	}
+	.m-article-tit{
+		width: 160px;
+	}
+}
+.m-translate{
+	.translate-item{
+		margin:12px 16px;
+		display: flex;
+		line-height: 1.8em;
+	}
+	.m-article{
+		flex: 1;
+		text-indent: 2em;
+		
 	}
 	.paitent-info{
 		padding: 16px;
@@ -115,27 +158,5 @@
 			display: inline-block;
 		}
 	}
-	
-}
-.g-add-translate{
-	.m-add-item{
-		display: flex;
-		justify-content: space-between;
-		margin:10px 0;
-
-	}
-	.m-right-tit{
-		vertical-align: top;
-	}
-	.translate-item{
-		display: flex;
-		textarea{
-			flex:1;
-			border-radius: 4px;
-			border-color: $normal;
-		}
-	}
-
-
 }
 

@@ -110,7 +110,7 @@ const fireEvent = function(e:React.MouseEvent<HTMLButtonElement>){
                     pathname:"/translate",
                     state:{
                         text:"归档文案 / " + node.fname,
-                        id:node.fprn
+                        id:node.id
                     }
                 }
 

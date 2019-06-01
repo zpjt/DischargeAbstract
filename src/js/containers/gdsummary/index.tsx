@@ -1,130 +1,190 @@
 import * as React from "react";
-import {RouteComponentProps} from "react-router-dom";
-import {connect,MapStateToProps} from "react-redux";
+import { RouteComponentProps } from "react-router-dom";
+import { connect, MapStateToProps } from "react-redux";
+import CaseModalText from "../summary/CaseModalText";
+import Api from "@api/gdsummary";
+import CaseModalInp from "../summary/CaseModalInp";
+import {Link} from "react-router-dom";
 
 
-
-type translateProps={
-	
+type translateProps = {
+	data:any;
+	id:string;
+	text:string;
 };
 
 
-type translateState={
+type translateState = {
+	
+}
 
+type ContainerState = {
 	data:any;
-	pageNum:string;
-	pageSize:string;
-	status:string;
-	fsex:string;
-	fage:string;
-	lrdata:string;
-	fdept:string; //科室
-	gddata:string; //归档时间
 }
 
 
 
- class TranslateManage extends React.PureComponent<RouteComponentProps<translateProps> & reduxProp,translateState>{
-	
 
-	state:translateState={
-		data:null,
-		pageNum:"1",
-		pageSize:"4",
-		status:"0",
-		fsex:"0",
-		fage: "",
-		lrdata: "",
-		fdept: "",
-		gddata: "",
+class TranslateManage extends React.PureComponent<translateProps, translateState> {
+
+	
+	params:SummarySpace.params = this.initState(this.props.data.enData);
+		
+	initState(data:SummarySpace.params){
+
+		const obj ={
+			fname: "",
+			fsex: "",
+			fage: "",
+			fdept: "",
+			fdeb: "",
+			fprn: "",
+			fsurvey: "",
+			fryqk: "",
+			fryzd: "",
+			fzljg: "",
+			fcyzd: "",
+			fcyqk: "",
+			fcyyz: "",
+			frydata: "",
+			fcydata: "",
+			fsumd: "",
+		}
+    
+        if(data){
+
+            for (const iterator  in obj) {
+
+               const key = iterator as "fname";
+
+                 data[key] && (obj[key] = data[key]);
+                
+            }
+            return obj;
+
+        }else{
+            return obj;
+        }
+
+
+    }
+	
+	changeState=(field:keyof SummarySpace.params,value:string)=>{
+
+		this.params[field]=value;
+
 	}
 
-	 componentDidMount() {
+	submit=(e:React.MouseEvent<HTMLButtonElement>)=>{
+		const type = e.currentTarget!.name as "save" | "submit" | "error" ;
+		const {id} = this.props;
 
+		const obj =Object.assign({id},this.params); 
+
+		switch (type) {
+			case "error":
+				Api.upSummaryCaseError(id,"asdfsadf").then(res=>{
+
+						console.log(res)
+				});
+				break;
+			case "submit":
+				Api.commitEnSummaryCase(obj).then(res=>{
+
+					console.log(res)
+
+				})	
+					break;
+			case "save":
+				Api.updataEnSummaryCase(obj).then(res=>{
+					console.log(res)
+				})	
+					break;
 		
+			default:
+				break;
+		}
+	}
+	
+
+	render() {
+
+		const { text ,data} = this.props;
+
+	
+
+		return (
+			<div className="g-padding g-gdsummary" >
+				<p style={{ paddingBottom: 16 }}>{text}</p>
+				<div className="g-translate-box" >
+					<div style={{ textAlign: "right", padding: 10 }}>
+						<button className="s-btn normal-btn">导出</button>
+					</div>
+					<div className="g-translate">
+
+							<CaseModalText
+								type="ch"
+								params={data.china}
+							/> 
+
+						<CaseModalInp
+							data={this.params}
+							type="en"
+							changeState={this.changeState}
+						/>
+
+					</div>
+				
+					<div className="translate-footer-opt">
+						<button className="s-btn normal-btn" name="error" onClick={this.submit}><i className="fa fa-floppy-o">&nbsp;</i>报错</button>
+						<button className="s-btn normal-btn" name="save" onClick={this.submit}><i className="fa fa-floppy-o">&nbsp;</i>保存</button>
+						<button className="s-btn normal-btn" name="submit" onClick={this.submit}><i className="fa fa-save">&nbsp;</i>提交</button>
+						<button className="s-btn normal-btn" ><Link to={{ pathname: "/summary", state: { text: "病历清单" } }}><i className="fa fa-refresh">&nbsp;</i>返回</Link></button>
+					</div>
+				</div>
+				
+			</div>
+
+		)
+
+	}
+}
 
 
+class Container extends React.PureComponent<RouteComponentProps<reduxProp>,ContainerState> {
+
+	state={
+		data:null,
+	}
+
+	componentDidMount() {
+
+		const { id } = this.props.location.state;
+
+
+		Api.getSummaryCaseById(id).then(res => {
+
+			this.setState({
+				data: res.data
+			})
+		})
 	}
 
 	render(){
 
-		const {location:{state:{text}}} = this.props;
+		const {data} = this.state;
+		const{location:{state:{id,text},} } =this.props;
 
-		return (
-				<div className="g-padding g-gdsummary" >
-					<p style={{paddingBottom:16}}>{text}</p>
-					<div className="g-translate-box" >
-						<div style={{textAlign:"right",padding:10}}>
-
-							<button className="s-btn normal-btn">导出</button>
-						</div>
-						<div className="g-translate">
-
-							<div className="g-ch-translate m-translate">
-								<p className="m-tit">
-									深圳市萨米医疗中心
-								</p>
-								<div className="g-translate-header">
-									<div>
-										<span >姓名：</span>
-										<span >性别：</span>
-										<span >年龄：</span>
-									</div>
-									<div>
-										<span >科室：</span>
-										<span >床号：</span>
-										<span >病案号：</span>
-									</div>
-								</div>
-								<div className="g-en-translate g-tanslate-content">
-									<p className="translate-item"><span className="m-right-tit">患者：</span></p>
-									<p className="translate-item"><span className="m-right-tit">入院情况：</span></p>
-									<p className="translate-item"><span  className="m-right-tit">诊疗经过：</span></p>
-									<p className="translate-item"><span className="m-right-tit">出院诊断：</span></p>
-									<p className="translate-item"><span className="m-right-tit">出院情况：</span></p>
-									<p className="translate-item"><span className="m-right-tit">出院医嘱：</span></p>
-								</div>
-							</div>
-							<div className="g-ch-translate m-translate">
-								<p className="m-tit">
-									Shenzhen Samii Medical Center	
-								</p>
-								<div className="g-translate-header">
-									<div>
-										<span >Name：</span>
-										<span >Gender：</span>
-										<span >Age：</span>
-									</div>
-									<div>
-										<span >Administrative office：</span>
-										<span >Bed Number：</span>
-										<span >Medical record number：</span>
-									</div>
-								</div>
-								<div className="g-en-translate g-tanslate-content">
-									<p className="translate-item"><span className="m-right-tit4">Patient：</span></p>
-									<p className="translate-item"><span className="m-right-tit4">Admission situation：</span></p>
-									<p className="translate-item"><span  className="m-right-tit4">Medical treatment：</span></p>
-									<p className="translate-item"><span className="m-right-tit4">Discharge diagnosis：</span></p>
-									<p className="translate-item"><span className="m-right-tit4">Discharge situation：</span></p>
-									<p className="translate-item"><span className="m-right-tit4">Discharge Instructions：</span></p>
-								</div>
-							</div>
-							
-						</div>
-					</div>
-				</div>
-			
-			)
-
+		return data ? <TranslateManage data={data} id={id} text={text} />:null;
 	}
 }
 
-type reduxProp ={
-	roleId:string;
-} 
 
-const mapStateToProp:MapStateToProps<reduxProp,translateProps,appStore>=({app})=>{
+type reduxProp = {
+	roleId: string;
+}
+
+const mapStateToProp: MapStateToProps<reduxProp, translateProps, appStore> = ({ app }) => {
 
 	const roleId = app.get("role_ids")[app.get("role_index")];
 	return {
@@ -135,7 +195,7 @@ const mapStateToProp:MapStateToProps<reduxProp,translateProps,appStore>=({app})=
 }
 
 
-export default connect(mapStateToProp)(TranslateManage);
+export default connect(mapStateToProp)(Container);
 
 
 
