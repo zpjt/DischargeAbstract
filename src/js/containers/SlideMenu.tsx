@@ -4,7 +4,7 @@ import ErrorBoundary from "@js/common/ErrorBoundary";
 import * as Velocity from "velocity-react";
 import {connect,MapStateToProps} from "react-redux";
 import  Api from "@api/main";
-
+import {SvgIcon} from "@js/common/Button"
 
 type slideMenu={
 	expand:boolean;
@@ -72,7 +72,7 @@ class SlideMenu extends React.PureComponent< SlideMenuProp & reduxProp,SlideMenu
 											<div className="g-logo">
 													<span className="m-logo"></span>
 													<span className="j-slideBar" onClick={this.expandHandle}>
-														 <i className="fa fa-bars fa-2x"></i>
+														<SvgIcon styleType={expand?"menu-expand":"menu-shrink"} size="size2"/>
 													</span>	
 											</div>
 											<ErrorBoundary>

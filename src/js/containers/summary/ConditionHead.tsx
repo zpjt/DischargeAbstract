@@ -139,7 +139,7 @@ export default class HeadOpt extends React.PureComponent<HeadOptProp, HeadOptSta
 					<div className="m-optBtn">
 
 						{ type ==="/gdsummary" ?(
-						<Button field="patchDao" handle={this.optHandle}> <Icon  styleType=""/>批量导出</Button>
+						<Button field="patchDao" handle={this.optHandle}> <Icon  styleType="fa-external-link"/>批量导出</Button>
 						):<Link to="/addCaseModal"><Button field="" ><Icon styleType="fa-plus"/>添加病历</Button></Link> }
 
 						<Button field="refresh" ><Icon styleType="fa-refresh"/>刷新</Button>

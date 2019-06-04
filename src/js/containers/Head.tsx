@@ -4,6 +4,7 @@ import { connect, MapStateToProps ,MapDispatchToProps} from "react-redux";
 import Modal from "@js/common/Modal";
 import { InpBox } from "@js/common/InputBtn";
 import {changeRole} from "@js/actions/appAction";
+import {SvgIcon} from "@js/common/Button";
 
 type HeadProp = {
 
@@ -143,11 +144,11 @@ class Head extends React.PureComponent<RouteComponentProps<HeadProp> & reduxStat
 						}
 					</ul>
 				</div>
-				<div className="m-mail">邮箱</div>
+				<div className="m-mail"><i className="fa fa-envelope-o fa-lg"></i></div>
 				<div className="g-user-opt" >
 					<div style={{ padding: "20px 10px" }}>
-						<span className="fa fa-user">&nbsp;&nbsp;</span>
-						<span>{user_name}</span>
+						<SvgIcon styleType="user" size="size1"/>
+						<span style={{verticalAlign:4}}>&nbsp;&nbsp;{user_name}</span>
 					</div>
 					<ul className="m-sysOpt">
 						<li onClick={this.logOut}>

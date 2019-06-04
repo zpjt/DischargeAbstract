@@ -189,7 +189,7 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 						<Button field="error" handle={this.submit} styleType="line-btn" type="danger"><Icon styleType=""/>报错</Button>
 						<Button field="save" handle={this.submit}  type="green"><Icon styleType="fa-floppy-o"/>保存</Button>
 						<button className="s-btn normal-btn primary" name="submit" onClick={this.submit}><i className="fa fa-save">&nbsp;</i>提交</button>
-						<Link to={{ pathname: "/summary", state: { text: "病历清单" } }}><button className="s-btn line-btn green" ><i className="fa fa-refresh">&nbsp;</i>返回</button></Link>
+						<Link to={{ pathname: "/summary", state: { text: "病历清单" } }}><button className="s-btn line-btn green" ><i className="fa fa-undo">&nbsp;</i>返回</button></Link>
 					</div>):null}
 				</div>
 				

@@ -92,5 +92,29 @@ type IconState={
     }
 }
 
+type SvgIconProps={
+    styleType:string;
+    size?:string;
+}
 
-export {Button,Icon}
+type SvgIconState={
+
+}
+
+ class SvgIcon extends React.PureComponent<SvgIconProps,SvgIconState>{
+
+
+
+    render(){
+
+        const {styleType,size} = this.props;
+        return (
+            <svg className={`icon ${size}`} aria-hidden="true">
+                <use  xlinkHref={`#icon-${styleType}`}></use> 
+            </svg>
+        )
+    }
+}
+
+
+export {Button,Icon,SvgIcon}

@@ -228,7 +228,7 @@ export default class Table extends React.PureComponent<TableProps, TableState>{
 
     render() {
 
-        const { list, column, idField, pageSize, total, navigatepageNums, pageNum } = this.props;
+        const { list, column, idField, total, navigatepageNums, pageNum } = this.props;
         const { tableH, checkArr } = this.state;
 
         let tabOver = "";
@@ -240,7 +240,7 @@ export default class Table extends React.PureComponent<TableProps, TableState>{
 
             h = (+tableH - 120);// 表头 高40 ，离底部还要有距离
 
-            tabOver = pageSize * 43 > h ? "tab-over" : "";
+            tabOver = list.length * 43 > h ? "tab-over" : "";
 
             h += "px";
         };

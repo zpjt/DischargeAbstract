@@ -3,6 +3,7 @@ import {Link,NavLink} from "react-router-dom";
 import "@css/menu.scss";
 import * as Immutable from "immutable";
 import * as Velocity from "velocity-react";
+import {SvgIcon} from "@js/common/Button";
 
 type MenuItem = TypedMap<{
 		 id: string;
@@ -55,12 +56,14 @@ class ParMenu extends React.PureComponent<ItemProps>{
  			const activeName = obj.get("active") ? "active" : "";
 
 			const hObj = this.props.expand ? {display: "block"} : {};
-
+icon
 			return (
 					<li className="li-par">
 							<div  className={"menu-item menu-par " + activeName} onClick={()=>slectItem(index)}>
 									<span className="par-icon">
-										<i className={icon}></i>
+										{/* <i className={"fa "+icon}></i> */}
+										<SvgIcon styleType="folder" />
+
 									</span>	
 									<span className="j-nav" >
 										<Link to={path}>{text}</Link>

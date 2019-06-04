@@ -92,7 +92,7 @@ class AddCaseModal extends React.PureComponent< caseModalProps, caseModalState>{
                 <div className="add-opt-box">
                     <Button type="green" handle={this.submit} field="save"><Icon styleType="fa fa-floppy-o"/>保存</Button>
                     <button className="s-btn normal-btn primary" name="submit" onClick={this.submit}><i className="fa fa-save">&nbsp;</i>提交</button>
-                    <Link to={{ pathname: "/summary", state: { text: "病历清单" } }}><button className="s-btn line-btn primary" ><i className="fa fa-refresh">&nbsp;</i>取消</button></Link>
+                    <Link to={{ pathname: "/summary", state: { text: "病历清单" } }}><button className="s-btn line-btn primary" ><i className="fa fa-undo">&nbsp;</i>取消</button></Link>
                 </div>
             </div>
 
