@@ -58,7 +58,8 @@ class CaseManage extends React.PureComponent<RouteComponentProps<caseProps> & re
 	}
 
 	getTableData(role_id:string){
-		Api.getAllSummaryCaseByStatus(Object.assign({role_id},this.params)).then(res => {
+		const flag = this.props.location.pathname === "/summary" ? "0" :"1";
+		Api.getAllSummaryCaseByStatus(Object.assign({role_id,flag},this.params)).then(res => {
 			this.setState({
 				data: res.data
 			})
@@ -68,6 +69,17 @@ class CaseManage extends React.PureComponent<RouteComponentProps<caseProps> & re
 	refreshData=()=>{
 
 		this.getTableData(this.props.roleId)
+	}
+
+	delCase=(ids?:string)=>{
+
+		const flag = ids ? ids : this.state.checkArr;
+		Api.delSummaryCaseById(flag).then((res:AxiosInterfaceResponse)=>{
+
+					console.log(res);
+			this.getTableData(this.props.roleId);
+		});
+
 	}
 
 	changeState = (filed: "checkArr" | keyof CaseManage["params"], value: string) => {
@@ -85,22 +97,24 @@ class CaseManage extends React.PureComponent<RouteComponentProps<caseProps> & re
 
 	render() {
 
-		const { location: { state: { text } } } = this.props;
-		const {data,checkArr} = this.state;
+		const { location: { state: { text } ,pathname} } = this.props;
+		const {data} = this.state;
 
 		return (
 			<div className="g-padding g-summary" >
 
 				<p style={{ paddingBottom: 16 }}>{text}</p>
 				<HeadOpt 
-				checkArr={checkArr} 
-				refreshHandle={this.refreshData} 
-				changeHandle={this.changeState} 
+					delItem={this.delCase} 
+					changeHandle={this.changeState} 
+					type={pathname}
 				
 				/>
 				{data ?  <ResultSearch  
 					data={data}
 				    changeHandle={this.changeState} 
+					type={pathname}
+					delItem = {this.delCase}
 				/> : null}
 
 			</div>

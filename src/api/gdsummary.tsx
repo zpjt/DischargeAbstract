@@ -7,7 +7,7 @@ export default {
     getSummaryCaseById:function (id:string) {
         return axios.get("summary/getSummaryCaseById?id="+id)
     },
-    updataEnSummaryCase:function(data:any){
+    updataEnSummaryCase:function(data:any){//修改也是保存
         return axios.post("summary/updataEnSummaryCase",data,{
 
             headers:{
@@ -15,7 +15,7 @@ export default {
             }
         })
     },
-    commitEnSummaryCase:function(data:any){
+    commitEnSummaryCase:function(data:any){//提交
         return axios.post("summary/commitEnSummaryCase",data,{
             headers:{
                 "Content-Type":"application/json"
@@ -23,13 +23,22 @@ export default {
         })
 
     },
-    upSummaryCaseError:function(id:string,errMessages:string){
+    upSummaryCaseError:function(id:string,errMessages:string){//报错不翻译
         return axios.post("/summary/upSummaryCaseError",qs.stringify({id,errMessages}))
     },
-    passEnSummaryCase:function(){
+    passEnSummaryCase:function(id:string){//通过
 
-        
+        return axios.post("summary/passEnSummaryCase",{id},{
+            headers:{
+                "Content-Type":"application/json"
+            }
+        })
+    },
+    returnSummaryCase:function(id:string,descr:string){//驳回
+
+        return axios.post("/summary/returnSummaryCase",qs.stringify({id,descr}))
     }
+
 
 
 }

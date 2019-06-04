@@ -7,16 +7,17 @@ const languageConfig = {
         fdept: "Administrative office",
         fdeb: "Bed Number",
         fprn: "Medical record number",
-        fsurvey: "",
+        fsurvey: "due to",
         fryqk: "Admission situation",
         fryzd: "",
         fzljg: "Medical treatment",
         fcyzd: "Discharge diagnosis",
         fcyqk: "Discharge situation",
         fcyyz: "Discharge Instructions",
-        frydata: "be hospital in",
-        fcydata: "out of hospital in",
-        fsumd: "for",
+        frydata: "admitted to hospital at",
+        fcydata: "discharged at",
+        fsumd: "hospitalized for",
+        fsumd1: "days",
         patient:"Patient"
     },
     ch:{
@@ -34,13 +35,14 @@ const languageConfig = {
         fcyzd: "出院诊断",
         fcyqk: "出院情况",
         fcyyz: "出院医嘱",
-        frydata: "于",
-        fcydata: "于",
+        frydata: "入院",
+        fcydata: "出院",
         fsumd: "共住院",
+        fsumd1: "天",
         patient:"患者"
 
     }
 };
-
+//Zhang Si, male, 20, due to "patient Zhang Sanyin.", admitted to hospital at 20190605, discharged at 20190506, hospitalized for 3 days.
 
 export {languageConfig}

@@ -20,12 +20,11 @@ type caseModalProps = {
         fcyzd: string;
         fcyqk: string;
         fcyyz: string;
-        status: string;
+      //  status: string;
         frydata: string;
         fcydata: string;
         fsumd: string;
     }
-  
     type:"ch"|"en";
 
 }
@@ -51,33 +50,34 @@ class CaseModal extends React.PureComponent<caseModalProps>{
         
         const {type,params:{ fname, fage, fsex, fdeb, fdept, fprn, fryqk, fzljg, fcyyz, fcyqk, fcyzd, fsurvey, fcydata, frydata, fsumd }} = this.props;
         const config = languageConfig[type];
+        const is_en = type ==="en" ?<br/>:null ;
         return (
                         <div className={"m-translate "+(type === "ch" && "g-translate-ch" || "g-translate-en")}>
                             <p className="m-tit">{config.title}</p>
                             <div className="g-translate-header">
                                 <div className="m-add-item">
-                                    <p ><span className="m-right-tit m-head-tit">{config.fname}：</span>{fname}</p>
-                                    <p ><span className="m-right-tit m-head-tit">{config.fsex}：</span> {fsex} </p>
-                                    <p ><span className="m-right-tit m-head-tit">{config.fage}：</span>{fage}</p>
+                                    <p ><span className="m-right-tit m-head-tit">{config.fname}：</span>{is_en}{fname}</p>
+                                    <p ><span className="m-right-tit m-head-tit">{config.fdept}：</span>{is_en}{fdept}</p>
+                                </div>
+                                 <div className="m-add-item">
+                                    <p ><span className="m-right-tit m-head-tit">{config.fsex}：</span>{is_en}{fsex} </p>
+                                    <p ><span className="m-right-tit m-head-tit">{config.fdeb}：</span>{is_en}{fdeb}</p>
                                 </div>
                                 <div className="m-add-item">
-                                    <p ><span className="m-right-tit m-head-tit">{config.fdept}：</span>{fdept}</p>
-                                    <p ><span className="m-right-tit m-head-tit">{config.fdeb}：</span>{fdeb}</p>
-                                    <p ><span className="m-right-tit m-head-tit">{config.fprn}：</span>{fprn}</p>
+                                    <p ><span className="m-right-tit m-head-tit">{config.fage}：</span>{is_en}{fage}</p>
+                                    <p ><span className="m-right-tit m-head-tit">{config.fprn}：</span>{is_en}{fprn}</p>
                                 </div>
                             </div>
                             <div className=" g-tanslate-content">
                                 <p className="paitent-info">
                                     <span >{config.patient}：</span>
                                     <span >
-                                        {fname}，{fsex}，{fage}，因“
-                                        {fsurvey}”， 于
-                                        {frydata}
-                                        入院，于
-                                        {fcydata}
-                                        出院，共住院
-                                        {fsumd}
-                                        天。</span>
+                                        {fname}，{fsex}，{fage}，{config.fsurvey}“
+                                        {fsurvey}”， 
+                                        {is_en ? config.frydata + frydata :"于" +frydata + config.frydata}，
+                                        {is_en ? config.fcydata + fcydata :"于" +fcydata + config.fcydata}，
+                                        {config.fsumd+fsumd+config.fsumd1}
+                                        。</span>
                                 </p>
                                 <p className="translate-item">
                                     <span className="m-right-tit m-article-tit">{config.fryqk}：</span>

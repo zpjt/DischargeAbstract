@@ -6,7 +6,7 @@ import SlideMenu from "@js/containers/SlideMenu";
 import Head from "@js/containers/Head";
 import MainRouter from "@js/Router" ;
 
-HashRouter
+BrowserRouter
 
 class IndexCom extends React.PureComponent{
 	
@@ -34,11 +34,11 @@ class App extends React.PureComponent{
 
 	render(){
 			return (
-					<BrowserRouter basename="index">
+					<HashRouter>
 							<Switch>
                             	<Route  path="/"   component={IndexCom} />	
 							</Switch>
-					</BrowserRouter>
+					</HashRouter>
 					)
 		}
 	

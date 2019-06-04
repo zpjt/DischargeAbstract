@@ -166,7 +166,7 @@ class Calendar extends React.PureComponent<calendarProps, calendarState> impleme
 	clearSelTime=()=>{
 		
 		this.setState({
-			selTimeArr:Immutable.fromJS([]),
+			selTimeArr:Immutable.fromJS(this.timeValToTimeObj(true)),
 			expand:false
 		})
 

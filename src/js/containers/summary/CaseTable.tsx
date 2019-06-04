@@ -46,20 +46,21 @@ type caseData = {
     total:number;
 }
 
-let registEvent:(id:string)=>void = function(){
 
+
+   
+type ResultProp = {
+    changeHandle(field:any,value:string):void;
+    data:caseData;
+    type : string; 
+    delItem:(ids:string)=>void;
+} 
+type ResultState={
 }
 
-const fireEvent = function(e:React.MouseEvent<HTMLButtonElement>){
+class ResultSearch extends React.PureComponent<ResultProp,ResultState>{
 
-    const id = e.currentTarget!.name;
-
-    registEvent(id);
-
-
-}
-
- const column = [
+    column =   [
         {
             text: "姓名",
             field: "fname",
@@ -88,7 +89,10 @@ const fireEvent = function(e:React.MouseEvent<HTMLButtonElement>){
             text: "录入时间", 
             field: "lrdata",
         },
-
+         {
+            text: "归档时间", 
+            field: "gddata",
+        },
         {
             text: "状态",
             field: "status",
@@ -104,13 +108,17 @@ const fireEvent = function(e:React.MouseEvent<HTMLButtonElement>){
             text: "操作",
             field: "opt",
             width: 180,
-            formatter: function (node:any) {
+            formatter: (node:any)=>{
 
+                const type = this.props.type;
+                const is_gdsummary = type === "/summary";
                 const pathObj = {
                     pathname:"/translate",
                     state:{
-                        text:"归档文案 / " + node.fname,
-                        id:node.id
+                        text: ( !is_gdsummary && "病例清单" || "归档文案") + (" / 查看详情"),
+                        id:node.id,
+                        type:this.props.type,
+                        status:node.status
                     }
                 }
 
@@ -120,29 +128,33 @@ const fireEvent = function(e:React.MouseEvent<HTMLButtonElement>){
                             
                         </button>
                         &nbsp;
-                        <button className="s-btn normal-btn" name={node.id} onClick={fireEvent}>删去</button>
+                        <button className="s-btn normal-btn" name={node.id} onClick={this.delItemCase}>删去</button>
                         </>
                         )
             }
         }
     ];
 
-   
-type ResultProp = {
-    changeHandle(field:any,value:string):void;
-    data:caseData;
-} 
-type ResultState={
-}
-
-class ResultSearch extends React.PureComponent<ResultProp,ResultState>{
-
-
     state={
   
     }
+
+    delItemCase=(e:React.MouseEvent<HTMLButtonElement>)=>{
+
+
+        const id = e.currentTarget!.name;
+
+        this.props.delItem(id);
+    }
     componentDidMount(){
 
+       
+
+        if(this.props.type =="/summary"){
+
+            this.column.splice(7,1)
+
+        }
 
     }
     render(){
@@ -154,10 +166,10 @@ class ResultSearch extends React.PureComponent<ResultProp,ResultState>{
 
         const {list,pageNum,pageSize,total,navigatepageNums} = data;
         const {changeHandle} = this.props;
-
+        
             return <Table 
                         list={list} 
-                        column={column}
+                        column={this.column}
                         pageNum={pageNum}
                         pageSize={pageSize}
                         total={total}

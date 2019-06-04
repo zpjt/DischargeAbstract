@@ -11,12 +11,14 @@ type translateProps = {
 	data:any;
 	id:string;
 	text:string;
+	type:string;
+	status:string;
 };
 
 
-type translateState = {
+type translateState = SummarySpace.params; 
 	
-}
+
 
 type ContainerState = {
 	data:any;
@@ -28,11 +30,8 @@ type ContainerState = {
 class TranslateManage extends React.PureComponent<translateProps, translateState> {
 
 	
-	params:SummarySpace.params = this.initState(this.props.data.enData);
-		
-	initState(data:SummarySpace.params){
-
-		const obj ={
+	
+	obj = 	{
 			fname: "",
 			fsex: "",
 			fage: "",
@@ -49,7 +48,11 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 			frydata: "",
 			fcydata: "",
 			fsumd: "",
-		}
+	}
+	state:SummarySpace.params = this.initState(this.props.data.english);
+	initState(data:SummarySpace.params){
+
+		const obj = this.obj;
     
         if(data){
 
@@ -71,24 +74,30 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 	
 	changeState=(field:keyof SummarySpace.params,value:string)=>{
 
-		this.params[field]=value;
+		this.setState({
+			[field as "fname"]:value,
+		})
 
 	}
 
 	submit=(e:React.MouseEvent<HTMLButtonElement>)=>{
-		const type = e.currentTarget!.name as "save" | "submit" | "error" ;
+		const type = e.currentTarget!.name as "save" | "submit" | "error" |"pass" |"reject";
 		const {id} = this.props;
 
-		const obj =Object.assign({id},this.params); 
+		const obj =Object.assign({id},this.state); 
 
 		switch (type) {
 			case "error":
-				Api.upSummaryCaseError(id,"asdfsadf").then(res=>{
+				Api.upSummaryCaseError(id,"报错").then(res=>{
 
-						console.log(res)
+						console.log(res);
 				});
 				break;
 			case "submit":
+				if(document.querySelectorAll("#g-gdsummary .no-fill").length){
+					alert("填写完整！")
+					return ;
+				}
 				Api.commitEnSummaryCase(obj).then(res=>{
 
 					console.log(res)
@@ -100,26 +109,59 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 					console.log(res)
 				})	
 					break;
-		
+			case "pass"	:
+				Api.passEnSummaryCase(id).then(res=>{
+					console.log(res)
+				})
+				break;
+			case "reject":
+				Api.returnSummaryCase(id,"驳回").then(res=>{
+					console.log(res);
+				});
+				break;
 			default:
 				break;
 		}
+	}
+
+	getDao(){
+
+
+		return (<div className="j-dao" ><div > 
+						<span><button className="s-btn normal-btn">导出</button></span>
+						<ul className="m-dao-drop">
+							<li><i className="fa fa-file-image-o">&nbsp;</i><span>导出图片</span></li>
+							<li><i className="fa fa-file-pdf-o">&nbsp;</i><span>导出pdf</span></li>
+							<li><i className="fa fa-file-word-o"></i>&nbsp;<span>导出文档</span></li>
+							<li><i className="fa fa-print"></i>&nbsp;<span>打印</span></li>
+						</ul>
+					</div></div>)
+	}
+
+	getCheckOpt(){
+
+
+		return (
+			<div className="m-check-opt">
+				<button className="s-btn normal-btn" name="reject" onClick={this.submit}>驳回</button>
+				<button className="s-btn normal-btn" name="pass" onClick={this.submit}>通过</button>
+			</div>
+		)
 	}
 	
 
 	render() {
 
-		const { text ,data} = this.props;
+		const { text,data,type,status} = this.props;
 
-	
+		const is_gdsummary = type == "/gdsummary";
 
 		return (
-			<div className="g-padding g-gdsummary" >
+			<div className="g-padding g-gdsummary" id="g-gdsummary" >
 				<p style={{ paddingBottom: 16 }}>{text}</p>
 				<div className="g-translate-box" >
-					<div style={{ textAlign: "right", padding: 10 }}>
-						<button className="s-btn normal-btn">导出</button>
-					</div>
+
+				{is_gdsummary ? status == "5" ? this.getDao():this.getCheckOpt(): null} 
 					<div className="g-translate">
 
 							<CaseModalText
@@ -127,20 +169,23 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 								params={data.china}
 							/> 
 
-						<CaseModalInp
-							data={this.params}
+						{!is_gdsummary ?<CaseModalInp
+							data={this.state}
 							type="en"
 							changeState={this.changeState}
-						/>
+						/>:<CaseModalText
+							params={this.obj}
+							type="en"
+						/>}
 
 					</div>
 				
-					<div className="translate-footer-opt">
+					{!is_gdsummary ? (<div className="translate-footer-opt">
 						<button className="s-btn normal-btn" name="error" onClick={this.submit}><i className="fa fa-floppy-o">&nbsp;</i>报错</button>
 						<button className="s-btn normal-btn" name="save" onClick={this.submit}><i className="fa fa-floppy-o">&nbsp;</i>保存</button>
 						<button className="s-btn normal-btn" name="submit" onClick={this.submit}><i className="fa fa-save">&nbsp;</i>提交</button>
 						<button className="s-btn normal-btn" ><Link to={{ pathname: "/summary", state: { text: "病历清单" } }}><i className="fa fa-refresh">&nbsp;</i>返回</Link></button>
-					</div>
+					</div>):null}
 				</div>
 				
 			</div>
@@ -173,9 +218,9 @@ class Container extends React.PureComponent<RouteComponentProps<reduxProp>,Conta
 	render(){
 
 		const {data} = this.state;
-		const{location:{state:{id,text},} } =this.props;
+		const{location:{state:{id,text,type,status}} } =this.props;
 
-		return data ? <TranslateManage data={data} id={id} text={text} />:null;
+		return data ? <TranslateManage data={data} id={id} text={text} type={type} status={status}/>:null;
 	}
 }
 

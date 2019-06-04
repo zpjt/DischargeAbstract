@@ -7,16 +7,12 @@ import {withRouter} from "react-router-dom"
 
 type caseModalProps = {
     data:SummarySpace.params & {id:string};
-   
+    user_id:string,
     pathTo(path:any):void;
 };
 
 
-type caseModalState = {
-   
-   
-}
-
+type caseModalState = SummarySpace.params & {id:string};
 
 
 
@@ -24,14 +20,15 @@ type caseModalState = {
 
 class AddCaseModal extends React.PureComponent< caseModalProps, caseModalState>{
 
-
-    params:SummarySpace.params & {id:string} = this.props.data;
+    
+    state = Object.assign({},this.props.data) ;
 
 
     submit = (e: React.MouseEvent<HTMLButtonElement>) => {
 
+        const{ user_id} = this.props;
         const type = e.currentTarget!.name as "save" | "submit";
-        const obj = this.params;
+        const obj = Object.assign({user_id},this.state);
 
         if (type == "save") {
 
@@ -43,6 +40,12 @@ class AddCaseModal extends React.PureComponent< caseModalProps, caseModalState>{
             });
 
         } else { //提交
+
+            if(document.querySelectorAll("#g-gdsummary .no-fill").length){
+
+                alert("填写完毕！")
+                return 
+            }
 
             Api.saveChSummaryCase(obj).then(res => {
 
@@ -67,18 +70,18 @@ class AddCaseModal extends React.PureComponent< caseModalProps, caseModalState>{
     }
 
     changeState=(field:keyof SummarySpace.params,value:string)=>{
-        this.params[field]=value;
-        
-        console.log(this.params)
+        this.setState({
+            [field as "fname"]:value,
+        })
 	}
 
 
     render() {
 
-        const { id,...obj} = this.params;
+        const { id,...obj} = this.state;
 
         return (
-            <div className="g-padding g-gdsummary" >
+            <div className="g-padding g-gdsummary" id="g-gdsummary">
            
                 <div className="g-translate-box" style={{ width: "50%", marginLeft: 10 }} >
                     <div className="g-translate g-add-modal">
@@ -99,7 +102,7 @@ class AddCaseModal extends React.PureComponent< caseModalProps, caseModalState>{
 
 
 type ContainerState={
-    data:any
+    data:any;
 }
 
 class Container extends React.PureComponent<RouteComponentProps<{}> & reduxState,ContainerState> {
@@ -133,7 +136,6 @@ class Container extends React.PureComponent<RouteComponentProps<{}> & reduxState
 			fcydata: "",
             fsumd: "",
             id:"",
-            user_id:this.props.user_id
 		}
         //看看上次有没有写了一部分保存后没有提交的
         Api.getSummaryCaseByUserid(user_id)
@@ -158,10 +160,12 @@ class Container extends React.PureComponent<RouteComponentProps<{}> & reduxState
 
 	render(){
 
-		const {data} = this.state;
+        const {data} = this.state;
+        
+        const user_id = this.props.user_id;
 		
 
-		return data ? <AddCaseModal data={data}   pathTo={this.pathTo} />:null;
+		return data ? <AddCaseModal data={data}  user_id={user_id}  pathTo={this.pathTo} />:null;
 	}
 }
 
