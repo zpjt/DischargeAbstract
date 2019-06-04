@@ -5,7 +5,7 @@ import CaseModalText from "../summary/CaseModalText";
 import Api from "@api/gdsummary";
 import CaseModalInp from "../summary/CaseModalInp";
 import {Link} from "react-router-dom";
-
+import {Button,Icon} from "@js/common/Button"
 
 type translateProps = {
 	data:any;
@@ -13,6 +13,7 @@ type translateProps = {
 	text:string;
 	type:string;
 	status:string;
+	pathTo(path:"gdsummary"|"summary"):void;
 };
 
 
@@ -82,7 +83,7 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 
 	submit=(e:React.MouseEvent<HTMLButtonElement>)=>{
 		const type = e.currentTarget!.name as "save" | "submit" | "error" |"pass" |"reject";
-		const {id} = this.props;
+		const {id,pathTo} = this.props;
 
 		const obj =Object.assign({id},this.state); 
 
@@ -91,6 +92,7 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 				Api.upSummaryCaseError(id,"报错").then(res=>{
 
 						console.log(res);
+						pathTo("summary");
 				});
 				break;
 			case "submit":
@@ -102,6 +104,7 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 
 					console.log(res)
 
+						pathTo("gdsummary");
 				})	
 					break;
 			case "save":
@@ -112,11 +115,13 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 			case "pass"	:
 				Api.passEnSummaryCase(id).then(res=>{
 					console.log(res)
+						pathTo("gdsummary");
 				})
 				break;
 			case "reject":
 				Api.returnSummaryCase(id,"驳回").then(res=>{
 					console.log(res);
+						pathTo("summary");
 				});
 				break;
 			default:
@@ -128,7 +133,7 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 
 
 		return (<div className="j-dao" ><div > 
-						<span><button className="s-btn normal-btn">导出</button></span>
+						<span><button className="s-btn normal-btn primary">导出</button></span>
 						<ul className="m-dao-drop">
 							<li><i className="fa fa-file-image-o">&nbsp;</i><span>导出图片</span></li>
 							<li><i className="fa fa-file-pdf-o">&nbsp;</i><span>导出pdf</span></li>
@@ -143,8 +148,8 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 
 		return (
 			<div className="m-check-opt">
-				<button className="s-btn normal-btn" name="reject" onClick={this.submit}>驳回</button>
-				<button className="s-btn normal-btn" name="pass" onClick={this.submit}>通过</button>
+				<button className="s-btn normal-btn danger" name="reject" onClick={this.submit}>驳回</button>
+				<button className="s-btn normal-btn green" name="pass" onClick={this.submit}>通过</button>
 			</div>
 		)
 	}
@@ -181,10 +186,10 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 					</div>
 				
 					{!is_gdsummary ? (<div className="translate-footer-opt">
-						<button className="s-btn normal-btn" name="error" onClick={this.submit}><i className="fa fa-floppy-o">&nbsp;</i>报错</button>
-						<button className="s-btn normal-btn" name="save" onClick={this.submit}><i className="fa fa-floppy-o">&nbsp;</i>保存</button>
-						<button className="s-btn normal-btn" name="submit" onClick={this.submit}><i className="fa fa-save">&nbsp;</i>提交</button>
-						<button className="s-btn normal-btn" ><Link to={{ pathname: "/summary", state: { text: "病历清单" } }}><i className="fa fa-refresh">&nbsp;</i>返回</Link></button>
+						<Button field="error" handle={this.submit} styleType="line-btn" type="danger"><Icon styleType=""/>报错</Button>
+						<Button field="save" handle={this.submit}  type="green"><Icon styleType="fa-floppy-o"/>保存</Button>
+						<button className="s-btn normal-btn primary" name="submit" onClick={this.submit}><i className="fa fa-save">&nbsp;</i>提交</button>
+						<Link to={{ pathname: "/summary", state: { text: "病历清单" } }}><button className="s-btn line-btn green" ><i className="fa fa-refresh">&nbsp;</i>返回</button></Link>
 					</div>):null}
 				</div>
 				
@@ -202,6 +207,10 @@ class Container extends React.PureComponent<RouteComponentProps<reduxProp>,Conta
 		data:null,
 	}
 
+	back=(path:"gdsummary" | "summary")=>{
+
+		this.props.history.push({ pathname: "/"+path, state: { text: "病历清单" } })
+	}
 	componentDidMount() {
 
 		const { id } = this.props.location.state;
@@ -220,7 +229,7 @@ class Container extends React.PureComponent<RouteComponentProps<reduxProp>,Conta
 		const {data} = this.state;
 		const{location:{state:{id,text,type,status}} } =this.props;
 
-		return data ? <TranslateManage data={data} id={id} text={text} type={type} status={status}/>:null;
+		return data ? <TranslateManage data={data} id={id} text={text} type={type} status={status} pathTo={this.back}/>:null;
 	}
 }
 

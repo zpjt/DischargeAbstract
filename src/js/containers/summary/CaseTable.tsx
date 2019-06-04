@@ -1,6 +1,7 @@
 import * as React from "react";
 import Table from "@js/common/table/index";
 import {NavLink} from "react-router-dom";
+import {Button} from "@js/common/Button"
 //请求参数： pageNum：第几页 pageSize：每页几条 role_id：角色id status:状态默认筛选值0； status是筛选值,status_name是对应中文 主任角色可选筛选值：3：提交（未审核）5：已审核；6：报错 医生角色可选筛选值：1:未翻译，2：已翻译，4：驳回 fdept：科室 默认空字符串 fsex：性别 默认空字符串 fage：年龄 默认空字符串 lrdata：录入日期 默认空字符串 gddata：归档日期 默认空字符串 返回值： code：状态码 200为正常状态 message：状态信息 data： total：总条数 list：需要显示的数据 pageNum：当前第几页 pageSize：每页条数 prePage：上一页页码 nextPage：下一页页码 navigatepageNums：页码数组
 
 type ListItem = {
@@ -121,14 +122,10 @@ class ResultSearch extends React.PureComponent<ResultProp,ResultState>{
                         status:node.status
                     }
                 }
-
                 return (<>
-                        <button className="s-btn normal-btn" >
-                            <NavLink to={pathObj} >查看</NavLink>
-                            
-                        </button>
+                        <NavLink to={pathObj} ><button className="s-btn normal-btn primary" >查看</button></NavLink>
                         &nbsp;
-                        <button className="s-btn normal-btn" name={node.id} onClick={this.delItemCase}>删去</button>
+                        <Button type="danger" field={node.id}  handle={this.delItemCase}>删去</Button>
                         </>
                         )
             }

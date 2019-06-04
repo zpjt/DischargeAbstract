@@ -3,6 +3,7 @@ import Search from "@js/common/SearchCom";
 import Calendar from "@js/common/calendar/index";
 import Combobox from "@js/common/combobox/index";
 import {Link} from "react-router-dom";
+import {Button,Icon} from "@js/common/Button";
 
 type HeadOptProp = {
 	delItem():void;
@@ -137,16 +138,13 @@ export default class HeadOpt extends React.PureComponent<HeadOptProp, HeadOptSta
 
 					<div className="m-optBtn">
 
-						{ type ==="/gdsummary" ?( <>
-						
-						<button className="s-btn normal-btn" name="patchDao" onClick={this.optHandle}><i className="fa fa-refresh">&nbsp;</i>批量导出</button>
-						
-						</>):<button className="s-btn normal-btn" ><Link to="/addCaseModal"><i className="fa fa-plus">&nbsp;</i>添加病历</Link></button> }
+						{ type ==="/gdsummary" ?(
+						<Button field="patchDao" handle={this.optHandle}> <Icon  styleType=""/>批量导出</Button>
+						):<Link to="/addCaseModal"><Button field="" ><Icon styleType="fa-plus"/>添加病历</Button></Link> }
 
-						<button className="s-btn normal-btn" name="refresh"  onClick={this.optHandle}><i className="fa fa-refresh">&nbsp;</i>刷新</button>
+						<Button field="refresh" ><Icon styleType="fa-refresh"/>刷新</Button>
 					
-					
-						<button className="s-btn normal-btn" onClick={this.optHandle} name="del"><i className="fa fa-trash">&nbsp;</i>批量删除</button>
+						<Button handle={this.optHandle} field="del" styleType="line-btn" type="danger"><Icon styleType="fa-trash"/>批量删除</Button>
 					</div>
 				</div>
 			</div>
