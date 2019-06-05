@@ -6,9 +6,9 @@ import {Link} from "react-router-dom";
 import {Button,Icon} from "@js/common/Button";
 
 type HeadOptProp = {
-	delItem():void;
 	changeHandle(field:string,value:string):void;
 	type:string;
+	showModal:()=>void;
 }
 
 type HeadOptState = {
@@ -38,7 +38,10 @@ const translateArr = [
 	}
 	, {
 		id: "2",
-		text: "已翻译"
+		text: "未提交"
+	}, {
+		id: "4",
+		text: "驳回"
 	},
 	{
 		id: "0",
@@ -71,14 +74,13 @@ export default class HeadOpt extends React.PureComponent<HeadOptProp, HeadOptSta
 
 		const type = e.currentTarget!.name;
 
-		const {delItem} = this.props;
 
 		switch (type) {
 			case "refresh":
 				
 				break;
 			case "del":
-				delItem();
+				this.props.showModal();
 				break;
 			case "patchDao":
 				
@@ -142,7 +144,7 @@ export default class HeadOpt extends React.PureComponent<HeadOptProp, HeadOptSta
 						<Button field="patchDao" handle={this.optHandle}> <Icon  styleType="fa-external-link"/>批量导出</Button>
 						):<Link to="/addCaseModal"><Button field="" ><Icon styleType="fa-plus"/>添加病历</Button></Link> }
 
-						<Button field="refresh" ><Icon styleType="fa-refresh"/>刷新</Button>
+						<Button field="refresh" type="green"><Icon styleType="fa-refresh"/>刷新</Button>
 					
 						<Button handle={this.optHandle} field="del" styleType="line-btn" type="danger"><Icon styleType="fa-trash"/>批量删除</Button>
 					</div>

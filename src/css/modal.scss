@@ -23,13 +23,16 @@ $Tit_H:40px;
 .m-Modal{
 	z-index: 2;
 	min-width: $M_width;
+	$pading:10px;
 	.m-Mtit{
 		height: $Tit_H;
-		background-color: #f1f2f2;
+		background-color:white;
+		border-bottom: 2px solid $normal;
 		border-radius: 4px 4px 0px 0px;
 		display: flex;
 		position: relative;
-		justify-content: center;
+		padding:0 $pading ; 
+		//justify-content: center;
 		align-items: center;
 		cursor: move;
 	}
@@ -39,13 +42,16 @@ $Tit_H:40px;
 	.m-Mclose{
 		color:#cfcfcf;
 		position: absolute;
-		right: 10px;
+		right: $pading;
 		cursor: pointer;
+		&:hover{
+			color: $themeColor;
+		}
 
 	}	
 	.m-Mbody{
 		background: white;
-		padding: 10px;
+		padding: $pading;
 	}
 
 	.m-Mfooter{

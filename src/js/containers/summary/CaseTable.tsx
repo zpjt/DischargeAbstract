@@ -100,8 +100,9 @@ class ResultSearch extends React.PureComponent<ResultProp,ResultState>{
             formatter:function(node:any){
 
                 // 主任角色可选筛选值 3：5：；6： 医生角色可选筛选值：1:，2：，4：
-
-                return ["","未翻译","已翻译","提交（未审核）","驳回","已审核","报错"][node.status]; 
+                const status = node.status;
+                const name = status == 1 || status == 3 ? "m-translate-warn" : (status == 2 || status== 5 ?"m-translate-green":"m-translate-error");
+                return <span className={name}>{["","未翻译","翻译（未提交）","提交（未审核）","驳回","已审核","报错"][status]}</span>; 
 
             }
         },
@@ -112,14 +113,11 @@ class ResultSearch extends React.PureComponent<ResultProp,ResultState>{
             formatter: (node:any)=>{
 
                 const type = this.props.type;
-                const is_gdsummary = type === "/summary";
                 const pathObj = {
                     pathname:"/translate",
                     state:{
-                        text: ( !is_gdsummary && "病例清单" || "归档文案") + (" / 查看详情"),
                         id:node.id,
-                        type:this.props.type,
-                        status:node.status
+                        type,
                     }
                 }
                 return (<>

@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as ReactDom from "react-dom";
+import {Icon} from "@js/common/Button";
 
 
 type ModalProps = {
@@ -13,6 +14,7 @@ type ModalProps = {
 		onCancel:()=>void;
 		onSure:()=>void;
 		show:boolean;
+		type?:"tip"|"question";
 }
 
 type ModalState = {
@@ -39,7 +41,6 @@ export default class Modal extends React.PureComponent<ModalProps,ModalState>{
 
 	componentDidMount(){
 
-		console.log(this.ModalDom,"dom")
 	}
 
 	headMouseDown=(e:React.MouseEvent)=>{
@@ -62,11 +63,16 @@ export default class Modal extends React.PureComponent<ModalProps,ModalState>{
 			(this.ModalDom.current)!.onmousemove = null ;
 	}
 
+	sureHandle=()=>{
+		const {onSure} = this.props;
+		onSure();
+	}
+
 	render(){
 
 
 
-		const {children,container,tit,confirmName,cancelName,onCancel,onSure,show,className} = this.props;
+		const {children,container,tit,confirmName,cancelName,onCancel,show,className,type} = this.props;
 		let flag = container;
 
 		const {pointX,pointY} = this.state;
@@ -74,9 +80,9 @@ export default class Modal extends React.PureComponent<ModalProps,ModalState>{
 
 		return ReactDom.createPortal((
 				<div className={"g-modal " +className }
-							ref={this.ModalDom} 
-							style={{display:(show ? "flex":"none")}}
-							onMouseUp={this.headMouseUp}
+					 ref={this.ModalDom} 
+					 style={{display:(show ? "flex":"none")}}
+					 onMouseUp={this.headMouseUp}
 				>
 					<div className="m-Mask" />
 
@@ -85,7 +91,7 @@ export default class Modal extends React.PureComponent<ModalProps,ModalState>{
 									onMouseDown={this.headMouseDown} 
 									
 						>
-							<span className="tit-name">{tit}</span>
+							<span className="tit-name">{type?<Icon styleType={type=="tip"?"fa-exclamation-circle fa-lg":"fa-question-circle fa-lg"}/>:null}{tit}</span>
 							<span className="m-Mclose" onClick={onCancel}>
 									<i className="fa fa-times fa-2x"></i>
 							</span>
@@ -95,12 +101,13 @@ export default class Modal extends React.PureComponent<ModalProps,ModalState>{
 							{children}
 						</div>
 						<div className="m-Mfooter">
-								<button className="s-btn normal-btn" onClick={onSure}>
-									{confirmName}
-								</button>
-								<button className="s-btn normal-btn" onClick={onCancel}>
+								<button className="s-btn line-btn green" onClick={onCancel}>
 									{cancelName}
 								</button>
+								<button className="s-btn normal-btn primary" onClick={this.sureHandle}>
+									{confirmName}
+								</button>
+								
 						</div>
 					</div>
 				</div>

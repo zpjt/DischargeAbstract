@@ -4,7 +4,6 @@ import {createPortal} from "react-dom";
 
 
 type LoadingProp = {
-		show:boolean;
 		container:HTMLElement;
 }
 
@@ -24,8 +23,8 @@ class Loading extends React.PureComponent<LoadingProp,LoadingState>{
 	}
 	render(){
 
-		const {show,container} = this.props;
-		return show  ? createPortal(<Loading.LoadingCom/>,container) : null ; 
+		const {container} = this.props;
+		return  createPortal(<Loading.LoadingCom/>,container)  
 	}
 
 }

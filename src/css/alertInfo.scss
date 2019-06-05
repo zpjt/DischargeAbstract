@@ -1,12 +1,24 @@
 @import "./scss/unit","./scss/variables";
 
-.g-alertInfo{
-    position: absolute;
-    @extend %shadow;
+.g-notification{
+    position: absolute; 
     right: 20px;
-    top:30px;
-    z-index: 10;
-    padding: 10px;
+    top:10px;
+    z-index: 2;
+    text-align: right;
+    .g-alertInfo{
+        
+        @extend %shadow;
+        display: inline-flex;
+        padding: 10px;
+        margin: 8px 0;
+        align-items: center
+    }
+
+}
+
+.g-alertInfo{
+    
     .warn{
         color:$warn;
     }
@@ -18,6 +30,10 @@
     }
     .m-alert-close{
         padding-left: 10px;
+        cursor: pointer;
+        &:hover{
+            color:$themeColor;
+        }
     }
 
 }

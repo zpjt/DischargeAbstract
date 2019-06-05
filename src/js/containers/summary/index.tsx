@@ -4,7 +4,9 @@ import HeadOpt from "./ConditionHead";
 import ResultSearch from "./CaseTable";
 import { connect, MapStateToProps } from "react-redux";
 import Api from "@api/summary";
-
+import Modal from "@js/common/Modal";
+import {Notification} from "@js/common/toast/index";
+import Loading from "@js/common/Loading";
 type caseProps = {
 
 };
@@ -13,6 +15,10 @@ type caseProps = {
 type CaseState = {
 	checkArr:string;
 	data:any;
+	initDelModal:boolean;
+	showModal:boolean;
+	delId:string;
+	fetching:boolean;
 }
 
 
@@ -42,11 +48,26 @@ class CaseManage extends React.PureComponent<RouteComponentProps<caseProps> & re
 	state: CaseState = {
 		checkArr:"",
 		data:null,
+		initDelModal:false,
+		showModal:false,
+		delId:"",
+		fetching:false,
 	}
-
+	notificationRef:React.RefObject<Notification>=React.createRef();
     componentDidMount() {
 		this.getTableData(this.props.roleId);
 	}
+	toggleShowDelModal=()=>{
+
+		this.setState(pre=>{
+			return {
+				showModal:!pre.showModal,
+				initDelModal:true
+			}
+		})
+
+	}
+
 
 	componentWillReceiveProps(nextProp:reduxProp){
 
@@ -59,9 +80,13 @@ class CaseManage extends React.PureComponent<RouteComponentProps<caseProps> & re
 
 	getTableData(role_id:string){
 		const flag = this.props.location.pathname === "/summary" ? "0" :"1";
+		this.setState({
+			fetching:true,
+		})
 		Api.getAllSummaryCaseByStatus(Object.assign({role_id,flag},this.params)).then(res => {
 			this.setState({
-				data: res.data
+				data: res.data,
+				fetching:false
 			})
 		});
 	}
@@ -71,14 +96,41 @@ class CaseManage extends React.PureComponent<RouteComponentProps<caseProps> & re
 		this.getTableData(this.props.roleId)
 	}
 
-	delCase=(ids?:string)=>{
+	delCase=()=>{
 
-		const flag = ids ? ids : this.state.checkArr;
+		const flag = this.state.delId;
+		const notification = this.notificationRef.current!;
 		Api.delSummaryCaseById(flag).then((res:AxiosInterfaceResponse)=>{
 
-					console.log(res);
+			this.toggleShowDelModal();
+			notification.addNotice(res.message,"success")	
 			this.getTableData(this.props.roleId);
 		});
+
+	}
+	delitem=(id:string)=>{
+
+		this.setState({
+			delId:id
+		});
+		
+		this.toggleShowDelModal();
+
+	}
+	delMultiply=()=>{
+
+		if(!this.state.checkArr){
+			this.notificationRef.current!.addNotice("请选择病历！","warn");
+			return;
+		}
+
+		this.setState(pre=>{
+			return {
+				delId:pre.checkArr
+			}
+		});
+
+		this.toggleShowDelModal();
 
 	}
 
@@ -98,23 +150,35 @@ class CaseManage extends React.PureComponent<RouteComponentProps<caseProps> & re
 	render() {
 
 		const { location: { state: { text } ,pathname} } = this.props;
-		const {data} = this.state;
+		const {data,initDelModal,showModal,fetching} = this.state;
+		const modalDom = document.getElementById("s-modal")!;
 
 		return (
 			<div className="g-padding g-summary" >
-
+				{fetching?<Loading container={modalDom}/>:null}
+				<Notification ref={this.notificationRef}/>
+				{initDelModal ? (<Modal 
+								className="m-del-modal"
+								tit="提示"
+								type="question"
+								container={modalDom}
+								onSure={this.delCase}
+								onCancel={this.toggleShowDelModal}
+								show={showModal}
+						 >
+							<p style={{padding:"20px 10px"}}>确定删去吗？</p>
+				</Modal>) : null }
 				<p style={{ paddingBottom: 16 }}>{text}</p>
 				<HeadOpt 
-					delItem={this.delCase} 
 					changeHandle={this.changeState} 
 					type={pathname}
-				
+					showModal={this.delMultiply}
 				/>
 				{data ?  <ResultSearch  
 					data={data}
 				    changeHandle={this.changeState} 
 					type={pathname}
-					delItem = {this.delCase}
+					delItem = {this.delitem}
 				/> : null}
 
 			</div>

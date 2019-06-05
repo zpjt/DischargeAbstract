@@ -34,7 +34,16 @@
 		@extend %shadow;
 		padding: 10px 16px;
 	}
-
+	//状态
+	.m-translate-error{
+		color: $error;
+	}
+	.m-translate-warn{
+		color: $warn;
+	}
+	.m-translate-green{
+		color: $green;
+	}
 }
 
 .g-gdsummary{
@@ -100,6 +109,7 @@
 	.j-dao{
 		display: flex;
 		justify-content: flex-end;
+		align-items: center;
 		&>div{
 			padding: 10px;
 			&:hover{
@@ -137,11 +147,13 @@
 	.no-fill{
 		border-color: $warn
 	}
+	
+	
 }
 
 .g-add-modal{
 	.m-translate{
-		width: 100%;
+		width:100%;
 	}
 }
 

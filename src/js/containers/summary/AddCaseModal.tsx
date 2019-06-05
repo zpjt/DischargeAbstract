@@ -4,12 +4,14 @@ import { Link, RouteComponentProps } from "react-router-dom";
 import { connect, MapStateToProps } from "react-redux";
 import CaseModalInp from "../summary/CaseModalInp";
 import {withRouter} from "react-router-dom";
-import {Button,Icon} from "@js/common/Button"
+import {Button,Icon} from "@js/common/Button";
+import {Notification} from "@js/common/toast/index";
 
 type caseModalProps = {
     data:SummarySpace.params & {id:string};
     user_id:string,
     pathTo(path:any):void;
+    hasSave:boolean;
 };
 
 
@@ -24,33 +26,36 @@ class AddCaseModal extends React.PureComponent< caseModalProps, caseModalState>{
     
     state = Object.assign({},this.props.data) ;
 
-
+    notificationRef:React.RefObject<Notification> = React.createRef();
+    componentDidMount(){
+        if(this.props.hasSave){
+            this.notificationRef.current!.addNotice("有上次保存未提交的，请填写完整，然后提交！","warn",0);
+        }
+    }
     submit = (e: React.MouseEvent<HTMLButtonElement>) => {
 
         const{ user_id} = this.props;
         const type = e.currentTarget!.name as "save" | "submit";
         const obj = Object.assign({user_id},this.state);
 
+        const notifacation = this.notificationRef.current!;
+
         if (type == "save") {
 
-            Api.addChSummaryCase(obj).then(res => {
+            Api.addChSummaryCase(obj).then(()=> {
 
-                console.log(res)
-
+                notifacation.addNotice("保存成功！","success");
 
             });
 
         } else { //提交
 
             if(document.querySelectorAll("#g-gdsummary .no-fill").length){
-
-                alert("填写完毕！")
+                notifacation.addNotice("请填写完整，然后提交！","warn");
                 return 
             }
 
-            Api.saveChSummaryCase(obj).then(res => {
-
-                console.log(res);
+            Api.saveChSummaryCase(obj).then( ()=> {
 
                 const obj = {
                     pathname: "/summary",
@@ -59,7 +64,6 @@ class AddCaseModal extends React.PureComponent< caseModalProps, caseModalState>{
                     }
                 }
                 this.props.pathTo(obj)
-
 
             })
 
@@ -83,7 +87,7 @@ class AddCaseModal extends React.PureComponent< caseModalProps, caseModalState>{
 
         return (
             <div className="g-padding g-gdsummary" id="g-gdsummary">
-           
+                <Notification  ref={this.notificationRef}/>
                 <div className="g-translate-box" style={{ width: "50%", marginLeft: 10 }} >
                     <div className="g-translate g-add-modal">
                         <CaseModalInp data={obj} type="ch" changeState={this.changeState} />
@@ -104,12 +108,14 @@ class AddCaseModal extends React.PureComponent< caseModalProps, caseModalState>{
 
 type ContainerState={
     data:any;
+    hasSave:boolean;
 }
 
 class Container extends React.PureComponent<RouteComponentProps<{}> & reduxState,ContainerState> {
 
 	state:ContainerState={
-		data:null,
+        data:null,
+        hasSave:false
     }
     
     pathTo=(path:any)=>{
@@ -141,7 +147,8 @@ class Container extends React.PureComponent<RouteComponentProps<{}> & reduxState
         //看看上次有没有写了一部分保存后没有提交的
         Api.getSummaryCaseByUserid(user_id)
             .then((res:any) => {
-                if (res.code == 4000) {
+                const hasSave = res.code == 4000;
+                if (hasSave) {
                     for (const iterator in obj) {
 
                         const key = iterator as "fname";
@@ -154,19 +161,20 @@ class Container extends React.PureComponent<RouteComponentProps<{}> & reduxState
                 }
 
                 this.setState({
-                    data:obj
+                    data:obj,
+                    hasSave,
                 })
             })
     }
 
 	render(){
 
-        const {data} = this.state;
+        const {data,hasSave} = this.state;
         
         const user_id = this.props.user_id;
 		
 
-		return data ? <AddCaseModal data={data}  user_id={user_id}  pathTo={this.pathTo} />:null;
+		return data ? <AddCaseModal hasSave={hasSave} data={data}  user_id={user_id}  pathTo={this.pathTo} />:null;
 	}
 }
 

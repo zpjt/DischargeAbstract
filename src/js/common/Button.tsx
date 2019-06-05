@@ -103,7 +103,9 @@ type SvgIconState={
 
  class SvgIcon extends React.PureComponent<SvgIconProps,SvgIconState>{
 
-
+    static defaultProps={
+        size:""
+    }
 
     render(){
 
