@@ -45,6 +45,11 @@
 		color: $green;
 	}
 }
+.m-translate-modal{
+	.m-Modal{
+		width: 400px;
+	}
+}
 
 .g-gdsummary{
 	@extend %flex-column;
@@ -154,6 +159,30 @@
 .g-add-modal{
 	.m-translate{
 		width:100%;
+	}
+	.m-org-drop{
+		@extend %shadow;
+		position: absolute;
+		z-index: 2;
+		max-height: 300px;
+		overflow: auto;
+		cursor: pointer;
+		width: 100%;
+		&>li{
+			margin: 10px;
+			&:hover{
+				color: $themeColor;
+			}
+		}
+		display: none;
+	}
+	.g-org{
+		position: relative;
+		&:hover{
+			.m-org-drop{
+				display: block;
+			}
+		}
 	}
 }
 

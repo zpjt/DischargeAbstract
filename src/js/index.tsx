@@ -34,7 +34,7 @@ class App extends React.PureComponent{
 
 	render(){
 			return (
-					<BrowserRouter basename="index">
+					<BrowserRouter>
 							<Switch>
                             	<Route  path="/"   component={IndexCom} />	
 							</Switch>

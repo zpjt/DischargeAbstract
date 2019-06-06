@@ -12,6 +12,7 @@ type caseModalProps = {
     user_id:string,
     pathTo(path:any):void;
     hasSave:boolean;
+    orgData:{id:string;name:string}[];
 };
 
 
@@ -36,7 +37,8 @@ class AddCaseModal extends React.PureComponent< caseModalProps, caseModalState>{
 
         const{ user_id} = this.props;
         const type = e.currentTarget!.name as "save" | "submit";
-        const obj = Object.assign({user_id},this.state);
+        const {...parmas}  = this.state;
+        const obj = Object.assign({user_id},parmas);
 
         const notifacation = this.notificationRef.current!;
 
@@ -77,20 +79,54 @@ class AddCaseModal extends React.PureComponent< caseModalProps, caseModalState>{
     changeState=(field:keyof SummarySpace.params,value:string)=>{
         this.setState({
             [field as "fname"]:value,
+            
         })
-	}
+    }
+    
+   
+
+    orgItemHandle=(e:React.MouseEvent<HTMLLIElement>)=>{
+
+        const text = e.currentTarget!.dataset.name;
+        console.log(text);
+
+        this.setState({
+           fdept:text!    
+        })
+
+    }
+
+    filterOrg(){
+        const {orgData} = this.props;
+        const {fdept} = this.state;
+
+        return orgData.filter(val=>{
+            return val.name.includes(fdept)
+        });
+
+    }
 
 
     render() {
 
         const { id,...obj} = this.state;
+        const orgData = this.filterOrg();
 
         return (
             <div className="g-padding g-gdsummary" id="g-gdsummary">
                 <Notification  ref={this.notificationRef}/>
                 <div className="g-translate-box" style={{ width: "50%", marginLeft: 10 }} >
                     <div className="g-translate g-add-modal">
-                        <CaseModalInp data={obj} type="ch" changeState={this.changeState} />
+                        <CaseModalInp data={obj} type="ch" changeState={this.changeState} >
+                            <ul className="m-org-drop" >{
+                                orgData.map(val=>{
+                                    return (
+                                        <li onClick={this.orgItemHandle} data-name={val.name} key={val.id}>{val.name}</li>
+                                    )
+                                })
+                            }
+                            </ul>  
+                        </CaseModalInp>
                     </div>
                 </div>
                 <div className="add-opt-box">
@@ -109,13 +145,15 @@ class AddCaseModal extends React.PureComponent< caseModalProps, caseModalState>{
 type ContainerState={
     data:any;
     hasSave:boolean;
+    orgData:any ;
 }
 
 class Container extends React.PureComponent<RouteComponentProps<{}> & reduxState,ContainerState> {
 
 	state:ContainerState={
         data:null,
-        hasSave:false
+        hasSave:false,
+        orgData:null
     }
     
     pathTo=(path:any)=>{
@@ -145,15 +183,22 @@ class Container extends React.PureComponent<RouteComponentProps<{}> & reduxState
             id:"",
 		}
         //看看上次有没有写了一部分保存后没有提交的
-        Api.getSummaryCaseByUserid(user_id)
-            .then((res:any) => {
-                const hasSave = res.code == 4000;
+        const hasData = Api.getSummaryCaseByUserid(user_id);
+            
+        
+        const Org = Api.getAllOrg();
+
+        Promise.all([hasData,Org]).then((res:any[])=>{
+
+            const [caseData,orgData] =res;
+
+            const hasSave = caseData.code == 4000;
                 if (hasSave) {
                     for (const iterator in obj) {
 
                         const key = iterator as "fname";
 
-                        res.data[0][key] && (obj[key] = res.data[0][key]);
+                        caseData.data[0][key] && (obj[key] = caseData.data[0][key]);
 
                     }
                     
@@ -163,18 +208,21 @@ class Container extends React.PureComponent<RouteComponentProps<{}> & reduxState
                 this.setState({
                     data:obj,
                     hasSave,
+                    orgData:orgData.data
                 })
-            })
+
+        })
+
     }
 
 	render(){
 
-        const {data,hasSave} = this.state;
+        const {data,hasSave,orgData} = this.state;
         
         const user_id = this.props.user_id;
 		
 
-		return data ? <AddCaseModal hasSave={hasSave} data={data}  user_id={user_id}  pathTo={this.pathTo} />:null;
+		return data ? <AddCaseModal orgData={orgData} hasSave={hasSave} data={data}  user_id={user_id}  pathTo={this.pathTo} />:null;
 	}
 }
 

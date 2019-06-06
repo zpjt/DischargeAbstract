@@ -34,6 +34,9 @@ export default {
     },
     delSummaryCaseById:function(id:string){
         return  axios.post("summary/delSummaryCaseById",qs.stringify({id}));
+    },
+    getAllOrg(){
+        return axios.get("/summary/getAllOrg")
     }
 
 

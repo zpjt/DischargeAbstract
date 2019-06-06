@@ -37,8 +37,10 @@ export default {
     returnSummaryCase:function(id:string,descr:string){//驳回
 
         return axios.post("/summary/returnSummaryCase",qs.stringify({id,descr}))
+    },
+    getAllOrg(){
+        return axios.get("/summary/getAllOrg")
     }
-
 
 
 }

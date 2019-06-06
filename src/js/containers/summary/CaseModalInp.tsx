@@ -51,6 +51,8 @@ class CaseModal extends React.PureComponent<caseModalProps>{
         const value =timeArr[0]; 
         this.props.changeState(field,value)
     }
+
+    
     
     static ItemInp:React.SFC<{is_en:boolean,value:string,field?:string,handle:(e:React.ChangeEvent<HTMLInputElement>)=>void}>=({is_en,field,value,handle})=>{
 
@@ -61,7 +63,7 @@ class CaseModal extends React.PureComponent<caseModalProps>{
     
     render() {
         
-        const {type,data} = this.props;
+        const {type,data,children} = this.props;
         const {fname, fage, fsex, fdeb, fdept, fprn, fryqk, fzljg, fcyyz, fcyqk, fcyzd, fsurvey, fcydata, frydata, fsumd } = data;
         const config = languageConfig[type];
 
@@ -75,8 +77,11 @@ class CaseModal extends React.PureComponent<caseModalProps>{
                                     <div >{config.fname}：<br />
                                      <CaseModal.ItemInp is_en={is_en} field="fname" value={fname} handle={this.changeHandle} />
                                     </div> 
-                                    <div>{config.fdept}：<br />
-                                    <input type="text" name="fdept" className={"s-inp normal "+(!fdept ?"no-fill":"")} value={fdept} onChange={this.changeHandle} /></div>
+                                    <div  className="g-org">{config.fdept}：<br />
+                                    <input  type="text" name="fdept" autoComplete="off" className={"s-inp normal "+(!fdept ?"no-fill":"")} value={fdept} onChange={this.changeHandle} />
+                                    {children}
+                                    
+                                    </div>
                                    
                                   
                                 </div>

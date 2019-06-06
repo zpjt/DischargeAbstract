@@ -19,6 +19,7 @@ type translateProps = {
 type translateState = SummarySpace.params & {
 	initModal:boolean;
 	showModal:boolean;
+	reasonTxt:string;
 }; 
 	
 
@@ -26,7 +27,7 @@ type translateState = SummarySpace.params & {
 type ContainerState = {
 	data:any;
 }
-		   //     return <span className={name}>{["","未翻译","翻译（未提交）","提交（未审核）","驳回","已审核","报错"][status]}</span>; 
+		  
 		   
 enum caseStatus {
 	noTranslate = 1,
@@ -38,8 +39,9 @@ enum caseStatus {
 }
 
 
-class TranslateManage extends React.PureComponent<translateProps, translateState> {
 
+class TranslateManage extends React.PureComponent<translateProps, translateState> {
+	static pathObj = { pathname: "/gdsummary", state: { text: "归档文案" } }
 	obj = {
 			fname: "",
 			fsex: "",
@@ -82,6 +84,7 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 			fsumd: "",
 			initModal:false,
 			showModal:false,
+			reasonTxt:"",
 		} ;
     
         if(data){
@@ -120,17 +123,13 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 	submit=(e:React.MouseEvent<HTMLButtonElement>)=>{
 		const type = e.currentTarget!.name as "save" | "submit" | "error" |"pass" |"reject";
 		const {id,pathTo} = this.props;
-
-		const obj =Object.assign({id},this.state); 
+		const {initModal,showModal,reasonTxt,...params} = this.state;
+		const obj =Object.assign({id,},params); 
 		const notification = this.notificationRef.current!;
 
 		switch (type) {
 			case "error":
-				// Api.upSummaryCaseError(id,"报错").then(res=>{
-
-				// 		console.log(res);
-				// 		pathTo("summary");
-				// });
+			
 				this.toggleModal();
 				break;
 			case "submit":
@@ -153,9 +152,7 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 				})
 				break;
 			case "reject":
-				// Api.returnSummaryCase(id,"驳回").then(()=>{
-				// 		pathTo("summary");
-				// });
+			
 				this.toggleModal();
 				break;
 			default:
@@ -163,11 +160,55 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 		}
 	}
 
+	modalSureHanlde=()=>{
+
+		const {type,id} = this.props;
+		const {reasonTxt} = this.state;
+
+		const notification = this.notificationRef.current!;
+		if(!reasonTxt){
+
+			notification.addNotice("不能为空！","warn")
+			return ;
+		}
+
+		if(type=="/summary"){
+
+			Api.upSummaryCaseError(id,reasonTxt).then((res:AxiosInterfaceResponse)=>{
+
+				this.toggleModal();
+
+				notification.addNotice(res.message,"success");
+
+				
+
+
+
+			});
+
+		}else{
+			Api.returnSummaryCase(id,reasonTxt).then((res:AxiosInterfaceResponse)=>{
+
+				this.toggleModal();
+
+				notification.addNotice(res.message,"success");
+
+				
+
+
+
+			});
+		}
+
+
+
+	}
+
 	getDao(){
 
 
 		return (<div className="j-dao" >
-					<Link to={{ pathname: "/gdsummary", state: { text: "归档文案" } }}><button className="s-btn line-btn green ">返回</button></Link>
+					<Link to={TranslateManage.pathObj}><button className="s-btn line-btn green ">返回</button></Link>
 					<div > 
 						<span><button className="s-btn normal-btn primary">导出</button></span>
 						<ul className="m-dao-drop">
@@ -181,11 +222,9 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 	}
 
 	getCheckOpt(){
-
-
 		return (
 			<div className="m-check-opt">
-				<Link to={{ pathname: "/gdsummary", state: { text: "归档文案" } }}><button className="s-btn line-btn green ">返回</button></Link>
+				<Link to={TranslateManage.pathObj}><button className="s-btn line-btn green ">返回</button></Link>
 				<button className="s-btn normal-btn danger" name="reject" onClick={this.submit}>驳回</button>
 				<button className="s-btn normal-btn green" name="pass" onClick={this.submit}>通过</button>
 			</div>
@@ -199,10 +238,17 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 			showModal:!pre.showModal
 		}));
 	}
+	changeReason=(e:React.ChangeEvent<HTMLTextAreaElement>)=>{
+
+
+		this.setState({
+			reasonTxt:e.currentTarget!.value
+		})
+	}
 	render() {
 
 		const { data,type,} = this.props;
-		const {initModal,showModal} = this.state;
+		const {initModal,showModal,reasonTxt} = this.state;
 		const status = data.china.status;
 		const is_gdsummary = type == "/gdsummary";
 		const text = is_gdsummary && "归档文案" || "病例清单"
@@ -214,16 +260,15 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 						show={showModal}
 						tit={is_gdsummary ? "驳回" :"报错"}
 						type="tip"
-						onSure={()=>console.log(1)}
+						onSure={this.modalSureHanlde}
 						onCancel={this.toggleModal}
 						className="m-translate-modal"
 						container= {document.getElementById("s-modal")!}
 					
 					>
 						<div>
-
-							<span>原因：</span>
-							<textarea rows={3}></textarea>
+							<p style={{padding:"6px 0"}}><span>{is_gdsummary ? "驳回" :"报错"}原因：</span></p>
+							<div><textarea value={reasonTxt} onChange={this.changeReason} className="s-txt" style={{width:"100%"}} rows={6}></textarea></div>
 						</div>
 
 					</Modal>):null

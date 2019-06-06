@@ -210,6 +210,10 @@ export default class Table extends React.PureComponent<TableProps, TableState>{
                 newPageNum = +pageNum - 1;
                 newPageNum = newPageNum < 1 ? totalPage : newPageNum;
                 break;
+        };
+
+        if(newPageNum == pageNum){
+            return ;
         }
         changeHandle("pageNum",newPageNum + ""); 
     }

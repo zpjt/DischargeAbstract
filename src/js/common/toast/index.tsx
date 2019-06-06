@@ -124,10 +124,14 @@ class Notice extends React.PureComponent<noticeProps,noticeState>{
         return (
                 <div >
                     <span className="g-alertInfo">
-                        <span className={type} style={{paddingRight:8,fontSize:24}}>
-                            <i className={"fa " + (type=="success"?"fa-check-circle":type=="warn"?"fa-exclamation-triangle":"fa-times-circle-o " )}></i>    
+                        <span>
+                            <span className={type} style={{ paddingRight: 8, fontSize: 24 }}>
+                                <i className={"fa " + (type == "success" ? "fa-check-circle" : type == "warn" ? "fa-exclamation-triangle" : "fa-times-circle-o ")}></i>
+
+                            </span>
+                            <span className="txt">{tit}</span>
                         </span>
-                        <span className="txt">{tit}</span>
+                       
                         <span className="m-alert-close" data-key={sigin} onClick={closeHandle}><i className="fa fa-times fa-lg"  /></span>
 
                     </span>
