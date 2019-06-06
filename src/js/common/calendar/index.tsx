@@ -95,6 +95,8 @@ class Calendar extends React.PureComponent<calendarProps, calendarState> impleme
 		ableClear:false
 	}
 
+
+
 	curTime = this.getCurTime();
 
 	state: calendarState = {
@@ -102,7 +104,33 @@ class Calendar extends React.PureComponent<calendarProps, calendarState> impleme
 		selTimeArr: Immutable.fromJS(this.timeValToTimeObj(this.props.ableClear!)),
 		rotate: this.props.rotate!,
 	}
+	wrapDomRef:React.RefObject<HTMLDivElement> = React.createRef();
+	documentClickFn=(e:MouseEvent)=>{
 
+		const target = e.target! as HTMLElement;
+		const wrap = this.wrapDomRef.current!;
+		if(target == wrap || wrap.contains(target) ){
+			
+		}else{
+
+			this.setState({
+				expand:false
+			});
+		}
+
+
+		
+
+	}
+
+	componentDidMount(){
+
+		document.addEventListener("click",this.documentClickFn);
+	}
+	componentWillUnmount(){
+
+		document.removeEventListener("click",this.documentClickFn);
+	}
 	//改变时间日期
 	changeSelTimeItme = (viewIndex: number, showTimeObj: CalendarApi["curTime"]) => {
 		const { year, month, day, searson } = showTimeObj;
@@ -378,7 +406,7 @@ class Calendar extends React.PureComponent<calendarProps, calendarState> impleme
 		const flagSelTimeArr = selTimeArr.getIn([0,"year"]) ? selTimeArr : Immutable.fromJS(this.timeValToTimeObj(false));
 
 		return (
-			<div className="g-calendar" style={{ width }}>
+			<div className="g-calendar" style={{ width }} ref={this.wrapDomRef}>
 				{hasInp ? <CalendarInp
 					selTimeVal={this.getSelTimeVal()}
 					dropHandle={this.dropHandle}

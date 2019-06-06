@@ -52,6 +52,8 @@ export default class ComTreeBox extends React.PureComponent<props,states> implem
 		hasSlideIcon:true,
 	}
 
+	wrapDomRef:React.RefObject<HTMLDivElement>=React.createRef();
+
 	constructor(props:props){
  		super(props);
 
@@ -624,6 +626,33 @@ export default class ComTreeBox extends React.PureComponent<props,states> implem
 
 	}
 
+	documentClickFn=(e:MouseEvent)=>{
+
+		const target = e.target! as HTMLElement;
+		const wrap = this.wrapDomRef.current!;
+		if(target == wrap || wrap.contains(target) ){
+			
+		}else{
+
+			this.setState({
+				drop:false
+			});
+		}
+
+
+		
+
+	}
+
+	componentDidMount(){
+
+		document.addEventListener("click",this.documentClickFn);
+	}
+	componentWillUnmount(){
+
+		document.removeEventListener("click",this.documentClickFn);
+	}
+
 	render(){
 
 		const {drop,treeData} = this.state;
@@ -631,7 +660,7 @@ export default class ComTreeBox extends React.PureComponent<props,states> implem
 		const value = this.getValue();
 
 
-		return (<div className={"comTreeBox "+(drop ? "active ":"") + (!value?"no-fill":"")} style={{width:width+"px"}}>
+		return (<div ref={this.wrapDomRef}  className={"comTreeBox "+(drop ? "active ":"") + (!value?"no-fill":"")} style={{width:width+"px"}}>
 							<ComboInp multiply={checkbox!} value={value} toggleDrop={this.toggleDrop}  drop={drop} hasSlideIcon={hasSlideIcon}/>
 							<VelocityComponent animation={drop?"slideDown":"slideUp"}>
 								<div className="m-drop" style={{width:(pannelWidth ? pannelWidth :"100%")}}>

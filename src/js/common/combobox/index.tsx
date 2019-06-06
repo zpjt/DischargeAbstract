@@ -50,7 +50,7 @@ export default class Combobox extends React.PureComponent<props, state>{
 	}
 
 
-
+	wrapDomRef:React.RefObject<HTMLDivElement> = React.createRef();
 
 	constructor(props: props) {
 
@@ -202,6 +202,32 @@ export default class Combobox extends React.PureComponent<props, state>{
 		};
 	}
 
+	documentClickFn=(e:MouseEvent)=>{
+
+		const target = e.target! as HTMLElement;
+		const wrap = this.wrapDomRef.current!;
+		if(target == wrap || wrap.contains(target) ){
+			
+		}else{
+
+			this.setState({
+				drop:false
+			});
+		}
+
+
+		
+
+	}
+
+	componentDidMount(){
+
+		document.addEventListener("click",this.documentClickFn);
+	}
+	componentWillUnmount(){
+
+		document.removeEventListener("click",this.documentClickFn);
+	}
 
 	render() {
 
@@ -215,7 +241,7 @@ export default class Combobox extends React.PureComponent<props, state>{
 
 
 
-		return (<div className={"combobox " + (drop ? "active " : "") + ((!value && require) ? "no-fill" : "")} style={{ width }} >
+		return (<div ref={this.wrapDomRef} className={"combobox " + (drop ? "active " : "") + ((!value && require) ? "no-fill" : "")} style={{ width }} >
 
 			<ComboInp 
 				placeholder={placeholder} 
