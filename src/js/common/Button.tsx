@@ -111,9 +111,12 @@ type SvgIconState={
 
         const {styleType,size} = this.props;
         return (
+            <>
             <svg className={`icon ${size}`} aria-hidden="true">
                 <use  xlinkHref={`#icon-${styleType}`}></use> 
             </svg>
+            &nbsp;
+            </>
         )
     }
 }

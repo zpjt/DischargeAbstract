@@ -37,7 +37,8 @@ export default {
     },
     getAllOrg(){
         return axios.get("/summary/getAllOrg")
-    }
+    },
+  
 
 
 

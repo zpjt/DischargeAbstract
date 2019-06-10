@@ -79,6 +79,7 @@ type calendarState = {
 	expand: boolean;
 	selTimeArr: Immutable.List<TypedMap<CalendarApi["curTime"]>>;
 	rotate: commonInterface["rotate"],
+	calendarVal:string;
 }
 
 
@@ -92,19 +93,33 @@ class Calendar extends React.PureComponent<calendarProps, calendarState> impleme
 		selTimeValArr: "",
 		width: 240,
 		placeholder: "",
-		ableClear:false
+		ableClear:false,
+		
 	}
 
 
 
 	curTime = this.getCurTime();
 
-	state: calendarState = {
-		expand: false,
-		selTimeArr: Immutable.fromJS(this.timeValToTimeObj(this.props.ableClear!)),
-		rotate: this.props.rotate!,
-	}
+	
 	wrapDomRef:React.RefObject<HTMLDivElement> = React.createRef();
+	constructor(props:calendarProps){
+
+		super(props);
+		const {time,rotate,clickBack,field,selTimeValArr,ableClear} = this.props;
+		const selTimeArr = Immutable.fromJS(this.timeValToTimeObj(ableClear!));
+		
+		const timeVal = this.getTimeStrArr(selTimeArr,rotate!,time!);
+		this.state={
+		expand: false,
+		selTimeArr,
+		rotate:rotate!,
+		calendarVal:timeVal.join(" 至 ")
+	};
+ 
+	  !selTimeValArr && !ableClear && clickBack && clickBack(timeVal.toJS(),field);
+
+	}
 	documentClickFn=(e:MouseEvent)=>{
 
 		const target = e.target! as HTMLElement;
@@ -186,6 +201,8 @@ class Calendar extends React.PureComponent<calendarProps, calendarState> impleme
 			return {
 				selTimeArr,
 			}
+		},()=>{
+			this.getSelTimeVal();
 		});
 
 	}
@@ -196,6 +213,8 @@ class Calendar extends React.PureComponent<calendarProps, calendarState> impleme
 		this.setState({
 			selTimeArr:Immutable.fromJS(this.timeValToTimeObj(true)),
 			expand:false
+		},()=>{
+			this.getSelTimeVal();
 		})
 
 	}
@@ -204,6 +223,8 @@ class Calendar extends React.PureComponent<calendarProps, calendarState> impleme
 
 		this.setState({
 			rotate:rotate
+		},()=>{
+			this.getSelTimeVal();
 		})
 	}
 
@@ -233,6 +254,8 @@ class Calendar extends React.PureComponent<calendarProps, calendarState> impleme
 			return {
 				selTimeArr,
 			}
+		},()=>{
+			this.getSelTimeVal()
 		})
 
 	}
@@ -349,14 +372,9 @@ class Calendar extends React.PureComponent<calendarProps, calendarState> impleme
 
 	}
 
-	getSelTimeVal() {
-
-		const { selTimeArr, rotate } = this.state;
-		const { time, clickBack, field } = this.props;
-
-
-
-		const getStr = (val: commonInterface["showTimeObj"], rotate: number) => {
+	getTimeStrArr(selTimeArr:calendarState["selTimeArr"],rotate:calendarState["rotate"],time:boolean){
+	
+		const getStr = (val: commonInterface["showTimeObj"], rotate: number,time:boolean) => {
 
 			const year = val.get("year");
 			if(!year){
@@ -383,14 +401,26 @@ class Calendar extends React.PureComponent<calendarProps, calendarState> impleme
 			}
 		}
 
-		const strArr = selTimeArr.map(val => {
-			return getStr(val, rotate)!;
+		return selTimeArr.map(val => {
+			return getStr(val, rotate,time)!;
 		});
+	}
 
+	getSelTimeVal() {
+
+		const { selTimeArr, rotate } = this.state;
+		const { time, clickBack, field } = this.props;
+		const strArr = this.getTimeStrArr(selTimeArr,rotate,time!);
 
 		clickBack && clickBack(strArr.toJS(), field!);
 
-		return strArr.join(" 至 ");
+		const str = strArr.join(" 至 ")
+
+		this.setState({
+			calendarVal:str
+		})
+
+		return str;
 	}
 
 	dropHandle = () => {
@@ -401,14 +431,14 @@ class Calendar extends React.PureComponent<calendarProps, calendarState> impleme
 	render() {
 
 		const { hasInp, time, width, placeholder,ableClear } = this.props;
-		const { expand, selTimeArr, rotate } = this.state;
+		const { expand, selTimeArr, rotate,calendarVal } = this.state;
 
 		const flagSelTimeArr = selTimeArr.getIn([0,"year"]) ? selTimeArr : Immutable.fromJS(this.timeValToTimeObj(false));
 
 		return (
 			<div className="g-calendar" style={{ width }} ref={this.wrapDomRef}>
 				{hasInp ? <CalendarInp
-					selTimeVal={this.getSelTimeVal()}
+					selTimeVal={calendarVal}
 					dropHandle={this.dropHandle}
 					placeholder={placeholder!}
 					ableClear={ableClear!}

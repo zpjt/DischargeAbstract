@@ -147,6 +147,25 @@ class CaseManage extends React.PureComponent<RouteComponentProps<caseProps> & re
 			}
 	}
 
+	daoPatch=()=>{
+		
+		const {checkArr} = this.state;
+		if(!checkArr){
+
+			this.notificationRef.current!.addNotice("选择病例!","warn");
+			return;
+
+		}
+
+		const a = document.createElement("a");
+		a.href=window.getSession("getPath")+"summary/wordExport?ids="+checkArr;
+		document.body.appendChild(a);
+		a.download="文件下载"
+		a.click();
+		document.body.removeChild(a);
+
+	}
+
 	render() {
 
 		const { location: { state: { text } ,pathname} } = this.props;
@@ -173,6 +192,7 @@ class CaseManage extends React.PureComponent<RouteComponentProps<caseProps> & re
 					changeHandle={this.changeState} 
 					type={pathname}
 					showModal={this.delMultiply}
+					daoPatch={this.daoPatch}
 				/>
 				{data ?  <ResultSearch  
 					data={data}

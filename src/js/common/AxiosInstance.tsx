@@ -1,5 +1,4 @@
 import axions ,{AxiosResponse}from "axios";
-
 const instance = axions.create({
 		baseURL:window.getSession("getPath"),
 		headers: {
@@ -27,10 +26,14 @@ declare global{
 
 instance.interceptors.response.use(function (response) {
 
+	
+
 		if(response.data.code == 200 || response.data.code==4000){
 			return response.data;
 		}else{// session过期，重新登录
-			console.log(response.data.message)
+
+			
+		
 			 return Promise.reject(response.data);
 		}
     

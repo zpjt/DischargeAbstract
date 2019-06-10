@@ -1,5 +1,5 @@
 import axios from "@js/common/AxiosInstance";
-
+import * as qs from "qs";
 
 export default {
 
@@ -11,6 +11,18 @@ export default {
 
 
     },
+    checkPwd:function(user_id:string,password:string){
+
+        return axios.post("summary/checkPwd",qs.stringify({user_id,password}))
+    },
+    updatePwd:function(user_id:string,password:string){
+
+        return axios.post("summary/updatePwd",qs.stringify({user_id,password}))
+
+    },
+    logOut:function(){
+        return axios.get("login/logOut");
+    }
     
 
 

@@ -9,6 +9,7 @@ type HeadOptProp = {
 	changeHandle(field:string,value:string):void;
 	type:string;
 	showModal:()=>void;
+	daoPatch():void;
 }
 
 type HeadOptState = {
@@ -83,7 +84,7 @@ export default class HeadOpt extends React.PureComponent<HeadOptProp, HeadOptSta
 				this.props.showModal();
 				break;
 			case "patchDao":
-				
+				this.props.daoPatch();
 				break;
 
 			default:

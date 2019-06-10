@@ -5,6 +5,10 @@ import Modal from "@js/common/Modal";
 import { InpBox } from "@js/common/InputBtn";
 import {changeRole} from "@js/actions/appAction";
 import {SvgIcon} from "@js/common/Button";
+import Api from "@api/main";
+import {Notification} from "@js/common/toast/index";
+
+ const LoginUrl = window.getSession("getPath")+"login.html";
 
 type HeadProp = {
 
@@ -13,29 +17,61 @@ type HeadProp = {
 type HeadState = {
 	initPasswordModal: boolean;
 	showPasswordModal: boolean;
-	initPasswordModal1: boolean;
-	showPasswordModal1: boolean;
 	password: string;
+	newPassword:string;
 }
 
 class Head extends React.PureComponent<RouteComponentProps<HeadProp> & reduxStateProp & dispatchProp, HeadState>{
 
 	state: HeadState = {
 		initPasswordModal: false,
-		initPasswordModal1: false,
 		showPasswordModal: false,
-		showPasswordModal1: false,
 		password: "",
+		newPassword: "",
 	}
 
 	logOut = () => {
 
-		console.log("login");
+		Api.logOut()
+	}
 
-		this.setState(pre => ({
-			initPasswordModal1: true,
-			showPasswordModal1: !pre.showPasswordModal1,
-		}))
+	notifitionRef:React.RefObject<Notification>=React.createRef();
+	async submitPassword(){
+
+		const {newPassword,password} = this.state;
+		const {user_id} = this.props;
+
+		const notifition = this.notifitionRef.current!;
+
+		const result = await Api.checkPwd(user_id,password) as AxiosInterfaceResponse;
+	
+		if(result.code===200){
+				Api.updatePwd(user_id,newPassword).then((res:AxiosInterfaceResponse)=>{
+
+						notifition.addNotice(res.message,"success");
+						this.togglePassword();
+						window.location.href=LoginUrl;
+
+				});
+		}else{
+			notifition.addNotice(result.message,"warn");
+		}
+
+
+	}
+
+	submit=()=>{
+
+		const {newPassword,password} = this.state;
+		if(!newPassword || !password){
+
+			this.notifitionRef.current!.addNotice("填写完整！","warn");
+
+			return
+
+		}
+
+		this.submitPassword();
 	}
 
 	togglePassword = () => {
@@ -64,20 +100,22 @@ class Head extends React.PureComponent<RouteComponentProps<HeadProp> & reduxStat
 	render() {
 
 		const { user_name, role_arr, role_index, role_ids } = this.props;
-		const { initPasswordModal, showPasswordModal, password,initPasswordModal1,showPasswordModal1 } = this.state;
+		const { initPasswordModal, showPasswordModal, password,newPassword} = this.state;
 
 		const rootModalDom = document.getElementById("modal_root") as HTMLDivElement;
 
 		return (<div className="g-head">
+			<Notification ref={this.notifitionRef} />
 			{initPasswordModal ? (<Modal
 				show={showPasswordModal}
 				container={rootModalDom!}
 				tit={"修改密码"}
 				onCancel={this.togglePassword}
-				onSure={this.togglePassword}
+				onSure={this.submit}
 				className="pwd-M"
 
 			>
+				<p className="item-inp">用户名：{user_name}</p>
 				<InpBox
 					type="password"
 					styleType="normal"
@@ -89,37 +127,9 @@ class Head extends React.PureComponent<RouteComponentProps<HeadProp> & reduxStat
 				<InpBox
 					type="password"
 					styleType="normal"
-					field="password"
+					field="newPassword"
 					title="新密码"
-					value={password}
-					changeHandle={this.changePassword}
-				/>
-
-
-			</Modal>) : null}
-				{initPasswordModal1 ? (<Modal
-				show={showPasswordModal1}
-				container={rootModalDom!}
-				tit={"login"}
-				onCancel={this.logOut}
-				onSure={this.logOut}
-				className="pwd-M"
-
-			>
-				<InpBox
-					type="password"
-					styleType="normal"
-					field="password"
-					title="旧密码"
-					value={password}
-					changeHandle={this.changePassword}
-				/>
-				<InpBox
-					type="password"
-					styleType="normal"
-					field="password"
-					title="新密码"
-					value={password}
+					value={newPassword}
 					changeHandle={this.changePassword}
 				/>
 
@@ -173,6 +183,7 @@ type reduxStateProp = {
 	role_arr: string[];
 	role_index: number;
 	role_ids: string[];
+	user_id:string;
 }
 
 type dispatchProp = {
@@ -186,8 +197,8 @@ const mapStateToProps: MapStateToProps<reduxStateProp, RouteComponentProps<HeadP
 		user_name: app.get("user_name"),
 		role_arr: app.get("role_names"),
 		role_ids: app.get("role_ids"),
-		role_index: app.get("role_index")
-
+		role_index: app.get("role_index"),
+		user_id:app.get("user_id"),
 	}
 
 }

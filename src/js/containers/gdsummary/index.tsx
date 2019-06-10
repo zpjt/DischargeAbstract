@@ -5,7 +5,7 @@ import CaseModalText from "../summary/CaseModalText";
 import Api from "@api/gdsummary";
 import CaseModalInp from "../summary/CaseModalInp";
 import {Link} from "react-router-dom";
-import {Button,Icon} from "@js/common/Button";
+import {Button,Icon, SvgIcon} from "@js/common/Button";
 import {Notification} from "@js/common/toast/index";
 import Modal from "@js/common/Modal";
 type translateProps = {
@@ -204,6 +204,39 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 
 	}
 
+	daoHandle=(e:React.MouseEvent<HTMLLIElement>)=>{
+
+		const type = e.currentTarget.dataset.name;
+		const {id} = this.props;
+		const baseUrl = window.getSession("getPath");
+		switch (type) {
+			case "word":
+				this.downFile(baseUrl+"summary/wordExport?ids="+id);
+				break;
+			case "pdf":
+				this.downFile(baseUrl+"summary/pdfExport?ids="+id);
+				break;
+			case "images":
+				
+				break;
+			default:
+				break;
+		}
+	}
+
+	downFile(url:string){
+
+		const a = document.createElement("a");
+		a.href=url;
+		a.download = "文件下载";
+		
+		document.body.appendChild(a);
+
+		a.click();
+		document.body.removeChild(a);
+
+	}
+
 	getDao(){
 
 
@@ -212,10 +245,9 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 					<div > 
 						<span><button className="s-btn normal-btn primary">导出</button></span>
 						<ul className="m-dao-drop">
-							<li><i className="fa fa-file-image-o">&nbsp;</i><span>导出图片</span></li>
-							<li><i className="fa fa-file-pdf-o">&nbsp;</i><span>导出pdf</span></li>
-							<li><i className="fa fa-file-word-o"></i>&nbsp;<span>导出文档</span></li>
-							<li><i className="fa fa-print"></i>&nbsp;<span>打印</span></li>
+							<li data-name="images" onClick={this.daoHandle}><i className="fa fa-file-image-o">&nbsp;</i><span>导出图片</span></li>
+							<li data-name="pdf" onClick={this.daoHandle}><i className="fa fa-file-pdf-o">&nbsp;</i><span>导出pdf</span></li>
+							<li data-name="word" onClick={this.daoHandle}><i className="fa fa-file-word-o"></i>&nbsp;<span>导出文档</span></li>
 						</ul>
 					</div>
 				</div>)
@@ -299,7 +331,7 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 					{!is_gdsummary ? (<div className="translate-footer-opt">
 						<Button field="error" handle={this.submit} styleType="line-btn" type="danger"><Icon styleType=""/>报错</Button>
 						<Button field="save" handle={this.submit}  type="green"><Icon styleType="fa-floppy-o"/>保存</Button>
-						<button className="s-btn normal-btn primary" name="submit" onClick={this.submit}><i className="fa fa-save">&nbsp;</i>提交</button>
+						<button className="s-btn normal-btn primary" name="submit" onClick={this.submit}><SvgIcon styleType="submit"/>提交</button>
 						<Link to={{ pathname: "/summary", state: { text: "病历清单" } }}><button className="s-btn line-btn green" ><i className="fa fa-undo">&nbsp;</i>返回</button></Link>
 					</div>):null}
 				</div>
