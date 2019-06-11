@@ -39,10 +39,7 @@ export default class Modal extends React.PureComponent<ModalProps,ModalState>{
 
 	ModalDom:React.RefObject<HTMLDivElement> = React.createRef();
 
-	componentDidMount(){
-
-	}
-
+	
 	headMouseDown=(e:React.MouseEvent)=>{
 			const modalDom = (this.ModalDom.current)!;
 			const {pointY,pointX} = this.state;
@@ -79,41 +76,42 @@ export default class Modal extends React.PureComponent<ModalProps,ModalState>{
 		
 
 		return ReactDom.createPortal((
-			<VelocityComponent runOnMount={true} animation = {show?"transition.bounceDownIn":"transition.bounceDownOut"} > 
-				<div className={"g-modal " +className }
-					 ref={this.ModalDom} 
-					 onMouseUp={this.headMouseUp}
-				>
-					
-					<div className="m-Mwrap">
-						<div className="m-Mask" />
-						<div className="m-Modal" style={{transform:`translate(${pointX}px , ${pointY}px)`}}>
-						<div className="m-Mtit"
-									onMouseDown={this.headMouseDown} 
-									
-						>
-							<span className="tit-name">{type?<Icon styleType={type=="tip"?"fa-exclamation-circle fa-lg":"fa-question-circle fa-lg"}/>:null}{tit}</span>
-							<span className="m-Mclose" onClick={onCancel}>
-									<i className="fa fa-times fa-2x"></i>
-							</span>
-						</div>
+				<VelocityComponent runOnMount={true} animation = {show?"transition.bounceDownIn":"transition.bounceDownOut"} > 
+					<div className={"g-modal " +className }
+						ref={this.ModalDom} 
+						onMouseUp={this.headMouseUp}
+					>
 						
-						<div className="m-Mbody">
-							{children}
+						<div className="m-Mwrap">
+							<div className="m-Mask" />
+							<div className="m-Modal" style={{transform:`translate(${pointX}px , ${pointY}px)`}}>
+								<div className="m-Mtit"
+											onMouseDown={this.headMouseDown} 
+											
+								>
+									<span className="tit-name">{type?<Icon styleType={type=="tip"?"fa-exclamation-circle fa-lg":"fa-question-circle fa-lg"}/>:null}{tit}</span>
+									<span className="m-Mclose" onClick={onCancel}>
+											<i className="fa fa-times fa-2x"></i>
+									</span>
+								</div>
+							
+								<div className="m-Mbody">
+									{children}
+								</div>
+								<div className="m-Mfooter">
+										<button className="s-btn line-btn green" onClick={onCancel}>
+											{cancelName}
+										</button>
+										<button className="s-btn normal-btn primary" onClick={this.sureHandle}>
+											{confirmName}
+										</button>
+										
+								</div>
+							</div>
 						</div>
-						<div className="m-Mfooter">
-								<button className="s-btn line-btn green" onClick={onCancel}>
-									{cancelName}
-								</button>
-								<button className="s-btn normal-btn primary" onClick={this.sureHandle}>
-									{confirmName}
-								</button>
-								
-						</div>
-					</div>
-					</div>
-				
-				</div>	</VelocityComponent>
+					
+					</div>	
+				</VelocityComponent>
 			),flag);
 	}
 }

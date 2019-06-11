@@ -38,7 +38,7 @@ class Login extends React.PureComponent<LoginProp, LoginState>{
          
            switch(res.code){
                case 200:{
-                   window.location.href= window.getSession("getPath")+"index/"
+                   window.location.href= window.getSession("getPath")+"index"
                    break;
                }
                default:

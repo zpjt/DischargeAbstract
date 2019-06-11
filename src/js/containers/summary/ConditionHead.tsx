@@ -53,8 +53,11 @@ const checkArr = [
 	{
 		id: "3",
 		text: "未审核",
-		text2:""
+	},	{
+		id: "6",
+		text: "报错",
 	}
+	
 	, {
 		id: "5",
 		text: "已审核"

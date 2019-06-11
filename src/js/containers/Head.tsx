@@ -7,6 +7,7 @@ import {changeRole} from "@js/actions/appAction";
 import {SvgIcon} from "@js/common/Button";
 import Api from "@api/main";
 import {Notification} from "@js/common/toast/index";
+import SocketNews from "./Socket";
 
  const LoginUrl = window.getSession("getPath")+"login.html";
 
@@ -28,6 +29,13 @@ class Head extends React.PureComponent<RouteComponentProps<HeadProp> & reduxStat
 		showPasswordModal: false,
 		password: "",
 		newPassword: "",
+	}
+
+	componentDidMount(){
+
+	}
+	componentWillMount(){
+
 	}
 
 	logOut = () => {
@@ -99,8 +107,10 @@ class Head extends React.PureComponent<RouteComponentProps<HeadProp> & reduxStat
 
 	render() {
 
-		const { user_name, role_arr, role_index, role_ids } = this.props;
+		const { user_name, role_arr, role_index, role_ids ,user_id} = this.props;
 		const { initPasswordModal, showPasswordModal, password,newPassword} = this.state;
+
+		const role_id = role_ids[role_index];
 
 		const rootModalDom = document.getElementById("modal_root") as HTMLDivElement;
 
@@ -154,7 +164,9 @@ class Head extends React.PureComponent<RouteComponentProps<HeadProp> & reduxStat
 						}
 					</ul>
 				</div>
-				<div className="m-mail"><i className="fa fa-envelope-o fa-lg"></i></div>
+				<div className="m-mail">
+					 <SocketNews  user_id={user_id} role_id={role_id}/>
+				</div>
 				<div className="g-user-opt" >
 					<div style={{ padding: "20px 10px" }}>
 						<SvgIcon styleType="user" size="size1"/>

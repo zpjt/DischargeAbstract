@@ -1,13 +1,12 @@
 import * as React from "react" ;
 import {Switch} from "react-router";
-import {Route ,HashRouter,BrowserRouter} from "react-router-dom";
+import {Route,MemoryRouter,BrowserRouter} from "react-router-dom";
 
 import SlideMenu from "@js/containers/SlideMenu";
 import Head from "@js/containers/Head";
 import MainRouter from "@js/Router" ;
 
-HashRouter
-
+BrowserRouter
 class IndexCom extends React.PureComponent{
 	
 	render(){
@@ -34,11 +33,11 @@ class App extends React.PureComponent{
 
 	render(){
 			return (
-					<BrowserRouter>
+					<MemoryRouter>
 							<Switch>
                             	<Route  path="/"   component={IndexCom} />	
 							</Switch>
-					</BrowserRouter>
+					</MemoryRouter>
 					)
 		}
 	

@@ -2,7 +2,7 @@ import "@css/main.scss";
 import App from "./js/index";
 import {Provider} from "react-redux"
 import {createStore,applyMiddleware,compose} from "redux";
-import {logger} from "redux-logger" ;
+//import {logger} from "redux-logger" ;
 import  thunk from "redux-thunk" ;
 import  rootRecuders from "@js/actions/rootReducer";
 import * as React from "react";
@@ -12,7 +12,7 @@ import 'velocity-animate/velocity.ui';
 
 
 
-const middleware = [thunk,logger];
+const middleware = [thunk];
 let store:any;
 
 if(window.__REDUX_DEVTOOLS_EXTENSION__){

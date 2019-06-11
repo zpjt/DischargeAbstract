@@ -108,7 +108,7 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 		const chinaData = this.props.data.china;
 		 const hasModal = chinaData.status == caseStatus.errorCase ? chinaData.errmessages : chinaData.status == caseStatus.returnCase ? chinaData.descr :false;
 		
-		hasModal && this.notificationRef.current!.addNotice( (caseStatus.returnCase && "驳回："||"报错：")+hasModal,"warn",0)
+		hasModal && this.notificationRef.current!.addNotice( (caseStatus.returnCase == chinaData.status && "驳回："||"报错：")+hasModal,"warn",0)
 
 	}
 	
@@ -290,7 +290,7 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 					initModal ? (<Modal
 						
 						show={showModal}
-						tit={is_gdsummary ? "驳回" :"报错"}
+						tit={is_gdsummary ? "驳回"  :"报错"}
 						type="tip"
 						onSure={this.modalSureHanlde}
 						onCancel={this.toggleModal}
@@ -299,7 +299,7 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 					
 					>
 						<div>
-							<p style={{padding:"6px 0"}}><span>{is_gdsummary ? "驳回" :"报错"}原因：</span></p>
+							<p style={{padding:"6px 0"}}><span>{is_gdsummary? "驳回" :"报错"}原因：</span></p>
 							<div><textarea value={reasonTxt} onChange={this.changeReason} className="s-txt" style={{width:"100%"}} rows={6}></textarea></div>
 						</div>
 

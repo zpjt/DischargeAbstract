@@ -26,7 +26,10 @@ declare global{
 
 instance.interceptors.response.use(function (response) {
 
-	
+		if(response.headers["content-type"].includes("text/html")){
+			window.location.href=window.getSession("getPath")+"login";
+			return Promise.reject();
+		}	
 
 		if(response.data.code == 200 || response.data.code==4000){
 			return response.data;

@@ -226,6 +226,12 @@ module.exports = env =>{
 		                target: 'http://localhost:8080',
 		                secure: false,
 		                changeOrigin:true,
+					},
+					 '/DischargSummary/WebSocket': {
+						target: 'ws://localhost:8080',
+		                ws:true,
+		                secure: false,
+	                    logLevel: 'debug',
 		            }
 		        }
     		},
