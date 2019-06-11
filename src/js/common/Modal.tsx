@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDom from "react-dom";
 import {Icon} from "@js/common/Button";
-
+import {VelocityComponent} from "velocity-react";
 
 type ModalProps = {
 		ableMove?:boolean;
@@ -79,14 +79,15 @@ export default class Modal extends React.PureComponent<ModalProps,ModalState>{
 		
 
 		return ReactDom.createPortal((
+			<VelocityComponent runOnMount={true} animation = {show?"transition.bounceDownIn":"transition.bounceDownOut"} > 
 				<div className={"g-modal " +className }
 					 ref={this.ModalDom} 
-					 style={{display:(show ? "flex":"none")}}
 					 onMouseUp={this.headMouseUp}
 				>
-					<div className="m-Mask" />
-
-					<div className="m-Modal" style={{transform:`translate(${pointX}px , ${pointY}px)`}}>
+					
+					<div className="m-Mwrap">
+						<div className="m-Mask" />
+						<div className="m-Modal" style={{transform:`translate(${pointX}px , ${pointY}px)`}}>
 						<div className="m-Mtit"
 									onMouseDown={this.headMouseDown} 
 									
@@ -110,7 +111,9 @@ export default class Modal extends React.PureComponent<ModalProps,ModalState>{
 								
 						</div>
 					</div>
-				</div>
+					</div>
+				
+				</div>	</VelocityComponent>
 			),flag);
 	}
 }

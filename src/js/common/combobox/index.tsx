@@ -251,7 +251,9 @@ export default class Combobox extends React.PureComponent<props, state>{
 				drop={drop} 
 				hasSlideIcon={hasSlideIcon}
 			/>
-			<VelocityComponent duration={300} animation={drop ? "slideDown" : "slideUp"}>
+			<VelocityComponent duration={300} animation={drop ? "slideDown" : "slideUp"}
+					interruptBehavior="queue"
+			>
 				<ul style={{ maxHeight, width: (pannelWidth ? pannelWidth : "100%") }} className={"m-drop " + (dirctionUp && "direction-up" || "direction-down")} >
 
 					<DropCom data={data} getPropFieldVal={this.getPropFieldVal} clickHande={this.clickFn} />

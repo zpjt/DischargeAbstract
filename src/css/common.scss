@@ -83,7 +83,8 @@ body,html{
 				
 			}
 			.g-main{
-				overflow: auto;
+			//	overflow: auto;
+				overflow: hidden;
 				height: calc(100% - #{$Head});
 				position: relative;
 			}

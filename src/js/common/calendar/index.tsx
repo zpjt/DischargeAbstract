@@ -447,6 +447,8 @@ class Calendar extends React.PureComponent<calendarProps, calendarState> impleme
 				/> : null}
 				<VelocityComponent
 					animation={expand ? "slideDown" : "slideUp"}
+					interruptBehavior="queue"
+					
 				>
 					<div className="g-calendar-box">
 						<CalendarView

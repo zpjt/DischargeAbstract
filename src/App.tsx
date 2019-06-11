@@ -7,7 +7,8 @@ import  thunk from "redux-thunk" ;
 import  rootRecuders from "@js/actions/rootReducer";
 import * as React from "react";
 import * as ReactDom from "react-dom" ;
-
+import 'velocity-animate';
+import 'velocity-animate/velocity.ui';
 
 
 

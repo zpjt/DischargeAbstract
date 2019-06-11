@@ -1,6 +1,7 @@
 import * as React from "react";
 import {createPortal} from "react-dom";
 import "@css/alertInfo.scss";
+import {VelocityComponent} from "velocity-react";
 
 
 
@@ -122,6 +123,8 @@ class Notice extends React.PureComponent<noticeProps,noticeState>{
         const {type,tit,closeHandle,sigin} = this.props;
 
         return (
+            <VelocityComponent animation="transition.bounceRightIn" runOnMount={true}>
+  
                 <div >
                     <span className="g-alertInfo">
                         <span>
@@ -137,6 +140,7 @@ class Notice extends React.PureComponent<noticeProps,noticeState>{
                     </span>
                   
                 </div>
+            </VelocityComponent >
         )
     }
 }

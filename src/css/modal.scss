@@ -7,19 +7,24 @@ $Tit_H:40px;
     width: 100%;
     top: 0;
     left: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+   
     overflow: hidden;
-    z-index: 10;
-}
-
-.m-Mask{
+	z-index: 10;
+	.m-Mask{
 		background-color: rgba(0,0,0,0.3);
 		 height: 100%;
-    width: 100%;
-    position: absolute;
+		width: 100%;
+		position: absolute;
+	}
+	.m-Mwrap{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 100%;
+	}
 }
+
+
 .m-Modal{
 	z-index: 2;
 	min-width: $M_width;

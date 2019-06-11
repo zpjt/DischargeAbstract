@@ -79,6 +79,8 @@ declare module 'velocity-react' {
     stagger?: number,
     drag?: boolean,
     complete?: (elements: NodeListOf<HTMLElement>) => void,
+    interruptBehavior?:"queue"|"stop"|"finish",
+    runOnMount?:boolean,
   }
 
   export interface VelocityComponentProps extends React.HTMLProps<VelocityComponent>, AnimationSetup {

@@ -662,7 +662,11 @@ export default class ComTreeBox extends React.PureComponent<props,states> implem
 
 		return (<div ref={this.wrapDomRef}  className={"comTreeBox "+(drop ? "active ":"") + (!value?"no-fill":"")} style={{width:width+"px"}}>
 							<ComboInp multiply={checkbox!} value={value} toggleDrop={this.toggleDrop}  drop={drop} hasSlideIcon={hasSlideIcon}/>
-							<VelocityComponent animation={drop?"slideDown":"slideUp"}>
+							<VelocityComponent animation={drop?"slideDown":"slideUp"}
+							
+								interruptBehavior="queue"
+			
+							>
 								<div className="m-drop" style={{width:(pannelWidth ? pannelWidth :"100%")}}>
 									<Search closeHandle={this.closeHandle} searchHandle={this.searchHandle}/>
 									<ul className="m-tree" style={{maxHeight:maxHeight+"px"}}>
