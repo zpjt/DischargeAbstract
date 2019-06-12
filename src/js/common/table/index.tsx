@@ -7,9 +7,9 @@ type TableProps = {
     column: columnItem[],
     idField?: string;
     total: number;
-    pageNum: number;
-    pageSize: number;
-    navigatepageNums: number[];
+    pageNum: number;//当前页数
+    pageSize: number;//每页多少条
+    pages: number;//共有的页数
     tableH: string;
     changeHandle(field: any, value: string): void;
     
@@ -62,7 +62,7 @@ export default class Table extends React.PureComponent<TableProps, TableState>{
         idField: "id",
         hasOrder: true,
         checkbox: false,
-        perNums: 15,
+        perNums: 10,
         tableH: "auto",
     }
 
@@ -197,8 +197,8 @@ export default class Table extends React.PureComponent<TableProps, TableState>{
     controlMoveBtn=(e:React.MouseEvent<HTMLElement>)=>{
 
         const type = e.currentTarget!.dataset.name as "pre"|"next"
-        const {navigatepageNums,pageNum,changeHandle} = this.props;
-        const totalPage = navigatepageNums.length;
+        const {pages,pageNum,changeHandle} = this.props;
+        const totalPage = pages;
         let newPageNum= 0;
         switch (type) {
             case "next":
@@ -230,15 +230,119 @@ export default class Table extends React.PureComponent<TableProps, TableState>{
 
     }
 
+    firstPage() {
+    const { pages, pageNum } = this.props;
+    const arr = Array.from({length:5},(...args)=>(args[1]+1));
+    return (
+      <React.Fragment>
+        {arr.map(val=> (
+            <span className={"m-page-num " + (val == pageNum ? "active" : "")}
+                    key={val}
+                    data-num={val}
+                    onClick={this.pageCodeHandle}
+            >
+                {val}
+            </span>
+        ))}  
+        <span>...</span>
+        <span 
+            className={"m-page-num " + (pages == pageNum ? "active" : "")}
+            data-num={pages}
+            onClick={this.pageCodeHandle}
+            >
+                {pages}
+            </span>
+      
+      </React.Fragment>
+    );
+    }
+    lastPage() {
+        const { pages, pageNum } = this.props;
+        const arr = Array.from({length:5},(...args)=>(args[1]+1));
+        return (
+        <React.Fragment>
+            <span
+            className={"m-page-num " + (1 == pageNum ? "active" : "")}
+            data-num={1}
+            onClick={this.pageCodeHandle}
+            >
+            {1}
+            </span>
+            <span>...</span>
+            {arr.map(val => (
+                <span
+                    className={"m-page-num " + (pages - 5 +val == pageNum ? "active" : "")}
+                    data-num={pages-5+val}
+                    onClick={this.pageCodeHandle}
+                >
+
+                    {pages - 5 + val }
+                </span>
+            ))}
+        </React.Fragment>
+        );
+    }
+    centerPage() {
+        const {pageNum, pages } = this.props;
+        const arr = Array.from({length:5},(...args)=>(args[1]+1));
+        return (
+        <React.Fragment>
+            <span
+
+            className={"m-page-num " + (1 == pageNum ? "active" : "")}
+            data-num={1}
+            onClick={this.pageCodeHandle}
+            >
+            {1}
+            </span>
+            <span>...</span>
+            {arr.map(val => (
+            <span
+                data-num={pageNum - 3 + val }
+                onClick={this.pageCodeHandle}
+                className={"m-page-num " + (pageNum -3 +  val == pageNum ? "active" : "")}
+                
+            >
+                {pageNum - 3 + val}
+            </span>
+            ))}
+
+            <span>...</span>
+            <span
+
+            className={"m-page-num " + (pages == pageNum ? "active" : "")}
+            data-num={pages}
+            onClick={this.pageCodeHandle}
+            >
+            {pages}
+            </span>
+        </React.Fragment>
+        );
+    }
+    normalPage() {
+        const { pageNum, pages } = this.props;
+
+        const arr = Array.from({length:pages},(...args)=>(args[1]+1));
+        return arr.map(val => {
+            return (
+            <span
+            className={"m-page-num " + (val == pageNum ? "active" : "")}
+            data-num={val}
+            onClick={this.pageCodeHandle}
+            >
+                {val}
+            </span>
+            );
+        });
+    }
+
     render() {
 
-        const { list, column, idField, total, navigatepageNums, pageNum } = this.props;
+        const { list, column, idField, total, pageNum,pages } = this.props;
         const { tableH, checkArr } = this.state;
 
         let tabOver = "";
         let h: any;
-
-
 
         if (tableH > 0) {
 
@@ -252,6 +356,19 @@ export default class Table extends React.PureComponent<TableProps, TableState>{
         const colgroupCom = this.getColgroupCom(column);
 
         const checkStatus = this.countTotalStatus(checkArr,list);
+
+
+        let navigatepageCom;
+
+        if (pages < 11) {
+          navigatepageCom= this.normalPage();
+        } else if (pageNum - 1 < 4) {
+          navigatepageCom= this.firstPage();
+        } else if (pages - pageNum < 4) {
+           navigatepageCom= this.lastPage();
+        } else {
+          navigatepageCom= this.centerPage();
+        }
 
         return (<div className="g-table" ref={this.TableContainer}>
 
@@ -324,15 +441,7 @@ export default class Table extends React.PureComponent<TableProps, TableState>{
                         ><i className="fa fa-chevron-left "></i></span>
                         <span>
                             {
-                                navigatepageNums.map(val => {
-
-                                    return (<span className={"m-page-num " + (val == pageNum ? "active" : "")}
-                                        key={val}
-                                        data-num={val}
-                                        onClick={this.pageCodeHandle}
-                                    >{val}</span>)
-                                })
-
+                               navigatepageCom
                             }
 
                         </span>

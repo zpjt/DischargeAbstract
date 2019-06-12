@@ -159,7 +159,7 @@ class ResultSearch extends React.PureComponent<ResultProp,ResultState>{
             return "";
         }
 
-        const {list,pageNum,pageSize,total,navigatepageNums} = data;
+        const {list,pageNum,pageSize,total,pages} = data;
         const {changeHandle} = this.props;
         
             return <Table 
@@ -168,7 +168,7 @@ class ResultSearch extends React.PureComponent<ResultProp,ResultState>{
                         pageNum={pageNum}
                         pageSize={pageSize}
                         total={total}
-                        navigatepageNums={navigatepageNums}
+                        pages={pages}
                         changeHandle={changeHandle}
                     />
 

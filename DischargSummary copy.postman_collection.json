@@ -1,0 +1,1772 @@
+{
+	"info": {
+		"_postman_id": "0afab9c7-aaa8-4987-868d-caff1d61d07a",
+		"name": "DischargSummary copy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "登录",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"demo\",\"pwd\":\"F59BD65F7EDAFB087A81D4DCA06C4910\"}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/DischargSummary/login/logVal",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"DischargSummary",
+						"login",
+						"logVal"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "登录",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\":\"demo\",\"pwd\":\"F59BD65F7EDAFB087A81D4DCA06C4910\"}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/finemanage/login/logVal",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"finemanage",
+								"login",
+								"logVal"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 11 Apr 2019 00:42:56 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"fineUrl\": \"http://172.16.13.130:8080/finemanage/decision/login/cross/domain\",\n    \"finedata\": [\n        {\n            \"fine_username\": \"admin\",\n            \"validity\": -1,\n            \"fine_password\": \"admin\"\n        }\n    ],\n    \"url\": \"/index\"\n}"
+				}
+			]
+		},
+		{
+			"name": "退出",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/DischargSummary/login/logOut",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"DischargSummary",
+						"login",
+						"logOut"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "登录",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\":\"demo\",\"pwd\":\"F59BD65F7EDAFB087A81D4DCA06C4910\"}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/finemanage/login/logVal",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"finemanage",
+								"login",
+								"logVal"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 11 Apr 2019 00:42:56 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"fineUrl\": \"http://172.16.13.130:8080/finemanage/decision/login/cross/domain\",\n    \"finedata\": [\n        {\n            \"fine_username\": \"admin\",\n            \"validity\": -1,\n            \"fine_password\": \"admin\"\n        }\n    ],\n    \"url\": \"/index\"\n}"
+				}
+			]
+		},
+		{
+			"name": "科室数组",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/DischargSummary/summary/getAllOrg",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"DischargSummary",
+						"summary",
+						"getAllOrg"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "登录",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\":\"demo\",\"pwd\":\"F59BD65F7EDAFB087A81D4DCA06C4910\"}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/finemanage/login/logVal",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"finemanage",
+								"login",
+								"logVal"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 11 Apr 2019 00:42:56 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"fineUrl\": \"http://172.16.13.130:8080/finemanage/decision/login/cross/domain\",\n    \"finedata\": [\n        {\n            \"fine_username\": \"admin\",\n            \"validity\": -1,\n            \"fine_password\": \"admin\"\n        }\n    ],\n    \"url\": \"/index\"\n}"
+				}
+			]
+		},
+		{
+			"name": "分页测试",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "pageNum",
+							"value": "2",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/DischargSummary/summary/getAllPerson",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"DischargSummary",
+						"summary",
+						"getAllPerson"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "登录",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\":\"demo\",\"pwd\":\"F59BD65F7EDAFB087A81D4DCA06C4910\"}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/finemanage/login/logVal",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"finemanage",
+								"login",
+								"logVal"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 11 Apr 2019 00:42:56 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"fineUrl\": \"http://172.16.13.130:8080/finemanage/decision/login/cross/domain\",\n    \"finedata\": [\n        {\n            \"fine_username\": \"admin\",\n            \"validity\": -1,\n            \"fine_password\": \"admin\"\n        }\n    ],\n    \"url\": \"/index\"\n}"
+				}
+			]
+		},
+		{
+			"name": "病例清单（归档文案）",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "pageNum",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "pageSize",
+							"value": "4",
+							"type": "text"
+						},
+						{
+							"key": "role_id",
+							"value": "3201",
+							"type": "text"
+						},
+						{
+							"key": "status",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "fdept",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "fsex",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "fage",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "lrdata",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "gddata",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "flag",
+							"value": "1",
+							"description": "0：病例清单，1：归档文案",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/DischargSummary/summary/getAllSummaryCaseByStatus",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"DischargSummary",
+						"summary",
+						"getAllSummaryCaseByStatus"
+					]
+				},
+				"description": "请求参数：\n\tpageNum：第几页\n\tpageSize：每页几条\n\trole_id：角色id\n\tstatus:状态默认筛选值0； status是筛选值,status_name是对应中文\n\t\t\t主任角色可选筛选值：3：提交（未审核）5：已审核；6：报错\n\t\t\t医生角色可选筛选值：1:未翻译，2：已翻译，4：驳回\n\tfdept：科室 默认空字符串\n\tfsex：性别 默认空字符串\n\tfage：年龄 默认空字符串\n\tlrdata：录入日期 默认空字符串\n\tgddata：归档日期 默认空字符串\n返回值：\n\tcode：状态码 200为正常状态\n\tmessage：状态信息\n\tdata：\n\t  total：总条数\n\t  list：需要显示的数据\n\t  pageNum：当前第几页\n\t  pageSize：每页条数\n\t  prePage：上一页页码\n\t  nextPage：下一页页码\n\t  navigatepageNums：页码数组"
+			},
+			"response": [
+				{
+					"name": "登录",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\":\"demo\",\"pwd\":\"F59BD65F7EDAFB087A81D4DCA06C4910\"}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/finemanage/login/logVal",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"finemanage",
+								"login",
+								"logVal"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 11 Apr 2019 00:42:56 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"fineUrl\": \"http://172.16.13.130:8080/finemanage/decision/login/cross/domain\",\n    \"finedata\": [\n        {\n            \"fine_username\": \"admin\",\n            \"validity\": -1,\n            \"fine_password\": \"admin\"\n        }\n    ],\n    \"url\": \"/index\"\n}"
+				}
+			]
+		},
+		{
+			"name": "删除病例清单（归档文案）",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "id",
+							"value": "30,31",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/DischargSummary/summary/delSummaryCaseById",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"DischargSummary",
+						"summary",
+						"delSummaryCaseById"
+					]
+				},
+				"description": "请求参数：\n\tid：多个用，连接。\n\t单个：1 ；\n\t多个  1,2\n返回值：\n\tcode：   200         4000\n\tmessage：删除成功    删除失败"
+			},
+			"response": [
+				{
+					"name": "登录",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\":\"demo\",\"pwd\":\"F59BD65F7EDAFB087A81D4DCA06C4910\"}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/finemanage/login/logVal",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"finemanage",
+								"login",
+								"logVal"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 11 Apr 2019 00:42:56 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"fineUrl\": \"http://172.16.13.130:8080/finemanage/decision/login/cross/domain\",\n    \"finedata\": [\n        {\n            \"fine_username\": \"admin\",\n            \"validity\": -1,\n            \"fine_password\": \"admin\"\n        }\n    ],\n    \"url\": \"/index\"\n}"
+				}
+			]
+		},
+		{
+			"name": "保存添加病例",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n \"fname\":\"手术\",\n \"fsex\":\"男\",\n \"fage\":\"15\",\n \"fdept\":\"骨科\",\n \"fdeb\":\"325\",\n \"fprn\":\"002569\",\n \"fsurvey\":\"\",\n \"fryqk\":\"\",\n \"fryzd\":\"\",\n \"fzljg\":\"\",\n \"fcyzd\":\"\",\n \"fcyqk\":\"\",\n \"fcyyz\":\"\",\n \"status\":\"\",\n \"user_id\":10\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/DischargSummary/summary/addChSummaryCase",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"DischargSummary",
+						"summary",
+						"addChSummaryCase"
+					]
+				},
+				"description": "请求参数：\n\n返回值：\n\tcode：   200         4000\n\tmessage：删除成功    删除失败"
+			},
+			"response": [
+				{
+					"name": "登录",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\":\"demo\",\"pwd\":\"F59BD65F7EDAFB087A81D4DCA06C4910\"}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/finemanage/login/logVal",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"finemanage",
+								"login",
+								"logVal"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 11 Apr 2019 00:42:56 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"fineUrl\": \"http://172.16.13.130:8080/finemanage/decision/login/cross/domain\",\n    \"finedata\": [\n        {\n            \"fine_username\": \"admin\",\n            \"validity\": -1,\n            \"fine_password\": \"admin\"\n        }\n    ],\n    \"url\": \"/index\"\n}"
+				}
+			]
+		},
+		{
+			"name": "提交新增病例",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n \"id\":28,\t\n \"fname\":\"手术\",\n \"fsex\":\"男\",\n \"fage\":\"15\",\n \"fdept\":\"骨科\",\n \"fdeb\":\"325\",\n \"fprn\":\"002569\",\n \"fsurvey\":\"\",\n \"fryqk\":\"\",\n \"fryzd\":\"\",\n \"fzljg\":\"\",\n \"fcyzd\":\"\",\n \"fcyqk\":\"\",\n \"fcyyz\":\"\",\n \"status\":\"\",\n \"user_id\":10\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/DischargSummary/summary/saveChSummaryCase",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"DischargSummary",
+						"summary",
+						"saveChSummaryCase"
+					]
+				},
+				"description": "请求参数：\n\n返回值：\n\tcode：   200         4000\n\tmessage：提交成功    提交失败"
+			},
+			"response": [
+				{
+					"name": "登录",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\":\"demo\",\"pwd\":\"F59BD65F7EDAFB087A81D4DCA06C4910\"}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/finemanage/login/logVal",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"finemanage",
+								"login",
+								"logVal"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 11 Apr 2019 00:42:56 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"fineUrl\": \"http://172.16.13.130:8080/finemanage/decision/login/cross/domain\",\n    \"finedata\": [\n        {\n            \"fine_username\": \"admin\",\n            \"validity\": -1,\n            \"fine_password\": \"admin\"\n        }\n    ],\n    \"url\": \"/index\"\n}"
+				}
+			]
+		},
+		{
+			"name": "修改英文文档（保存按钮）",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n \"id\":1,\t\n \"fname\":\"Zhang San\",\n \"fsex\":\"Male\",\n \"fage\":\"15\",\n \"fdept\":\"Orthopedic Surgery\",\n \"fdeb\":\"A301\",\n \"fprn\":\"0003256197\",\n \"fsurvey\":\"1\",\n \"fryqk\":\"1\",\n \"fryzd\":\"1\",\n \"fzljg\":\"1\",\n \"fcyzd\":\"1\",\n \"fcyqk\":\"1\",\n \"fcyyz\":null,\n \"status\":\"\"\n \n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/DischargSummary/summary/updataEnSummaryCase",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"DischargSummary",
+						"summary",
+						"updataEnSummaryCase"
+					]
+				},
+				"description": "请求参数：\n\n返回值：\n\tcode：   200         4000\n\tmessage：删除成功    删除失败"
+			},
+			"response": [
+				{
+					"name": "登录",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\":\"demo\",\"pwd\":\"F59BD65F7EDAFB087A81D4DCA06C4910\"}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/finemanage/login/logVal",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"finemanage",
+								"login",
+								"logVal"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 11 Apr 2019 00:42:56 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"fineUrl\": \"http://172.16.13.130:8080/finemanage/decision/login/cross/domain\",\n    \"finedata\": [\n        {\n            \"fine_username\": \"admin\",\n            \"validity\": -1,\n            \"fine_password\": \"admin\"\n        }\n    ],\n    \"url\": \"/index\"\n}"
+				}
+			]
+		},
+		{
+			"name": "提交英文文档（提交按钮）",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n \"id\":1,\t\n \"fname\":\"Zhang San\",\n \"fsex\":\"Male\",\n \"fage\":\"15\",\n \"fdept\":\"Orthopedic Surgery\",\n \"fdeb\":\"A301\",\n \"fprn\":\"0003256197\",\n \"fsurvey\":\"1\",\n \"fryqk\":\"1\",\n \"fryzd\":\"1\",\n \"fzljg\":\"1\",\n \"fcyzd\":\"1\",\n \"fcyqk\":\"1\",\n \"fcyyz\":null,\n \"status\":\"\"\n \n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/DischargSummary/summary/commitEnSummaryCase",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"DischargSummary",
+						"summary",
+						"commitEnSummaryCase"
+					]
+				},
+				"description": "请求参数：\n只需添加有改动的字段，和id\n    如只改了fname,那么从参数只需写id，fname\n    {\n    \t \"id\":1,\t\n         \"fname\":\"Zhang San\"\n    }\n返回值：\n\tcode：   200         4000\n\tmessage：删除成功    删除失败"
+			},
+			"response": [
+				{
+					"name": "登录",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\":\"demo\",\"pwd\":\"F59BD65F7EDAFB087A81D4DCA06C4910\"}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/finemanage/login/logVal",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"finemanage",
+								"login",
+								"logVal"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 11 Apr 2019 00:42:56 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"fineUrl\": \"http://172.16.13.130:8080/finemanage/decision/login/cross/domain\",\n    \"finedata\": [\n        {\n            \"fine_username\": \"admin\",\n            \"validity\": -1,\n            \"fine_password\": \"admin\"\n        }\n    ],\n    \"url\": \"/index\"\n}"
+				}
+			]
+		},
+		{
+			"name": "通过审核英文文档（通过按钮）",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n \"id\":1,\t\n \"fname\":\"Zhang San\",\n \"fsex\":\"Male\",\n \"fage\":\"15\",\n \"fdept\":\"Orthopedic Surgery\",\n \"fdeb\":\"A301\",\n \"fprn\":\"0003256197\",\n \"fsurvey\":\"1\",\n \"fryqk\":\"1\",\n \"fryzd\":\"1\",\n \"fzljg\":\"1\",\n \"fcyzd\":\"1\",\n \"fcyqk\":\"1\",\n \"fcyyz\":null\n \n \n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/DischargSummary/summary/passEnSummaryCase",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"DischargSummary",
+						"summary",
+						"passEnSummaryCase"
+					]
+				},
+				"description": "请求参数：\n    只需添加有改动的字段，和id\n    如只改了fname,那么从参数只需写id，fname\n    {\n    \t \"id\":1,\t\n         \"fname\":\"Zhang San\"\n    }\n返回值：\n\tcode：   200         4000\n\tmessage：删除成功    删除失败"
+			},
+			"response": [
+				{
+					"name": "登录",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\":\"demo\",\"pwd\":\"F59BD65F7EDAFB087A81D4DCA06C4910\"}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/finemanage/login/logVal",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"finemanage",
+								"login",
+								"logVal"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 11 Apr 2019 00:42:56 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"fineUrl\": \"http://172.16.13.130:8080/finemanage/decision/login/cross/domain\",\n    \"finedata\": [\n        {\n            \"fine_username\": \"admin\",\n            \"validity\": -1,\n            \"fine_password\": \"admin\"\n        }\n    ],\n    \"url\": \"/index\"\n}"
+				}
+			]
+		},
+		{
+			"name": "提交报错信息",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "id",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "errMessages",
+							"value": "10",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/DischargSummary/summary/upSummaryCaseError",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"DischargSummary",
+						"summary",
+						"upSummaryCaseError"
+					]
+				},
+				"description": "请求参数：\n\tid：\n\n返回值：\n\tcode：   200         4000\n\tmessage：可以查看    有其他用户正在编辑"
+			},
+			"response": [
+				{
+					"name": "登录",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\":\"demo\",\"pwd\":\"F59BD65F7EDAFB087A81D4DCA06C4910\"}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/finemanage/login/logVal",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"finemanage",
+								"login",
+								"logVal"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 11 Apr 2019 00:42:56 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"fineUrl\": \"http://172.16.13.130:8080/finemanage/decision/login/cross/domain\",\n    \"finedata\": [\n        {\n            \"fine_username\": \"admin\",\n            \"validity\": -1,\n            \"fine_password\": \"admin\"\n        }\n    ],\n    \"url\": \"/index\"\n}"
+				}
+			]
+		},
+		{
+			"name": "提交驳回信息",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "id",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "descr",
+							"value": "10",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/DischargSummary/summary/returnSummaryCase",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"DischargSummary",
+						"summary",
+						"returnSummaryCase"
+					]
+				},
+				"description": "请求参数：\n\tid：\n\n返回值：\n\tcode：   200         4000\n\tmessage：可以查看    有其他用户正在编辑"
+			},
+			"response": [
+				{
+					"name": "登录",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\":\"demo\",\"pwd\":\"F59BD65F7EDAFB087A81D4DCA06C4910\"}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/finemanage/login/logVal",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"finemanage",
+								"login",
+								"logVal"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 11 Apr 2019 00:42:56 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"fineUrl\": \"http://172.16.13.130:8080/finemanage/decision/login/cross/domain\",\n    \"finedata\": [\n        {\n            \"fine_username\": \"admin\",\n            \"validity\": -1,\n            \"fine_password\": \"admin\"\n        }\n    ],\n    \"url\": \"/index\"\n}"
+				}
+			]
+		},
+		{
+			"name": "word病例导出",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "ids",
+							"value": "64,65",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/DischargSummary/summary/wordExport",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"DischargSummary",
+						"summary",
+						"wordExport"
+					]
+				},
+				"description": "请求参数：\n\tid：\n\n返回值：\n\tcode：   200         4000\n\tmessage：可以查看    有其他用户正在编辑"
+			},
+			"response": [
+				{
+					"name": "登录",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\":\"demo\",\"pwd\":\"F59BD65F7EDAFB087A81D4DCA06C4910\"}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/finemanage/login/logVal",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"finemanage",
+								"login",
+								"logVal"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 11 Apr 2019 00:42:56 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"fineUrl\": \"http://172.16.13.130:8080/finemanage/decision/login/cross/domain\",\n    \"finedata\": [\n        {\n            \"fine_username\": \"admin\",\n            \"validity\": -1,\n            \"fine_password\": \"admin\"\n        }\n    ],\n    \"url\": \"/index\"\n}"
+				}
+			]
+		},
+		{
+			"name": "中文病例导出",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/DischargSummary/summary/chExport",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"DischargSummary",
+						"summary",
+						"chExport"
+					]
+				},
+				"description": "请求参数：\n\tid：\n\n返回值：\n\tcode：   200         4000\n\tmessage：可以查看    有其他用户正在编辑"
+			},
+			"response": [
+				{
+					"name": "登录",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\":\"demo\",\"pwd\":\"F59BD65F7EDAFB087A81D4DCA06C4910\"}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/finemanage/login/logVal",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"finemanage",
+								"login",
+								"logVal"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 11 Apr 2019 00:42:56 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"fineUrl\": \"http://172.16.13.130:8080/finemanage/decision/login/cross/domain\",\n    \"finedata\": [\n        {\n            \"fine_username\": \"admin\",\n            \"validity\": -1,\n            \"fine_password\": \"admin\"\n        }\n    ],\n    \"url\": \"/index\"\n}"
+				}
+			]
+		},
+		{
+			"name": "验证密码",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "user_id",
+							"value": "10",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/DischargSummary/summary/checkPwd",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"DischargSummary",
+						"summary",
+						"checkPwd"
+					]
+				},
+				"description": "请求参数：\n\tid：\n\n返回值：\n\tcode：   200         4000\n\tmessage：可以查看    有其他用户正在编辑"
+			},
+			"response": [
+				{
+					"name": "登录",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\":\"demo\",\"pwd\":\"F59BD65F7EDAFB087A81D4DCA06C4910\"}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/finemanage/login/logVal",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"finemanage",
+								"login",
+								"logVal"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 11 Apr 2019 00:42:56 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"fineUrl\": \"http://172.16.13.130:8080/finemanage/decision/login/cross/domain\",\n    \"finedata\": [\n        {\n            \"fine_username\": \"admin\",\n            \"validity\": -1,\n            \"fine_password\": \"admin\"\n        }\n    ],\n    \"url\": \"/index\"\n}"
+				}
+			]
+		},
+		{
+			"name": "修改密码",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "user_id",
+							"value": "10",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/DischargSummary/summary/updatePwd",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"DischargSummary",
+						"summary",
+						"updatePwd"
+					]
+				},
+				"description": "请求参数：\n\tid：\n\n返回值：\n\tcode：   200         4000\n\tmessage：可以查看    有其他用户正在编辑"
+			},
+			"response": [
+				{
+					"name": "登录",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\":\"demo\",\"pwd\":\"F59BD65F7EDAFB087A81D4DCA06C4910\"}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/finemanage/login/logVal",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"finemanage",
+								"login",
+								"logVal"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 11 Apr 2019 00:42:56 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"fineUrl\": \"http://172.16.13.130:8080/finemanage/decision/login/cross/domain\",\n    \"finedata\": [\n        {\n            \"fine_username\": \"admin\",\n            \"validity\": -1,\n            \"fine_password\": \"admin\"\n        }\n    ],\n    \"url\": \"/index\"\n}"
+				}
+			]
+		},
+		{
+			"name": "左侧菜单",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "role_id",
+							"value": "3201",
+							"type": "text"
+						},
+						{
+							"key": "",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/DischargSummary/summary/getMenu",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"DischargSummary",
+						"summary",
+						"getMenu"
+					]
+				},
+				"description": "请求参数：\n\t\n返回值：\n\tcode：   200         4000\n\tmessage：可以查看    有其他用户正在编辑"
+			},
+			"response": [
+				{
+					"name": "登录",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\":\"demo\",\"pwd\":\"F59BD65F7EDAFB087A81D4DCA06C4910\"}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/finemanage/login/logVal",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"finemanage",
+								"login",
+								"logVal"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 11 Apr 2019 00:42:56 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"fineUrl\": \"http://172.16.13.130:8080/finemanage/decision/login/cross/domain\",\n    \"finedata\": [\n        {\n            \"fine_username\": \"admin\",\n            \"validity\": -1,\n            \"fine_password\": \"admin\"\n        }\n    ],\n    \"url\": \"/index\"\n}"
+				}
+			]
+		},
+		{
+			"name": "根据id获取中英文病例",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "id",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/DischargSummary/summary/getSummaryCaseById",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"DischargSummary",
+						"summary",
+						"getSummaryCaseById"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "登录",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\":\"demo\",\"pwd\":\"F59BD65F7EDAFB087A81D4DCA06C4910\"}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/finemanage/login/logVal",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"finemanage",
+								"login",
+								"logVal"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 11 Apr 2019 00:42:56 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"fineUrl\": \"http://172.16.13.130:8080/finemanage/decision/login/cross/domain\",\n    \"finedata\": [\n        {\n            \"fine_username\": \"admin\",\n            \"validity\": -1,\n            \"fine_password\": \"admin\"\n        }\n    ],\n    \"url\": \"/index\"\n}"
+				}
+			]
+		},
+		{
+			"name": "点击添加病例(判断是否有未完成的病例)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "user_id",
+							"value": "10",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/DischargSummary/summary/getSummaryCaseByUserid",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"DischargSummary",
+						"summary",
+						"getSummaryCaseByUserid"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "登录",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\":\"demo\",\"pwd\":\"F59BD65F7EDAFB087A81D4DCA06C4910\"}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/finemanage/login/logVal",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"finemanage",
+								"login",
+								"logVal"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 11 Apr 2019 00:42:56 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"fineUrl\": \"http://172.16.13.130:8080/finemanage/decision/login/cross/domain\",\n    \"finedata\": [\n        {\n            \"fine_username\": \"admin\",\n            \"validity\": -1,\n            \"fine_password\": \"admin\"\n        }\n    ],\n    \"url\": \"/index\"\n}"
+				}
+			]
+		}
+	]
+}
