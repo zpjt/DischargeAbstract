@@ -2,13 +2,14 @@ import "@css/login.scss";
 import * as React from "react";
 import { render } from "react-dom";
 import axions from "@js/common/AxiosInstance";
+import {Button,Icon} from "@js/common/Button";
 
 type LoginProp = {
 };
 
 type LoginState = {
     isFetching: boolean;
-
+    warnTxt:string;
 };
 
 
@@ -18,7 +19,8 @@ class Login extends React.PureComponent<LoginProp, LoginState>{
     psdDom: React.RefObject<HTMLInputElement> = React.createRef();
 
     state:LoginState={
-        isFetching:false
+        isFetching:false,
+        warnTxt:""
     }
 
     loginHandle = () => {
@@ -26,6 +28,19 @@ class Login extends React.PureComponent<LoginProp, LoginState>{
         const name = (this.userDom.current!).value;
         const pwd = (this.psdDom.current!).value;
 
+        if(!name || !pwd){
+            this.setState({
+                warnTxt:"填写用户名和密码！"
+            })
+            return ;
+
+        }
+
+        this.setState({
+            isFetching:true
+        })
+
+        
         axions({
             url:"login/logVal",
             method:"post",
@@ -36,17 +51,21 @@ class Login extends React.PureComponent<LoginProp, LoginState>{
         }).then((res:any)=>{
 
          
-           switch(res.code){
+            let txt = ""; 
+            switch(res.code){
                case 200:{
                    window.location.href= window.getSession("getPath")+"index"
                    break;
                }
                default:
-                   alert(res.message);
+                  txt = res.message
                    break;
            };
 
-           
+            this.setState({
+                isFetching:false,
+                warnTxt:txt
+            })
 
 
         })
@@ -55,7 +74,8 @@ class Login extends React.PureComponent<LoginProp, LoginState>{
 
     }
     render() {
-        const { isFetching } = this.state;
+        const { isFetching,warnTxt } = this.state;
+        
         return (
             <div className="g-login">
                 <div className="m-login">
@@ -76,10 +96,12 @@ class Login extends React.PureComponent<LoginProp, LoginState>{
                             </div>
                         </div>
                         <div className="submit-btn">
-                            <button className="s-btn login-btn" onClick={this.loginHandle}>
+                            <Button handle={this.loginHandle} otherName="login-btn" >
                                 {isFetching ? <span style={{ paddingRight: 20 }}><i className="fa fa-spinner fa-pulse fa-lg fa-fw"></i></span> : null}
                                 <b>登 录</b>
-                            </button>
+                            </Button>
+                            
+                           {warnTxt ? <p className="m-warn"><Icon styleType="fa-exclamation-triangle"/>{warnTxt}</p>:null } 
                         </div>
                     </div>
                     <div className="login-footer">

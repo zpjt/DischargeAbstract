@@ -34,8 +34,6 @@ class SoketNews extends React.PureComponent<socketProps,soketState>{
         webSocket.onmessage = function (msg) {
 
              const result = msg.data;
-             
-             console.log(msg)
 
             if(result == "&"){
 
@@ -103,8 +101,6 @@ class SoketNews extends React.PureComponent<socketProps,soketState>{
            this.webSocket!.send("&");
            console.log("  心跳 <br/>");
         }
-      //  const _self = this;
-        setTimeout("this.heart()", 10*60*1000);
 
     }
 

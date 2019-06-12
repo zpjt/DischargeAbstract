@@ -88,7 +88,6 @@ class AddCaseModal extends React.PureComponent< caseModalProps, caseModalState>{
     orgItemHandle=(e:React.MouseEvent<HTMLLIElement>)=>{
 
         const text = e.currentTarget!.dataset.name;
-        console.log(text);
 
         this.setState({
            fdept:text!    

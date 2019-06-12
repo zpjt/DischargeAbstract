@@ -8,6 +8,8 @@ import {Link} from "react-router-dom";
 import {Button,Icon, SvgIcon} from "@js/common/Button";
 import {Notification} from "@js/common/toast/index";
 import Modal from "@js/common/Modal";
+import html2canvas from "html2canvas";
+
 type translateProps = {
 	data:any;
 	id:string;
@@ -42,24 +44,7 @@ enum caseStatus {
 
 class TranslateManage extends React.PureComponent<translateProps, translateState> {
 	static pathObj = { pathname: "/gdsummary", state: { text: "归档文案" } }
-	obj = {
-			fname: "",
-			fsex: "",
-			fage: "",
-			fdept: "",
-			fdeb: "",
-			fprn: "",
-			fsurvey: "",
-			fryqk: "",
-			fryzd: "",
-			fzljg: "",
-			fcyzd: "",
-			fcyqk: "",
-			fcyyz: "",
-			frydata: "",
-			fcydata: "",
-			fsumd: "",
-	}
+	
 	
 	state:translateState = this.initState(this.props.data.english);
 	notificationRef:React.RefObject<Notification> = React.createRef();
@@ -94,14 +79,7 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
             }
 		};
 
-		;
-		
-		 
-		// obj.initModal = hasModal;
-		// obj.showModal = hasModal;
-
 		return obj ;
-
 
 	}
 	componentDidMount(){
@@ -217,18 +195,37 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 				this.downFile(baseUrl+"summary/pdfExport?ids="+id);
 				break;
 			case "images":
-				
+				this.downImag();
 				break;
 			default:
 				break;
 		}
 	}
+	downImag(){
 
-	downFile(url:string){
+		const dom = document.getElementById("gTranslate")!
+		html2canvas(dom,{
+			width:dom.clientWidth,
+			height:dom.clientHeight,
+		}).then((canvas)=>{
+
+
+			this.downFile(canvas.toDataURL(),'img-snapshoot.jpg');
+			
+			
+
+    	});
+
+
+
+
+
+	}
+	downFile(url:string,fileName="文件下载"){
 
 		const a = document.createElement("a");
 		a.href=url;
-		a.download = "文件下载";
+		a.download = fileName;
 		
 		document.body.appendChild(a);
 
@@ -310,7 +307,7 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 				<div className="g-translate-box" >
 
 				{is_gdsummary ? status == "5" ? this.getDao():this.getCheckOpt(): null} 
-					<div className="g-translate">
+					<div className="g-translate" id="gTranslate">
 
 							<CaseModalText
 								type="ch"
@@ -322,7 +319,7 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 							type="en"
 							changeState={this.changeState}
 						/>:<CaseModalText
-							params={this.obj}
+							params={this.state}
 							type="en"
 						/>}
 

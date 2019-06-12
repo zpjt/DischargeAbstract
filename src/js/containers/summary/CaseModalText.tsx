@@ -15,12 +15,11 @@ type caseModalProps = {
         fprn: string;
         fsurvey: string;
         fryqk: string;
-        fryzd: string;
+     //   fryzd: string;
         fzljg: string;
         fcyzd: string;
         fcyqk: string;
         fcyyz: string;
-      //  status: string;
         frydata: string;
         fcydata: string;
         fsumd: string;
@@ -54,7 +53,7 @@ class CaseModal extends React.PureComponent<caseModalProps>{
         return (
                         <div className={"m-translate "+(type === "ch" && "g-translate-ch" || "g-translate-en")}>
                             <p className="m-tit">{config.title}</p>
-                            <div className="g-translate-header">
+                            <div className="g-translate-header" >
                                 <div className="m-add-item">
                                     <p ><span className="m-right-tit m-head-tit">{config.fname}：</span>{is_en}{fname}</p>
                                     <p ><span className="m-right-tit m-head-tit">{config.fdept}：</span>{is_en}{fdept}</p>

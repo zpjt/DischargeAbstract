@@ -4,7 +4,8 @@ import * as React from "react";
 type BtnProps={
     handle?:(e:React.MouseEvent<HTMLButtonElement>)=>void;
     styleType:"normal-btn" | "dashed-btn" | "line-btn";
-    type:"danger" | "primary" | "green";
+    otherName?:string;
+    type?:"danger" | "primary" | "green";
     field?:string;
 }
 
@@ -20,6 +21,7 @@ type BtnState={
     static defaultProps={
         styleType:"normal-btn",
         type:"primary",
+        otherName:""
     }
     state={
         timeId:undefined
@@ -58,9 +60,9 @@ type BtnState={
 
     render(){
 
-        const {children,handle,styleType,type,field} = this.props;
+        const {children,handle,styleType,type,field,otherName} = this.props;
         return (
-            <button onClick={handle} name={field} className={`s-btn ${styleType} ${type}`} onMouseUp={this.keyUp} >
+            <button onClick={handle} name={field} className={`s-btn ${styleType} ${type} ${otherName}`} onMouseUp={this.keyUp} >
                 {children}
             </button>
         )

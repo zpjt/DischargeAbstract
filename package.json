@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/html2canvas": "^0.0.35",
     "@types/node": "^11.11.6",
     "@types/qs": "^6.5.3",
     "@types/react": "^16.8.8",
@@ -45,6 +46,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "html2canvas": "^1.0.0-rc.3",
     "immutable": "^4.0.0-rc.11",
     "qs": "^6.7.0",
     "react": "^16.8.4",
