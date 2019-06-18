@@ -96,13 +96,13 @@ class ResultSearch extends React.PureComponent<ResultProp,ResultState>{
         },
         {
             text: "状态",
-            field: "status",
+            field: "status_name",
             formatter:function(node:any){
 
                 // 主任角色可选筛选值 3：5：；6： 医生角色可选筛选值：1:，2：，4：
                 const status = node.status;
                 const name = status == 1 || status == 3 ? "m-translate-warn" : (status == 2 || status== 5 ?"m-translate-green":"m-translate-error");
-                return <span className={name}>{["","未翻译","翻译（未提交）","提交（未审核）","驳回","已审核","报错"][status]}</span>; 
+                return <span className={name}>{node.status_name}</span>; 
 
             }
         },

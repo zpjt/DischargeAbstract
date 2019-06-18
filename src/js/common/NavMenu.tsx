@@ -61,7 +61,6 @@ class ParMenu extends React.PureComponent<ItemProps>{
 							<div  className={"menu-item menu-par " + activeName} onClick={()=>slectItem(index)}>
 									<span className="par-icon">
 										<SvgIcon styleType={icon} />
-
 									</span>	
 									<span className="j-nav" >
 										<Link to={path}>{text}</Link>

@@ -14,24 +14,17 @@ class SoketNews extends React.PureComponent<socketProps,soketState>{
 
     static tryTime = 0 ;
     static heartflag = false;
-    webSocket:null | WebSocket = this.initSocket();
+    webSocket:null | WebSocket;
     state:soketState={
         data:[]
     }
-    initSocket(){
+    initSocket(props:socketProps){
         
-       const {user_id,role_id} = this.props;
-       return  new WebSocket(Url+"/"+user_id+"/"+role_id);
+       const {user_id,role_id} = props;
 
-    }
-    
-    componentDidMount(){
-      
-       
-        const _self = this ;
-        const webSocket = this.webSocket!;
-		// 收到服务端消息
-        webSocket.onmessage = function (msg) {
+       const webSocket = new WebSocket(Url+"/"+user_id+"/"+role_id);
+       const _self = this ;
+       webSocket.onmessage = function (msg) {
 
              const result = msg.data;
 
@@ -39,13 +32,13 @@ class SoketNews extends React.PureComponent<socketProps,soketState>{
 
              }else if(result){
 
-            	const data = JSON.parse(msg.data);
+                const data = JSON.parse(msg.data);
                 const arr = data.data
                 _self.setState({
                     data: arr ,
                 });
-            	
-				
+                
+                
             }
 
 
@@ -77,13 +70,37 @@ class SoketNews extends React.PureComponent<socketProps,soketState>{
                 setTimeout(function () {
                     _self.webSocket = null;
                     SoketNews.tryTime++;
-                   _self.webSocket = _self.initSocket();
+                   _self.webSocket = _self.initSocket(_self.props);
                     console.log("  第"+SoketNews.tryTime+"次重连");
                 }, 3*1000);
             } else {
                 //alert("重连失败.");
             }
         };
+
+       return  webSocket;
+
+    }
+
+    componentWillReceiveProps(nextProps:socketProps){
+
+        const {role_id,user_id}=this.props;
+        if(nextProps.role_id!==role_id || nextProps.user_id!==user_id){
+
+                this.webSocket!.close();
+
+                this.webSocket = this.initSocket(nextProps);
+
+
+
+        }
+
+    }
+    
+    componentDidMount(){
+      
+      this.webSocket = this.initSocket(this.props);
+    
     }
 
     componentWillUnmount(){
@@ -122,11 +139,11 @@ class SoketNews extends React.PureComponent<socketProps,soketState>{
                 </div>
                 <ul className="m-soket-drop m-sysOpt">
                     {
-                        data.map((val,index)=>{
+                      data.length ?  data.map((val,index)=>{
                             return (
                                 <li key={index}>{val}</li>
                             )
-                        })
+                        }) :<li>没有消息!</li>
                     }
                 </ul>
             </>
