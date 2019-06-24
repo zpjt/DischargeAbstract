@@ -14,7 +14,7 @@ type props = {
 	field: string;
 	multiply?: boolean;
 	defaultVal?: string;
-	width?: number;
+	width?: number|"auto";
 	maxHeight?: number;
 	data: any[];
 	hasSlideIcon?: boolean;

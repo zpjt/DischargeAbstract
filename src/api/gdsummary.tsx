@@ -23,6 +23,15 @@ export default {
         })
 
     },
+     saveChSummaryCase:function(data:any) {
+
+        return axios.post("summary/saveChSummaryCase",data,{
+            headers:{
+                "Content-Type":"application/json"
+            }
+        })
+        
+    },
     upSummaryCaseError:function(id:string,errMessages:string){//报错不翻译
         return axios.post("/summary/upSummaryCaseError",qs.stringify({id,errMessages}))
     },

@@ -6,17 +6,21 @@ import CaseModalInp from "../summary/CaseModalInp";
 import {withRouter} from "react-router-dom";
 import {Button,Icon, SvgIcon} from "@js/common/Button";
 import {Notification} from "@js/common/toast/index";
+import {createTypedMap} from "@js/common/ImmutableMap";
 
 type caseModalProps = {
-    data:SummarySpace.params & {id:string};
-    user_id:string,
+    data:SummarySpace.params ;
+    user_id:string;
     pathTo(path:any):void;
     hasSave:boolean;
     orgData:{id:string;name:string}[];
 };
 
 
-type caseModalState = SummarySpace.params & {id:string};
+type caseModalState = {
+
+    data:TypedMap<SummarySpace.params> 
+}  ;
 
 
 
@@ -25,7 +29,9 @@ type caseModalState = SummarySpace.params & {id:string};
 class AddCaseModal extends React.PureComponent< caseModalProps, caseModalState>{
 
     
-    state = Object.assign({},this.props.data) ;
+    state:caseModalState ={
+        data:createTypedMap(this.props.data)
+    }  ;
 
     notificationRef:React.RefObject<Notification> = React.createRef();
     componentDidMount(){
@@ -37,8 +43,9 @@ class AddCaseModal extends React.PureComponent< caseModalProps, caseModalState>{
 
         const{ user_id} = this.props;
         const type = e.currentTarget!.name as "save" | "submit";
-        const {...parmas}  = this.state;
-        const obj = Object.assign({user_id},parmas);
+        const {data}  = this.state;
+        
+        const obj = Object.assign({user_id},data.toJS());
 
         const notifacation = this.notificationRef.current!;
 
@@ -77,10 +84,10 @@ class AddCaseModal extends React.PureComponent< caseModalProps, caseModalState>{
     }
 
     changeState=(field:keyof SummarySpace.params,value:string)=>{
-        this.setState({
-            [field as "fname"]:value,
-            
-        })
+        this.setState(pre=>({
+           
+             data:pre.data.set(field,value)  
+        }))
     }
     
    
@@ -89,15 +96,15 @@ class AddCaseModal extends React.PureComponent< caseModalProps, caseModalState>{
 
         const text = e.currentTarget!.dataset.name;
 
-        this.setState({
-           fdept:text!    
-        })
+        this.setState(pre=>({
+          data:pre.data.set("fdept",text!)   
+        }))
 
     }
 
     filterOrg(){
         const {orgData} = this.props;
-        const {fdept} = this.state;
+        const fdept = this.state.data.get("fdept")
 
         return orgData.filter(val=>{
             return val.name.includes(fdept)
@@ -108,7 +115,8 @@ class AddCaseModal extends React.PureComponent< caseModalProps, caseModalState>{
 
     render() {
 
-        const { id,...obj} = this.state;
+        const { data} = this.state;
+        
         const orgData = this.filterOrg();
 
         return (
@@ -116,7 +124,7 @@ class AddCaseModal extends React.PureComponent< caseModalProps, caseModalState>{
                 <Notification  ref={this.notificationRef}/>
                 <div className="g-translate-box" style={{ width: "50%", marginLeft: 10 }} >
                     <div className="g-translate g-add-modal">
-                        <CaseModalInp data={obj} type="ch" changeState={this.changeState} >
+                        <CaseModalInp data={data} type="ch" changeState={this.changeState} >
                             <ul className="m-org-drop" >{
                                 orgData.map(val=>{
                                     return (

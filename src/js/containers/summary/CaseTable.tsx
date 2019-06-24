@@ -102,7 +102,16 @@ class ResultSearch extends React.PureComponent<ResultProp,ResultState>{
 
                 // 主任角色可选筛选值 3：5：；6： 医生角色可选筛选值：1:，2：，4：
                 const status = node.status;
-                const name = status == 1 || status == 3 ? "m-translate-warn" : (status == 2 || status== 5 ?"m-translate-green":"m-translate-error");
+
+                const obj={
+                    "1":"m-translate-warn",
+                    "2":"",
+                    "3":"m-translate-green",
+                    "4":"m-translate-error",
+                    "5":"",
+                    "6":"m-translate-error",
+                }
+                const name = obj[status as "1"];
                 return <span className={name}>{node.status_name}</span>; 
 
             }

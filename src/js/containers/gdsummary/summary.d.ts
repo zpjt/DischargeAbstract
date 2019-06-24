@@ -17,6 +17,7 @@ declare namespace SummarySpace{
         frydata: string;
         fcydata: string;
         fsumd: string;
+        id?:string;
 
     }
 }
