@@ -11,6 +11,7 @@ type TableProps = {
     pageSize: number;//每页多少条
     pages: number;//共有的页数
     tableH: string;
+    checkbox: boolean,
     changeHandle(field: any, value: string): void;
     
 }
@@ -182,10 +183,10 @@ export default class Table extends React.PureComponent<TableProps, TableState>{
 
     }
 
-    getColgroupCom(column: columnItem[]) {
+    getColgroupCom(column: columnItem[],checkbox:boolean) {
 
         return (<colgroup>
-            <col style={{ width: "40px" }} />
+            {checkbox ?<col style={{ width: "40px" }} />:null}
             {
                 column.map(({ width, field }) => {
                     const wObj = width ? { width: width + "px" } : {};
@@ -273,6 +274,7 @@ export default class Table extends React.PureComponent<TableProps, TableState>{
                 <span
                     className={"m-page-num " + (pages - 5 +val == pageNum ? "active" : "")}
                     data-num={pages-5+val}
+                    key={pages-5+val}
                     onClick={this.pageCodeHandle}
                 >
 
@@ -301,6 +303,7 @@ export default class Table extends React.PureComponent<TableProps, TableState>{
                 data-num={pageNum - 3 + val }
                 onClick={this.pageCodeHandle}
                 className={"m-page-num " + (pageNum -3 +  val == pageNum ? "active" : "")}
+                key={pageNum - 3 + val}
                 
             >
                 {pageNum - 3 + val}
@@ -328,6 +331,7 @@ export default class Table extends React.PureComponent<TableProps, TableState>{
             <span
             className={"m-page-num " + (val == pageNum ? "active" : "")}
             data-num={val}
+            key={val}
             onClick={this.pageCodeHandle}
             >
                 {val}
@@ -338,7 +342,7 @@ export default class Table extends React.PureComponent<TableProps, TableState>{
 
     render() {
 
-        const { list, column, idField, total, pageNum,pages } = this.props;
+        const { list, column, idField, total, pageNum,pages ,checkbox} = this.props;
         const { tableH, checkArr } = this.state;
 
         let tabOver = "";
@@ -353,7 +357,7 @@ export default class Table extends React.PureComponent<TableProps, TableState>{
             h += "px";
         };
 
-        const colgroupCom = this.getColgroupCom(column);
+        const colgroupCom = this.getColgroupCom(column,checkbox);
 
         const checkStatus = this.countTotalStatus(checkArr,list);
 
@@ -377,12 +381,12 @@ export default class Table extends React.PureComponent<TableProps, TableState>{
                     {colgroupCom}
                     <thead >
                         <tr>
-                            <th >
+                           {checkbox? <th >
                                 <label className="m-label m-lab-checkbox" >
                                     <input type="checkbox" name="all" className={ checkStatus.hasCheck && "has-check" || ""} checked={checkStatus.hasAll } onChange={this.checkAll} />
 
                                 </label>
-                            </th>
+                            </th>:null}
                             {
                                 column.map(({ text, field }) => {
                                     return <th key={field}>{text}</th>
@@ -405,12 +409,12 @@ export default class Table extends React.PureComponent<TableProps, TableState>{
                                 const checkStaus = checkArr.includes(id);
 
                                 return (<tr key={id}>
-                                    <td style={{ width: "60px" }}>
+                                   {checkbox ? <td style={{ width: "60px" }}>
                                         <label className="m-label m-lab-checkbox" >
                                             <input type="checkbox" name={id} checked={checkStaus} onChange={this.checkItem} />
 
                                         </label>
-                                    </td>
+                                    </td>:null}
                                     {
                                         column.map((node) => {
                                             const { field, formatter } = node;

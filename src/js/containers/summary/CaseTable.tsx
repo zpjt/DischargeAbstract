@@ -55,6 +55,7 @@ type ResultProp = {
     data:caseData;
     type : string; 
     delItem:(ids:string)=>void;
+    roleId:string;
 } 
 type ResultState={
 }
@@ -112,7 +113,7 @@ class ResultSearch extends React.PureComponent<ResultProp,ResultState>{
             width: 180,
             formatter: (node:any)=>{
 
-                const type = this.props.type;
+                const { type ,roleId} = this.props;
                 const pathObj = {
                     pathname:"/translate",
                     state:{
@@ -123,7 +124,7 @@ class ResultSearch extends React.PureComponent<ResultProp,ResultState>{
                 return (<>
                         <NavLink to={pathObj} ><button className="s-btn normal-btn primary" >查看</button></NavLink>
                         &nbsp;
-                        <Button type="danger" field={node.id}  handle={this.delItemCase}>删去</Button>
+                       {roleId != "3202" ? <Button type="danger" field={node.id}  handle={this.delItemCase}>删除</Button> :null}
                         </>
                         )
             }
@@ -153,7 +154,7 @@ class ResultSearch extends React.PureComponent<ResultProp,ResultState>{
 
     }
     render(){
-        const {data} = this.props;
+        const {data,roleId} = this.props;
 
         if(!data){
             return "";
@@ -170,6 +171,7 @@ class ResultSearch extends React.PureComponent<ResultProp,ResultState>{
                         total={total}
                         pages={pages}
                         changeHandle={changeHandle}
+                        checkbox={roleId!="3202"}
                     />
 
 

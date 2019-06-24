@@ -224,29 +224,17 @@
 	}
 }
 .g-translate-en{
-	// .m-add-item:last-child{
-	// 	.m-head-tit{
-	// 		//width:146px;
-	// 	}
-
-	// }
-	// .m-add-item:nth-child(2){
-	// 	.m-head-tit{
-	// 	//	width:86px;
-	// 	}
-
-	// }
-	// .m-add-item:nth-child(1){
-	// 	.m-head-tit{
-	// 	//@extend	width:134px;
-	// 	}
-
-	// }
 	.m-survey{
 		width: calc(100% - 80px)
 	}
 	.m-article-tit{
 		width: 160px;
+	}
+
+	.m-article{
+		border-radius: 4px;
+		//border:1px solid $normal;
+		//min-height: 40px;
 	}
 }
 .m-translate{
@@ -276,16 +264,21 @@
 	}
 }
 
-
+.g-role-sys{
+	.m-sysOpt{
+		width: 60px;
+		right: 10px;
+	}
+}
 
 .m-mail{
 	position: relative;
-	width: 80px;
+	width: 40px;
 	cursor: pointer;
 	.m-soket-drop{
 		width: 120px;
 		text-align: left;
-		right: auto;
+		left:-10px;
 	}
 	.fa-circle{
 		color: red;

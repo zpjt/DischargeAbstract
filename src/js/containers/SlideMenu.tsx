@@ -4,7 +4,8 @@ import ErrorBoundary from "@js/common/ErrorBoundary";
 import * as Velocity from "velocity-react";
 import {connect,MapStateToProps} from "react-redux";
 import  Api from "@api/main";
-import {SvgIcon} from "@js/common/Button"
+import {SvgIcon} from "@js/common/Button";
+import {withRouter,RouteComponentProps} from "react-router-dom"
 
 type slideMenu={
 	expand:boolean;
@@ -21,7 +22,7 @@ type SlideMenuState ={
 
 }
 
-class SlideMenu extends React.PureComponent< SlideMenuProp & reduxProp,SlideMenuState>{
+class SlideMenu extends React.PureComponent< reduxProp & RouteComponentProps<SlideMenuProp> ,SlideMenuState>{
 
 	state:slideMenu = {
 		expand:true,
@@ -34,16 +35,36 @@ class SlideMenu extends React.PureComponent< SlideMenuProp & reduxProp,SlideMenu
 		
 		Api.getMenu({role_id}).then(res=>{
 
-			this.setState({
-						data:res.data,
-				});
+			this.setState(()=>({
+				data:res.data,
+			}),()=>{
+
+				this.firstNav();
+			});
 			
 		})
 		
 	}
 
+	firstNav(){
+
+		const {history} = this.props;
+		const {data} = this.state; 
+
+		const firstNode = data[0].children[0];
+
+		history.push({
+			pathname:firstNode.url,
+			state:{
+				text:firstNode.name,
+			}
+		});
+
+
+	}
+
 	componentDidMount(){
-			this.getMenu(this.props.roleId);
+		this.getMenu(this.props.roleId);
 	}
 	componentWillReceiveProps(nextProps:reduxProp){
 		if(nextProps.roleId!=this.props.roleId){
@@ -76,7 +97,14 @@ class SlideMenu extends React.PureComponent< SlideMenuProp & reduxProp,SlideMenu
 													</span>	
 											</div>
 											<ErrorBoundary>
-											{data.length ?	<MenuNav  data={data} expand={expand} textField="name" iconField="sysParam"/> :null}
+											{data.length ?	
+											<MenuNav  
+												data={data} 
+												expand={expand} 
+												textField="name" 
+												iconField="sysParam"
+											
+											/> :null}
 											</ErrorBoundary>
 					</div>
 			</Velocity.VelocityComponent> );
@@ -90,7 +118,7 @@ type reduxProp ={
 	roleId:string;
 } 
 
-const mapStateToProp:MapStateToProps<reduxProp,SlideMenuProp,appStore>=({app})=>{
+const mapStateToProp:MapStateToProps<reduxProp,RouteComponentProps<SlideMenuProp> ,appStore>=({app})=>{
 
 	const roleId = app.get("role_ids")[app.get("role_index")];
 	return {
@@ -101,4 +129,4 @@ const mapStateToProp:MapStateToProps<reduxProp,SlideMenuProp,appStore>=({app})=>
 }
 
 
-export default connect(mapStateToProp)(SlideMenu);
+export default withRouter(connect(mapStateToProp)(SlideMenu)) ;

@@ -105,8 +105,8 @@ body,html{
 						}
 					}
 					li.active{
-						background: $themeColor;
-						color:white
+						color:$themeColor;
+						font-weight: bolder;
 					}
 				}
 				.m-sysOpt{

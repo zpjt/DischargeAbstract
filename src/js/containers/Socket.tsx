@@ -133,7 +133,7 @@ class SoketNews extends React.PureComponent<socketProps,soketState>{
 
         return (
             <>
-                <div style={{ padding: "20px 10px" }}>
+                <div style={{ padding: "20px 0" }}>
                     <i className="fa fa-envelope-o fa-lg"></i>
                    { data.length ? <i className="fa fa-circle"></i> :null}
                 </div>

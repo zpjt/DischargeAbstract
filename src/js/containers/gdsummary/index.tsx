@@ -14,6 +14,7 @@ type translateProps = {
 	data:any;
 	id:string;
 	type:string;//路由路径
+	roleId:string;
 	pathTo(path:"gdsummary"|"summary"):void;
 };
 
@@ -140,7 +141,7 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 
 	modalSureHanlde=()=>{
 
-		const {type,id} = this.props;
+		const {id,roleId} = this.props;
 		const {reasonTxt} = this.state;
 
 		const notification = this.notificationRef.current!;
@@ -150,7 +151,7 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 			return ;
 		}
 
-		if(type=="/summary"){
+		if(roleId=="3202"){
 
 			Api.upSummaryCaseError(id,reasonTxt).then((res:AxiosInterfaceResponse)=>{
 
@@ -276,7 +277,7 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 	}
 	render() {
 
-		const { data,type,} = this.props;
+		const { data,type,roleId} = this.props;
 		const {initModal,showModal,reasonTxt} = this.state;
 		const status = data.china.status;
 		const is_gdsummary = type == "/gdsummary";
@@ -287,7 +288,7 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 					initModal ? (<Modal
 						
 						show={showModal}
-						tit={is_gdsummary ? "驳回"  :"报错"}
+						tit={roleId !="3202" ? "驳回"  :"报错"}
 						type="tip"
 						onSure={this.modalSureHanlde}
 						onCancel={this.toggleModal}
@@ -296,7 +297,7 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 					
 					>
 						<div>
-							<p style={{padding:"6px 0"}}><span>{is_gdsummary? "驳回" :"报错"}原因：</span></p>
+							<p style={{padding:"6px 0"}}><span>{roleId!="3202"? "驳回" :"报错"}原因：</span></p>
 							<div><textarea value={reasonTxt} onChange={this.changeReason} className="s-txt" style={{width:"100%"}} rows={6}></textarea></div>
 						</div>
 
@@ -306,13 +307,18 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 				<p style={{ paddingBottom: 16 }}>{text} / 查看详情</p>
 				<div className="g-translate-box" >
 
-				{is_gdsummary ? status == "5" ? this.getDao():this.getCheckOpt(): null} 
+				{  status == "5" ? this.getDao():null} 
 					<div className="g-translate" id="gTranslate">
 
-							<CaseModalText
+						{
+							status != "6" ?	<CaseModalText
 								type="ch"
 								params={data.china}
-							/> 
+							/> : 
+							<CaseModalInp data={data.china} type="ch" changeState={this.changeState} >
+                           
+                        </CaseModalInp>
+						}
 
 						{!is_gdsummary ?<CaseModalInp
 							data={this.state}
@@ -326,9 +332,24 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 					</div>
 				
 					{!is_gdsummary ? (<div className="translate-footer-opt">
-						<Button field="error" handle={this.submit} styleType="line-btn" type="danger"><Icon styleType=""/>报错</Button>
-						<Button field="save" handle={this.submit}  type="green"><Icon styleType="fa-floppy-o"/>保存</Button>
-						<button className="s-btn normal-btn primary" name="submit" onClick={this.submit}><SvgIcon styleType="submit"/>提交</button>
+
+						{
+							roleId == "3202" ?
+							 <>
+								<Button field="error" handle={this.submit} styleType="line-btn" type="danger"><Icon styleType=""/>报错</Button>
+								<Button field="save" handle={this.submit}  type="green"><Icon styleType="fa-floppy-o"/>保存</Button>	<button className="s-btn normal-btn primary" name="submit" onClick={this.submit}><SvgIcon styleType="submit"/>提交</button>
+							</>
+							:<>
+								<button className="s-btn normal-btn primary" name="pass" onClick={this.submit}><SvgIcon styleType="submit"/>通过</button>
+								<button className="s-btn normal-btn danger" name="reject" onClick={this.submit}>驳回</button>
+							</>
+
+						}
+
+						
+
+
+					
 						<Link to={{ pathname: "/summary", state: { text: "病历清单" } }}><button className="s-btn line-btn green" ><i className="fa fa-undo">&nbsp;</i>返回</button></Link>
 					</div>):null}
 				</div>
@@ -341,7 +362,7 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 }
 
 
-class Container extends React.PureComponent<RouteComponentProps<reduxProp>,ContainerState> {
+class Container extends React.PureComponent<RouteComponentProps & reduxProp ,ContainerState> {
 
 	state={
 		data:null,
@@ -367,9 +388,9 @@ class Container extends React.PureComponent<RouteComponentProps<reduxProp>,Conta
 	render(){
 
 		const {data} = this.state;
-		const{location:{state:{id,type}} } =this.props;
+		const{location:{state:{id,type}} ,roleId} =this.props;
 
-		return data ? <TranslateManage data={data} id={id}  type={type}  pathTo={this.back}/>:null;
+		return data ? <TranslateManage roleId={roleId} data={data} id={id}  type={type}  pathTo={this.back}/>:null;
 	}
 }
 

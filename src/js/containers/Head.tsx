@@ -170,7 +170,7 @@ class Head extends React.PureComponent<RouteComponentProps<HeadProp> & reduxStat
 				<div className="g-user-opt" >
 					<div style={{ padding: "20px 10px" }}>
 						<SvgIcon styleType="user" size="size1"/>
-						<span style={{verticalAlign:4}}>&nbsp;&nbsp;{user_name}</span>
+						<span style={{verticalAlign:4}}>{user_name}</span>
 					</div>
 					<ul className="m-sysOpt">
 						<li onClick={this.logOut}>

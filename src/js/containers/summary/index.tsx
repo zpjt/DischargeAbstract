@@ -168,7 +168,13 @@ class CaseManage extends React.PureComponent<RouteComponentProps<caseProps> & re
 
 	render() {
 
-		const { location: { state: { text } ,pathname} } = this.props;
+		
+		const { location: { state:{text} ,pathname} ,roleId} = this.props;
+
+
+
+
+
 		const {data,initDelModal,showModal,fetching} = this.state;
 		const modalDom = document.getElementById("s-modal")!;
 
@@ -193,12 +199,15 @@ class CaseManage extends React.PureComponent<RouteComponentProps<caseProps> & re
 					type={pathname}
 					showModal={this.delMultiply}
 					daoPatch={this.daoPatch}
+					roleId={roleId}
+				
 				/>
 				{data ?  <ResultSearch  
 					data={data}
 				    changeHandle={this.changeState} 
 					type={pathname}
 					delItem = {this.delitem}
+					roleId={roleId}
 				/> : null}
 
 			</div>

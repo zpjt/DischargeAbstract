@@ -10,6 +10,7 @@ type HeadOptProp = {
 	type:string;
 	showModal:()=>void;
 	daoPatch():void;
+	roleId:string;
 }
 
 type HeadOptState = {
@@ -39,7 +40,33 @@ const translateArr = [
 	}
 	, {
 		id: "2",
-		text: "未提交"
+		text: "已翻译"
+	}, {
+		id: "4",
+		text: "驳回"
+	},
+	{
+		id: "6",
+		text: "报错",
+	},
+	{
+		id: "3",
+		text: "未审核",
+ 	},
+	{
+		id: "0",
+		text: "所有"
+	}
+];
+const translateArr2 = [
+	{
+		id: "1",
+		text: "未翻译",
+		text2:""
+	}
+	, {
+		id: "2",
+		text: "已翻译"
 	}, {
 		id: "4",
 		text: "驳回"
@@ -49,25 +76,6 @@ const translateArr = [
 		text: "所有"
 	}
 ];
-const checkArr = [
-	{
-		id: "3",
-		text: "未审核",
-	},	{
-		id: "6",
-		text: "报错",
-	}
-	
-	, {
-		id: "5",
-		text: "已审核"
-	},
-	{
-		id: "0",
-		text: "所有"
-	}
-];
-
 export default class HeadOpt extends React.PureComponent<HeadOptProp, HeadOptState>{
 
 	state = {
@@ -126,7 +134,7 @@ export default class HeadOpt extends React.PureComponent<HeadOptProp, HeadOptSta
 
 	render() {
 
-		const {type} = this.props;
+		const {type,roleId} = this.props;
 		return (<>
 			<div>
 
@@ -138,7 +146,10 @@ export default class HeadOpt extends React.PureComponent<HeadOptProp, HeadOptSta
 						<Search searchHandle={this.inputChange} field="fage" hasBtn={false} width={80} tip="年龄搜索..." closeHandle={this.closeInput} />
 						<Calendar ableClear={true} field="lrdata" width={140} placeholder="录入时间" clickBack={this.changeTime} />
 						{ type == "/gdsummary"? <Calendar ableClear={true} field="gddata" width={140} placeholder="归档时间" clickBack={this.changeTime} /> :null }
-						<Combobox data={type !== "/gdsummary" ? translateArr : checkArr} field="status" clickCallback={this.comboboxCallback} width={100}  defaultVal="0" />
+						{
+						type !== "/gdsummary"	? <Combobox data={ roleId=="3202" ?translateArr2 : translateArr } field="status" clickCallback={this.comboboxCallback} width={100}  defaultVal="0" /> : null 
+						}
+						
 					</div>
 
 
@@ -149,7 +160,7 @@ export default class HeadOpt extends React.PureComponent<HeadOptProp, HeadOptSta
 						):<Link to="/addCaseModal"><Button field="" ><Icon styleType="fa-plus"/>添加病历</Button></Link> }
 
 					
-						<Button handle={this.optHandle} field="del" styleType="line-btn" type="danger"><Icon styleType="fa-trash"/>批量删除</Button>
+						{roleId != "3202" ? <Button handle={this.optHandle} field="del" styleType="line-btn" type="danger"><Icon styleType="fa-trash"/>批量删除</Button> : ""}
 					</div>
 				</div>
 			</div>

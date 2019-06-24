@@ -1,4 +1,4 @@
-import {Route} from "react-router";
+import {Route} from "react-router-dom";
 import * as React from "react";
 import Summary from "./containers/summary/index";
 import AddCaseModal from "./containers/summary/AddCaseModal";

@@ -135,7 +135,6 @@ class SubMenu extends React.PureComponent<SubMenuProp,SubMenuState>{
 									<span className="j-nav" onClick={()=>slectItem(index,parIndex)}>
 										<NavLink 
 										to={pathObj} 
-										replace={true}
 										>{text}</NavLink>
 									</span>
 							</div>	
@@ -165,37 +164,37 @@ type state={
 	preIndex:number[];			
 }
 
-class NavMenu extends React.PureComponent<props,state>{
+class NavMenu extends React.PureComponent<  props,state>{
 	
 	static defaultProps = {
 					textField:"text",
 					childrenField:"children",
 					pathField:"url",
 					iconField:"icon",
-					idField:"id"
+					idField:"id",
+					defaultNav: [],
 				};
 
+	state:state={
+			data:Immutable.fromJS(this.addFieldToData(this.props.data)),
+			preIndex:[0,0],
+	}	
+	
 
-	constructor(props:props){
 
-		super(props);
-		const menuData = this.addFieldToData(this.props.data);
-		this.state={
-			data:Immutable.fromJS(menuData),
-			preIndex:[],
-		}
-	}
+	
 
 	addFieldToData(data:props["data"]){
-
-		return data.map((val:any)=>{
-							val.active = false ;
-							const child = val.children.map((node:any)=>{
-								node.active = false ;
-								return node ;
-							});
-							val.children = child ;
-							return val ;
+		const preIndex = [0,0];
+		return data.map((val,index)=>{
+			const is_firstPar = index == preIndex[0];
+			val.active = is_firstPar;  
+			const child = val.children.map((node:any,oIndex:number)=>{
+				node.active = (is_firstPar && oIndex == preIndex[1]) || false ;
+				return node ;
+			});
+			val.children = child ;
+			return val ;
 		});
 
 	}
@@ -205,7 +204,7 @@ class NavMenu extends React.PureComponent<props,state>{
 		if(nextProp.data!==this.props.data){
 			this.setState({
 				data:Immutable.fromJS(this.addFieldToData(nextProp.data)),
-				preIndex:[],
+				preIndex:[0,0],
 			})
 		}
 
@@ -214,10 +213,6 @@ class NavMenu extends React.PureComponent<props,state>{
 
 
 	restPreSel(pre:state){
-
-
-
-
 
 		const {preIndex,data} = pre ;
 		const {childrenField} = this.props ;
@@ -336,4 +331,4 @@ class NavMenu extends React.PureComponent<props,state>{
 
 
 
-export default NavMenu ;
+export default NavMenu;
