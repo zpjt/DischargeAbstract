@@ -15,6 +15,7 @@ type ModalProps = {
 		onSure:()=>void;
 		show:boolean;
 		type?:"tip"|"question";
+		width?:number;
 }
 
 type ModalState = {
@@ -69,7 +70,7 @@ export default class Modal extends React.PureComponent<ModalProps,ModalState>{
 
 
 
-		const {children,container,tit,confirmName,cancelName,onCancel,show,className,type} = this.props;
+		const {children,container,tit,confirmName,cancelName,onCancel,show,className,type,width} = this.props;
 		let flag = container;
 
 		const {pointX,pointY} = this.state;
@@ -82,9 +83,9 @@ export default class Modal extends React.PureComponent<ModalProps,ModalState>{
 						onMouseUp={this.headMouseUp}
 					>
 						
-						<div className="m-Mwrap">
+						<div className="m-Mwrap" >
 							<div className="m-Mask" />
-							<div className="m-Modal" style={{transform:`translate(${pointX}px , ${pointY}px)`}}>
+							<div className="m-Modal" style={{transform:`translate(${pointX}px , ${pointY}px)`,width}}>
 								<div className="m-Mtit"
 											onMouseDown={this.headMouseDown} 
 											

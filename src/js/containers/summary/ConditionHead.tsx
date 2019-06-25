@@ -11,6 +11,7 @@ type HeadOptProp = {
 	showModal:()=>void;
 	daoPatch():void;
 	roleId:string;
+	showUpfileHandle():void;
 }
 
 type HeadOptState = {
@@ -38,10 +39,13 @@ const translateArr = [
 		text: "未翻译",
 		text2:""
 	}
-	, {
-		id: "2",
-		text: "已翻译"
-	}, {
+	,
+	//  {
+	// 	id: "2",
+	// 	text: "已翻译"
+	// },
+	
+	{
 		id: "4",
 		text: "驳回"
 	},
@@ -134,7 +138,7 @@ export default class HeadOpt extends React.PureComponent<HeadOptProp, HeadOptSta
 
 	render() {
 
-		const {type,roleId} = this.props;
+		const {type,roleId,showUpfileHandle} = this.props;
 		return (<>
 			<div>
 
@@ -157,8 +161,9 @@ export default class HeadOpt extends React.PureComponent<HeadOptProp, HeadOptSta
 
 						{ type ==="/gdsummary" ?(
 						<Button field="patchDao" handle={this.optHandle}> <Icon  styleType="fa-external-link"/>批量导出</Button>
-						):<Link to="/addCaseModal"><Button field="" ><Icon styleType="fa-plus"/>添加病历</Button></Link> }
-
+						):<><Button field="upfile" handle={showUpfileHandle}> <Icon  styleType="fa-external-link"/>病例导入</Button><Link to="/addCaseModal"><Button field="" ><Icon styleType="fa-plus"/>添加病历</Button></Link> </>}
+						
+						
 					
 						{roleId != "3202" ? <Button handle={this.optHandle} field="del" styleType="line-btn" type="danger"><Icon styleType="fa-trash"/>批量删除</Button> : ""}
 					</div>

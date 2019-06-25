@@ -150,9 +150,9 @@ class Head extends React.PureComponent<RouteComponentProps<HeadProp> & reduxStat
 				<div className="g-role-sys">
 					<div style={{ padding: "20px 10px"}}>
 						<span>{role_arr[role_index]}&nbsp;&nbsp;&nbsp;</span>
-						<span className="fa fa-arrows-v ">&nbsp;切换角色</span>
+					{role_ids.length ?	<span className="fa fa-arrows-v ">&nbsp;切换角色</span>:null}
 					</div>
-					<ul className="m-sysOpt">
+					{role_ids.length ?<ul className="m-sysOpt">
 						{
 							role_ids.map((val, index) => {
 								return (
@@ -162,7 +162,7 @@ class Head extends React.PureComponent<RouteComponentProps<HeadProp> & reduxStat
 								)
 							})
 						}
-					</ul>
+					</ul>:null}
 				</div>
 				<div className="m-mail">
 					 <SocketNews  user_id={user_id} role_id={role_id}/>

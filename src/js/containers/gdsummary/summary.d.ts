@@ -18,6 +18,7 @@ declare namespace SummarySpace{
         fcydata: string;
         fsumd: string;
         id?:string;
+        status?:number;
 
     }
 }

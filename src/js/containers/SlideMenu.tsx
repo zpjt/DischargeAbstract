@@ -61,6 +61,7 @@ class SlideMenu extends React.PureComponent< reduxProp & RouteComponentProps<Sli
 		});
 
 
+
 	}
 
 	componentDidMount(){
@@ -86,6 +87,7 @@ class SlideMenu extends React.PureComponent< reduxProp & RouteComponentProps<Sli
 	render(){
 
 		const {expand,data} = this.state;
+		const {menuUrl} = this.props;
 
 		return (
 			<Velocity.VelocityComponent duration={300} animation={{width:this.state.expand ? 250 : 50}}>
@@ -103,7 +105,7 @@ class SlideMenu extends React.PureComponent< reduxProp & RouteComponentProps<Sli
 												expand={expand} 
 												textField="name" 
 												iconField="sysParam"
-											
+												menuUrl={menuUrl}
 											/> :null}
 											</ErrorBoundary>
 					</div>
@@ -116,17 +118,22 @@ class SlideMenu extends React.PureComponent< reduxProp & RouteComponentProps<Sli
 
 type reduxProp ={
 	roleId:string;
+	menuUrl:string;
 } 
 
 const mapStateToProp:MapStateToProps<reduxProp,RouteComponentProps<SlideMenuProp> ,appStore>=({app})=>{
 
 	const roleId = app.get("role_ids")[app.get("role_index")];
+	const menuUrl = app.get("menuUrl");
 	return {
 
 		roleId,
+		menuUrl
 
 	}
-}
+};
+
+
 
 
 export default withRouter(connect(mapStateToProp)(SlideMenu)) ;

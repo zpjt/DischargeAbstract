@@ -114,7 +114,7 @@ class CaseModal extends React.PureComponent<caseModalProps>{
                                        {!is_en ?  (<>于<Calendar width={120} field="frydata" clickBack={this.setCalendar} selTimeValArr={frydata} />{config.frydata}</> ):( config.frydata + frydata)}
                                         ，
                                       { !is_en ?<>于<Calendar width={120} field="fcydata" clickBack={this.setCalendar} selTimeValArr={fcydata} />{config.fcydata}</>: config.fcydata+fcydata}
-                                        ，<>{config.fsumd}&nbsp;{!is_en ? <input className={"s-inp normal " + (!fsumd && "no-fill" || "")} style={{width:60}} name="fsumd" onChange={this.changeHandle} />: fsumd}&nbsp;{config.fsumd1}</>。</span>
+                                        ，<>{config.fsumd}&nbsp;{!is_en ? <input className={"s-inp normal " + (!fsumd && "no-fill" || "")} style={{width:60}} name="fsumd" onChange={this.changeHandle} value={fsumd} />: fsumd}&nbsp;{config.fsumd1}</>。</span>
                                 </div>
                                 <p className="translate-item">
                                     <span className="m-right-tit m-article-tit">{config.fryqk}：</span>

@@ -19,8 +19,10 @@ type caseModalProps = {
 
 type caseModalState = {
 
-    data:TypedMap<SummarySpace.params> 
-}  ;
+    data:TypedMap<SummarySpace.params> ;
+    timeId:null | number;
+    isChange:boolean;
+};
 
 
 
@@ -28,13 +30,42 @@ type caseModalState = {
 
 class AddCaseModal extends React.PureComponent< caseModalProps, caseModalState>{
 
+    timeSave=10000;
     
     state:caseModalState ={
-        data:createTypedMap(this.props.data)
-    }  ;
+        data:createTypedMap(this.props.data),
+        timeId:null,
+        isChange:false
+    };
 
     notificationRef:React.RefObject<Notification> = React.createRef();
     componentDidMount(){
+       // 添加自动保存的定时器
+       const _self = this;
+       let oldData = this.state.data;
+        const timeId = window.setInterval(function(){
+
+            const newData = _self.state.data;
+
+            if(oldData !== newData){
+
+                const obj = Object.assign({ user_id:_self.props.user_id }, newData.toJS());
+                Api.addChSummaryCase(obj).then(() => {
+
+                        oldData = newData ;
+
+                        _self.setState({
+                            isChange:false
+                        })
+                });
+            }
+
+        },this.timeSave);
+
+        this.setState({
+            timeId,
+        })
+
         if(this.props.hasSave){
             this.notificationRef.current!.addNotice("有上次保存未提交的，请填写完整，然后提交！","warn",0);
         }
@@ -54,6 +85,10 @@ class AddCaseModal extends React.PureComponent< caseModalProps, caseModalState>{
             Api.addChSummaryCase(obj).then(()=> {
 
                 notifacation.addNotice("保存成功！","success");
+
+                this.setState({
+                    isChange:false
+                })
 
             });
 
@@ -86,7 +121,8 @@ class AddCaseModal extends React.PureComponent< caseModalProps, caseModalState>{
     changeState=(field:keyof SummarySpace.params,value:string)=>{
         this.setState(pre=>({
            
-             data:pre.data.set(field,value)  
+             data:pre.data.set(field,value),
+             isChange:true,  
         }))
     }
     
@@ -97,7 +133,8 @@ class AddCaseModal extends React.PureComponent< caseModalProps, caseModalState>{
         const text = e.currentTarget!.dataset.name;
 
         this.setState(pre=>({
-          data:pre.data.set("fdept",text!)   
+          data:pre.data.set("fdept",text!)  ,
+          isChange:true 
         }))
 
     }
@@ -112,13 +149,20 @@ class AddCaseModal extends React.PureComponent< caseModalProps, caseModalState>{
 
     }
 
+    componentWillUnmount(){
+
+        const {timeId} = this.state;
+
+        timeId && window.clearInterval(timeId);
+    }
+
 
     render() {
 
-        const { data} = this.state;
+        const { data,isChange} = this.state;
         
         const orgData = this.filterOrg();
-
+        const saveAlert:React.CSSProperties | undefined  = isChange ? {color:"black"} : undefined;
         return (
             <div className="g-padding g-gdsummary" id="g-gdsummary">
                 <Notification  ref={this.notificationRef}/>
@@ -137,8 +181,8 @@ class AddCaseModal extends React.PureComponent< caseModalProps, caseModalState>{
                     </div>
                 </div>
                 <div className="add-opt-box">
-                    <Button type="green" handle={this.submit} field="save"><Icon styleType="fa fa-floppy-o"/>保存</Button>
-                    <button className="s-btn normal-btn primary" name="submit" onClick={this.submit}><SvgIcon styleType="submit"/>提交</button>
+                    <Button type="green" handle={this.submit} field="save"><Icon styleType="fa fa-floppy-o"/><span style={saveAlert}>保存</span></Button>
+                    <button className="s-btn normal-btn primary " name="submit"  onClick={this.submit} ><SvgIcon styleType="submit"/>提交</button>
                     <Link to={{ pathname: "/summary", state: { text: "病历清单" } }}><button className="s-btn line-btn primary" ><i className="fa fa-undo">&nbsp;</i>取消</button></Link>
                 </div>
             </div>

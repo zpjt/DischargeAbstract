@@ -38,7 +38,11 @@ export default {
     getAllOrg(){
         return axios.get("/summary/getAllOrg")
     },
-  
+   upCaseFile(url:string,enPk:string){
+
+
+    return axios.post("/summary/upCaseFile",qs.stringify({url,enPk}))
+   }
 
 
 

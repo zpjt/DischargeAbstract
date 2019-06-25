@@ -105,7 +105,7 @@ class ResultSearch extends React.PureComponent<ResultProp,ResultState>{
 
                 const obj={
                     "1":"m-translate-warn",
-                    "2":"",
+                    "2":"m-translate-warn",
                     "3":"m-translate-green",
                     "4":"m-translate-error",
                     "5":"",
@@ -130,8 +130,9 @@ class ResultSearch extends React.PureComponent<ResultProp,ResultState>{
                         type,
                     }
                 }
+                const name = this.props.roleId == "3202" ? "翻译" :  "查看";
                 return (<>
-                        <NavLink to={pathObj} ><button className="s-btn normal-btn primary" >查看</button></NavLink>
+                        <NavLink to={pathObj} ><button className="s-btn normal-btn primary" >{name}</button></NavLink>
                         &nbsp;
                        {roleId != "3202" ? <Button type="danger" field={node.id}  handle={this.delItemCase}>删除</Button> :null}
                         </>

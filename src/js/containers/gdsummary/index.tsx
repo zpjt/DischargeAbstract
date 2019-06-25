@@ -1,6 +1,6 @@
 import * as React from "react";
 import { RouteComponentProps } from "react-router-dom";
-import { connect, MapStateToProps } from "react-redux";
+import { connect, MapStateToProps ,MapDispatchToProps} from "react-redux";
 import CaseModalText from "../summary/CaseModalText";
 import Api from "@api/gdsummary";
 import CaseModalInp from "../summary/CaseModalInp";
@@ -10,6 +10,7 @@ import {Notification} from "@js/common/toast/index";
 import Modal from "@js/common/Modal";
 import html2canvas from "html2canvas";
 import {createTypedMap} from "@js/common/ImmutableMap";
+import { changeMenuUrl } from "@js/actions/appAction";
 
 type translateProps = {
 	data:any;
@@ -18,6 +19,7 @@ type translateProps = {
 	roleId:string;
 	orgData:any[];
 	pathTo(path:"gdsummary"|"summary"):void;
+	changeMenu(menuUrl:string):void;
 };
 
 
@@ -31,6 +33,8 @@ type translateState =  {
 	showModal:boolean;
 	reasonTxt:string;
 	obj:paramsObj;
+	timeId:null | number;
+	isChange:boolean;
 }; 
 	
 
@@ -48,22 +52,34 @@ enum caseStatus {
 	returnCase,
 	checkedCase,
 	errorCase
-}
+};
+
+enum roleEnum{
+	doctor="3202",
+	director="3201"
+
+};
+
+
+
+
 
 
 
 class TranslateManage extends React.PureComponent<translateProps, translateState> {
 	static pathObj = { pathname: "/gdsummary", state: { text: "归档文案" } }
 	
-	
+	timeSave=10000;
 	state:translateState = {
 		initModal: false,
 		showModal: false,
 		reasonTxt: "",
-		obj:this.initState(this.props.data)
+		obj:this.initState(this.props.data,this.props.roleId),
+		timeId:null,
+		isChange:false,
 	}; 
 	notificationRef:React.RefObject<Notification> = React.createRef();
-	initState(data:{english:SummarySpace.params,china:SummarySpace.params}){
+	initState(data:{english:SummarySpace.params,china:SummarySpace.params},roleId:string){
 
 		const obj:SummarySpace.params ={
 			fname: "",
@@ -83,14 +99,16 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 			fsumd: "",
 		};
 		
-        if(data.english){
-            for (const iterator  in obj) {
-               const key = iterator as "fname";
-                 data.english[key] && (obj[key] = data.english[key]);
+        if(data.english    ){
+
+			if(roleId == roleEnum.doctor || (roleId == roleEnum.director && data.china.status! !== caseStatus.translate && data.china.status! !==caseStatus.noTranslate)){
+				for (const iterator  in obj) {
+				const key = iterator as "fname";
+					data.english[key] && (obj[key] = data.english[key]);
+				}
 			}
 
-
-			
+           
 		};
 
 		return createTypedMap({
@@ -103,16 +121,52 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 		const chinaData = this.props.data.china;
 		 const hasModal = chinaData.status == caseStatus.errorCase ? chinaData.errmessages : chinaData.status == caseStatus.returnCase ? chinaData.descr :false;
 		
-		hasModal && this.notificationRef.current!.addNotice( (caseStatus.returnCase == chinaData.status && "驳回："||"报错：")+hasModal,"warn",0)
+		hasModal && this.notificationRef.current!.addNotice( (caseStatus.returnCase == chinaData.status && "驳回："||"报错：")+hasModal,"warn",0);
+
+		  // 添加自动保存的定时器
+		  
+		if(this.props.roleId!="3202"){ //医生
+			  return 
+		}
+       const _self = this;
+       let oldData = this.state.obj;
+        const timeId = window.setInterval(function(){
+
+            const newData = _self.state.obj;
+
+            if(oldData !== newData){
+
+                const obj = Object.assign({ id:_self.props.id }, newData.toJS().en);
+                Api.updataEnSummaryCase(obj).then(() => {
+
+                        oldData = newData ;
+
+                        _self.setState({
+                            isChange:false
+                        });
+                });
+            }
+
+        },this.timeSave);
+
+        this.setState({
+            timeId,
+        });
 
 	}
-	
+	componentWillUnmount(){
+
+        const {timeId} = this.state;
+
+        timeId && window.clearInterval(timeId);
+    }
 	changeState=(field:keyof SummarySpace.params,value:string)=>{
 
 		this.setState(pre=>{
 
 			return {
-				obj:pre.obj.setIn(["en",field],value)
+				obj:pre.obj.setIn(["en",field],value),
+				isChange:true,
 			}
 		})
 
@@ -130,7 +184,7 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 
 	submit=(e:React.MouseEvent<HTMLButtonElement>)=>{
 		const type = e.currentTarget!.name as "save" | "submit" | "error" |"pass" |"reject";
-		const {id,pathTo} = this.props;
+		const {id,pathTo,changeMenu} = this.props;
 	 
 		const notification = this.notificationRef.current!;
 
@@ -140,7 +194,9 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 				this.toggleModal();
 				break;
 			case "submit":{
-				if(document.querySelectorAll("#g-gdsummary .no-fill").length){
+				const status = this.props.data.china.status;
+				const oindex =  status ==6 ? 0 : 1 ;
+				if(document.querySelectorAll("#gTranslate .m-translate")[oindex].querySelectorAll(".no-fill").length){
 					notification.addNotice("填写完整，然后提交！","warn")
 					return ;
 				}
@@ -150,14 +206,15 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 
 				const obj =Object.assign({id},paramsData.ch);
 
-				if(this.props.data.china.status == "6"){ // 报错，修改中文；
+				if( status== "6"){ // 报错，修改中文；
 					Api.saveChSummaryCase(obj).then(() => {
 						pathTo("summary");
 					})
 
 				}else{
 					Api.commitEnSummaryCase(obj).then(()=>{
-						pathTo("gdsummary");
+						pathTo("summary");
+
 					});	
 				}
 			}
@@ -171,6 +228,9 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 				const obj =Object.assign({id},paramsData.en);
 				Api.updataEnSummaryCase(obj).then(()=>{
 					notification.addNotice("保存成功","success");
+					this.setState({
+						isChange:false
+					})
 				});	
 			}
 					break;
@@ -178,6 +238,7 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 			
 				Api.passEnSummaryCase(id).then(()=>{
 						pathTo("gdsummary");
+						changeMenu("1,0");
 				})
 				break;
 			case "reject":
@@ -330,7 +391,8 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
         const text = e.currentTarget!.dataset.name;
 
         this.setState(pre=>({
-          obj:pre.obj.setIn(["ch","fdept"],text!)   
+		  obj:pre.obj.setIn(["ch","fdept"],text!)  ,
+		  isChange:true
         }))
 
     }
@@ -349,7 +411,7 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 	render() {
 
 		const { data,type,roleId} = this.props;
-		const {initModal,showModal,reasonTxt,obj} = this.state;
+		const {initModal,showModal,reasonTxt,obj,isChange} = this.state;
 		const status = data.china.status;
 		const is_gdsummary = type == "/gdsummary";
 		const text = is_gdsummary && "归档文案" || "病例清单";
@@ -358,6 +420,7 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 
 		status == "6" &&( orgData = this.filterOrg());
 
+        const saveAlert:React.CSSProperties | undefined  = isChange ? {color:"black"} : undefined;
 
 		return (
 			<div className="g-padding g-gdsummary" id="g-gdsummary" >
@@ -421,24 +484,23 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 					{!is_gdsummary ? (<div className="translate-footer-opt">
 
 						{
-							roleId == "3202" ?
+							roleId == roleEnum.doctor ?
 							 <>
 								<Button field="error" handle={this.submit} styleType="line-btn" type="danger"><Icon styleType=""/>报错</Button>
-								<Button field="save" handle={this.submit}  type="green"><Icon styleType="fa-floppy-o"/>保存</Button>	
+								<Button field="save" handle={this.submit}  type="green"><Icon styleType="fa-floppy-o"/><span style={saveAlert}>保存</span></Button>	
 								<button className="s-btn normal-btn primary" name="submit" onClick={this.submit}><SvgIcon styleType="submit"/>提交</button>
 							</>
 							:<>
-								{status=="3" ?  <button className="s-btn normal-btn primary" name="pass" onClick={this.submit}><SvgIcon styleType="submit"/>通过</button>:null}
+								{status == caseStatus.submitCase  ?  <button className="s-btn normal-btn primary" name="pass" onClick={this.submit}><SvgIcon styleType="submit"/>通过</button>:null}
 
-								{status == "6" ? <button className="s-btn normal-btn primary" name="submit" onClick={this.submit}><SvgIcon styleType="submit" />提交</button> : null}
-
-								<button className="s-btn normal-btn danger" name="reject" onClick={this.submit}>驳回</button>
+								{status == caseStatus.errorCase ? <button className="s-btn normal-btn primary" name="submit" onClick={this.submit}><SvgIcon styleType="submit" />提交</button> : null}
+								{
+									status == caseStatus.submitCase ? 	<button className="s-btn normal-btn danger" name="reject" onClick={this.submit}>驳回</button> :null
+								}
+								
 							</>
 
 						}
-
-						
-
 
 					
 						<Link to={{ pathname: "/summary", state: { text: "病历清单" } }}><button className="s-btn line-btn green" ><i className="fa fa-undo">&nbsp;</i>返回</button></Link>
@@ -453,7 +515,10 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 }
 
 
-class Container extends React.PureComponent<RouteComponentProps & reduxProp ,ContainerState> {
+
+
+
+class Container extends React.PureComponent<RouteComponentProps & reduxProp & reduxDisPatch  ,ContainerState> {
 
 	state:ContainerState={
 		data:null,
@@ -488,9 +553,9 @@ class Container extends React.PureComponent<RouteComponentProps & reduxProp ,Con
 	render(){
 
 		const {data,orgData} = this.state;
-		const{location:{state:{id,type}} ,roleId} =this.props;
+		const{location:{state:{id,type}} ,roleId,changeMenu} =this.props;
 
-		return data ? <TranslateManage  orgData={orgData} roleId={roleId} data={data} id={id}  type={type}  pathTo={this.back}/>:null;
+		return data ? <TranslateManage changeMenu={changeMenu}  orgData={orgData} roleId={roleId} data={data} id={id}  type={type}  pathTo={this.back}/>:null;
 	}
 }
 
@@ -508,9 +573,24 @@ const mapStateToProp: MapStateToProps<reduxProp, translateProps, appStore> = ({ 
 
 	}
 }
+type reduxDisPatch ={
+	changeMenu(menuUrl:string):void;
+} 
 
+const mapDisPatchToProp:MapDispatchToProps<reduxDisPatch,translateProps>=(dispatch)=>{
 
-export default connect(mapStateToProp)(Container);
+	return {
+
+		changeMenu:function(menuUrl:string){
+
+			dispatch(changeMenuUrl(menuUrl));
+
+		},
+
+	}
+}; 
+
+export default connect(mapStateToProp,mapDisPatchToProp)(Container);
 
 
 

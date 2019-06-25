@@ -135,6 +135,7 @@ type InpBoxProp = {
 	value?: string;
 	changeHandle: (field: string, value: string) => void;
 	field: string;
+	placeholder?:string;
 }
 
 type InpBoxState = {
@@ -154,14 +155,14 @@ class InpBox extends React.PureComponent<InpBoxProp, InpBoxState>{
 	}
 
 	render() {
-		const { type, title, styleType, value } = this.props;
+		const { type, title, styleType, value , placeholder} = this.props;
 
 		const fillStatus = value ? "" : " no-fill ";
 
 		return (
 			<div className="item-inp">
-				<span className="m-inp-tit">{title}: </span>
-				<input type={type} className={"s-inp " + fillStatus + styleType} value={value} onChange={this.changeHandle} />
+				<span className="m-inp-tit">{title} </span>
+				<input type={type} className={"s-inp " + fillStatus + styleType} value={value} onChange={this.changeHandle} placeholder={ placeholder}/>
 			</div>
 		)
 

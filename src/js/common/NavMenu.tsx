@@ -156,12 +156,13 @@ type props = {
 		pathField?:"url";
 		iconField?:"sysParam";
 		idField?:"id";
+		menuUrl?:string;
 };
 
 
 type state={
 	data:Immutable.List<MenuItem>;
-	preIndex:number[];			
+	preIndex:(number| string)[];			
 }
 
 class NavMenu extends React.PureComponent<  props,state>{
@@ -173,19 +174,19 @@ class NavMenu extends React.PureComponent<  props,state>{
 					iconField:"icon",
 					idField:"id",
 					defaultNav: [],
+					menuUrl:"0,0"
 				};
 
 	state:state={
-			data:Immutable.fromJS(this.addFieldToData(this.props.data)),
-			preIndex:[0,0],
+			data:Immutable.fromJS(this.addFieldToData(this.props.data,this.props.menuUrl!.split(","))),
+			preIndex:this.props.menuUrl!.split(","),
 	}	
 	
 
 
 	
 
-	addFieldToData(data:props["data"]){
-		const preIndex = [0,0];
+	addFieldToData(data:props["data"],preIndex:state["preIndex"]){
 		return data.map((val,index)=>{
 			const is_firstPar = index == preIndex[0];
 			val.active = is_firstPar;  
@@ -201,9 +202,9 @@ class NavMenu extends React.PureComponent<  props,state>{
 
 	componentWillReceiveProps(nextProp:props){
 
-		if(nextProp.data!==this.props.data){
+		if(nextProp.data!==this.props.data  || nextProp.menuUrl !== this.props.menuUrl){
 			this.setState({
-				data:Immutable.fromJS(this.addFieldToData(nextProp.data)),
+				data:Immutable.fromJS(this.addFieldToData(nextProp.data,nextProp.menuUrl!.split(","))),
 				preIndex:[0,0],
 			})
 		}

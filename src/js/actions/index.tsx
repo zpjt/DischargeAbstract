@@ -10,6 +10,7 @@ declare global{
 			status: string;
 			user_id: string;
 			user_name: string;
+			menuUrl:string;
 	}
 
 	interface appStore {
