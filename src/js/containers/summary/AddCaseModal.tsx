@@ -31,7 +31,7 @@ type caseModalState = {
 class AddCaseModal extends React.PureComponent< caseModalProps, caseModalState>{
 
     timeSave=10000;
-    
+    id="";
     state:caseModalState ={
         data:createTypedMap(this.props.data),
         timeId:null,
@@ -50,13 +50,14 @@ class AddCaseModal extends React.PureComponent< caseModalProps, caseModalState>{
             if(oldData !== newData){
 
                 const obj = Object.assign({ user_id:_self.props.user_id }, newData.toJS());
-                Api.addChSummaryCase(obj).then(() => {
+                Api.addChSummaryCase(obj).then((res:AxiosInterfaceResponse) => {
 
                         oldData = newData ;
 
-                        _self.setState({
-                            isChange:false
-                        })
+                        _self.setState(pre=>({
+                            isChange:false,
+                            data:pre.data.set("id",res.data.id),
+                        }))
                 });
             }
 
@@ -82,13 +83,14 @@ class AddCaseModal extends React.PureComponent< caseModalProps, caseModalState>{
 
         if (type == "save") {
 
-            Api.addChSummaryCase(obj).then(()=> {
+            Api.addChSummaryCase(obj).then((res:AxiosInterfaceResponse)=> {
 
                 notifacation.addNotice("保存成功！","success");
 
-                this.setState({
-                    isChange:false
-                })
+                this.setState(pre=>({
+                    isChange:false,
+                    data:pre.data.set("id",res.data.id)
+                }))
 
             });
 

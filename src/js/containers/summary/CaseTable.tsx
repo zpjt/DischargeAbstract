@@ -66,6 +66,7 @@ class ResultSearch extends React.PureComponent<ResultProp,ResultState>{
         {
             text: "姓名",
             field: "fname",
+            width: 180,
         },
         {
             text: "性别",
@@ -119,7 +120,7 @@ class ResultSearch extends React.PureComponent<ResultProp,ResultState>{
         {
             text: "操作",
             field: "opt",
-            width: 180,
+            width: 140,
             formatter: (node:any)=>{
 
                 const { type ,roleId} = this.props;

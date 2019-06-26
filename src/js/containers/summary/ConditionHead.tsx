@@ -38,8 +38,8 @@ const translateArr = [
 		id: "1",
 		text: "未翻译",
 		text2:""
-	}
-	,
+	},
+	
 	//  {
 	// 	id: "2",
 	// 	text: "已翻译"
@@ -67,11 +67,12 @@ const translateArr2 = [
 		id: "1",
 		text: "未翻译",
 		text2:""
-	}
-	, {
-		id: "2",
-		text: "已翻译"
-	}, {
+	},
+	// , {
+	// 	id: "2",
+	// 	text: "已翻译"
+	// }, 
+	{
 		id: "4",
 		text: "驳回"
 	},

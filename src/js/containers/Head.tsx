@@ -9,7 +9,7 @@ import Api from "@api/main";
 import {Notification} from "@js/common/toast/index";
 import SocketNews from "./Socket";
 
- const LoginUrl = window.getSession("getPath")+"login.html";
+ const LoginUrl = window.getSession("getPath")+"login";
 
 type HeadProp = {
 
