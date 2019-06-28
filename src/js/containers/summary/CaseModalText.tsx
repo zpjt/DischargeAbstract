@@ -55,16 +55,16 @@ class CaseModal extends React.PureComponent<caseModalProps>{
                             <p className="m-tit">{config.title}</p>
                             <div className="g-translate-header" >
                                 <div className="m-add-item">
-                                    <p ><span className="m-right-tit m-head-tit">{config.fname}：</span>{is_en}{fname}</p>
-                                    <p ><span className="m-right-tit m-head-tit">{config.fdept}：</span>{is_en}{fdept}</p>
+                                    <p ><span className="m-right-tit m-head-tit">{config.fname}：</span>{is_en}<span className="head-txt">{fname}</span></p>
+                                    <p ><span className="m-right-tit m-head-tit">{config.fdept}：</span>{is_en}<span className="head-txt">{fdept}</span></p>
                                 </div>
                                  <div className="m-add-item">
-                                    <p ><span className="m-right-tit m-head-tit">{config.fsex}：</span>{is_en}{fsex} </p>
-                                    <p ><span className="m-right-tit m-head-tit">{config.fdeb}：</span>{is_en}{fdeb}</p>
+                                    <p ><span className="m-right-tit m-head-tit">{config.fsex}：</span>{is_en}<span className="head-txt">{fsex}</span> </p>
+                                    <p ><span className="m-right-tit m-head-tit">{config.fdeb}：</span>{is_en}<span className="head-txt">{fdeb}</span></p>
                                 </div>
                                 <div className="m-add-item">
-                                    <p ><span className="m-right-tit m-head-tit">{config.fage}：</span>{is_en}{fage}</p>
-                                    <p ><span className="m-right-tit m-head-tit">{config.fprn}：</span>{is_en}{fprn}</p>
+                                    <p ><span className="m-right-tit m-head-tit">{config.fage}：</span>{is_en}<span className="head-txt">{fage}</span></p>
+                                    <p ><span className="m-right-tit m-head-tit">{config.fprn}：</span>{is_en}<span className="head-txt">{fprn}</span></p>
                                 </div>
                             </div>
                             <div className=" g-tanslate-content">

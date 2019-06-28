@@ -34,9 +34,9 @@ class CaseModal extends React.PureComponent<caseModalProps>{
     changeHandle = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const tagert = e.currentTarget!;
         const field = tagert.name as "fage";
-        const value = tagert.value;
+        const value = tagert.value.trim();
+        this.props.changeState(field,value);
        
-        this.props.changeState(field,value)
     }
 
     setSex=(seletArr:Readonly<any[]>)=>{

@@ -24,6 +24,7 @@ type props = {
 	require?: boolean;
 	placeholder?: string;
 	dirctionUp?:boolean;
+	renderClick?:boolean;
 }
 
 
@@ -107,7 +108,11 @@ export default class Combobox extends React.PureComponent<props, state>{
 			this.setState({
 				data: Immutable.fromJS(this.addField(nextProp.data, slected)),
 				slected,
-			})
+			});
+
+			
+
+			nextProp.renderClick &&  nextProp.clickCallback && nextProp.clickCallback([{id:nextProp.defaultVal!,text:""}],nextProp.field)
 		}
 
 

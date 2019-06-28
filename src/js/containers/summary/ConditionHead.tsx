@@ -4,6 +4,7 @@ import Calendar from "@js/common/calendar/index";
 import Combobox from "@js/common/combobox/index";
 import {Link} from "react-router-dom";
 import {Button,Icon} from "@js/common/Button";
+import {connect,MapStateToProps} from "react-redux";
 
 type HeadOptProp = {
 	changeHandle(field:string,value:string):void;
@@ -30,7 +31,7 @@ const sexArr = [
 	},
 	{
 		id: "0",
-		text: "男、女"
+		text: "所有"
 	}
 ];
 const translateArr = [
@@ -81,7 +82,7 @@ const translateArr2 = [
 		text: "所有"
 	}
 ];
-export default class HeadOpt extends React.PureComponent<HeadOptProp, HeadOptState>{
+ class HeadOpt extends React.PureComponent<HeadOptProp & reduxStateProp , HeadOptState>{
 
 	state = {
 	}
@@ -139,7 +140,7 @@ export default class HeadOpt extends React.PureComponent<HeadOptProp, HeadOptSta
 
 	render() {
 
-		const {type,roleId,showUpfileHandle} = this.props;
+		const {type,roleId,showUpfileHandle,filterType} = this.props;
 		return (<>
 			<div>
 
@@ -152,7 +153,7 @@ export default class HeadOpt extends React.PureComponent<HeadOptProp, HeadOptSta
 						<Calendar ableClear={true} field="lrdata" width={140} placeholder="录入时间" clickBack={this.changeTime} />
 						{ type == "/gdsummary"? <Calendar ableClear={true} field="gddata" width={140} placeholder="归档时间" clickBack={this.changeTime} /> :null }
 						{
-						type !== "/gdsummary"	? <Combobox data={ roleId=="3202" ?translateArr2 : translateArr } field="status" clickCallback={this.comboboxCallback} width={100}  defaultVal="0" /> : null 
+						type !== "/gdsummary"	? <Combobox data={ roleId=="3202" ?translateArr2 : translateArr } field="status" clickCallback={this.comboboxCallback} renderClick={true} width={100}  defaultVal={filterType}  /> : null 
 						}
 						
 					</div>
@@ -175,3 +176,21 @@ export default class HeadOpt extends React.PureComponent<HeadOptProp, HeadOptSta
 	}
 
 }
+
+type reduxStateProp = {
+	filterType:string;
+}
+
+
+
+const mapStateToProps: MapStateToProps<reduxStateProp, HeadOptProp, appStore> = ({ app }) => {
+
+	return {
+		filterType:app.get("filterType")
+	}
+
+}
+
+
+
+export default connect(mapStateToProps)(HeadOpt);

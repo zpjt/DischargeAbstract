@@ -204,14 +204,16 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 
 				const paramsData = paramsObj.toJS();
 
-				const obj =Object.assign({id},paramsData.ch);
+				
 
 				if( status== "6"){ // 报错，修改中文；
+					const obj =Object.assign({id},paramsData.ch);
 					Api.saveChSummaryCase(obj).then(() => {
 						pathTo("summary");
 					})
 
 				}else{
+					const obj =Object.assign({id},paramsData.en);
 					Api.commitEnSummaryCase(obj).then(()=>{
 						pathTo("summary");
 
@@ -269,9 +271,8 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 				this.toggleModal();
 
 				notification.addNotice(res.message,"success");
-
 				
-
+				res.code == 200 &&	this.props.pathTo("summary");
 
 
 			});
@@ -284,6 +285,7 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 				notification.addNotice(res.message,"success");
 
 				
+				res.code==200 && this.props.pathTo("summary");
 
 
 

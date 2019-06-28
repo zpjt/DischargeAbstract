@@ -3,11 +3,12 @@ import { withRouter, RouteComponentProps } from "react-router-dom"
 import { connect, MapStateToProps ,MapDispatchToProps} from "react-redux";
 import Modal from "@js/common/Modal";
 import { InpBox } from "@js/common/InputBtn";
-import {changeRole} from "@js/actions/appAction";
+import {changeRole,changeFilterType,changeMenuUrl} from "@js/actions/appAction";
 import {SvgIcon} from "@js/common/Button";
 import Api from "@api/main";
 import {Notification} from "@js/common/toast/index";
 import SocketNews from "./Socket";
+import {Icon} from "@js/common/Button"
 
  const LoginUrl = window.getSession("getPath")+"login";
 
@@ -20,6 +21,7 @@ type HeadState = {
 	showPasswordModal: boolean;
 	password: string;
 	newPassword:string;
+	warnText:string;
 }
 
 class Head extends React.PureComponent<RouteComponentProps<HeadProp> & reduxStateProp & dispatchProp, HeadState>{
@@ -29,6 +31,7 @@ class Head extends React.PureComponent<RouteComponentProps<HeadProp> & reduxStat
 		showPasswordModal: false,
 		password: "",
 		newPassword: "",
+		warnText:""
 	}
 
 	componentDidMount(){
@@ -49,20 +52,23 @@ class Head extends React.PureComponent<RouteComponentProps<HeadProp> & reduxStat
 		const {newPassword,password} = this.state;
 		const {user_id} = this.props;
 
-		const notifition = this.notifitionRef.current!;
+		
 
 		const result = await Api.checkPwd(user_id,password) as AxiosInterfaceResponse;
 	
 		if(result.code===200){
-				Api.updatePwd(user_id,newPassword).then((res:AxiosInterfaceResponse)=>{
+				Api.updatePwd(user_id,newPassword).then(()=>{
 
-						notifition.addNotice(res.message,"success");
+						
 						this.togglePassword();
 						window.location.href=LoginUrl;
 
 				});
 		}else{
-			notifition.addNotice(result.message,"warn");
+			
+			this.setState({
+				warnText:result.message
+			})
 		}
 
 
@@ -73,8 +79,9 @@ class Head extends React.PureComponent<RouteComponentProps<HeadProp> & reduxStat
 		const {newPassword,password} = this.state;
 		if(!newPassword || !password){
 
-			this.notifitionRef.current!.addNotice("填写完整！","warn");
-
+			this.setState({
+				warnText:"填写完整！"
+			});
 			return
 
 		}
@@ -87,6 +94,9 @@ class Head extends React.PureComponent<RouteComponentProps<HeadProp> & reduxStat
 		this.setState(pre => ({
 			initPasswordModal: true,
 			showPasswordModal: !pre.showPasswordModal,
+			warnText:"",
+			password: "",
+			newPassword: "",
 		}))
 	}
 
@@ -105,10 +115,37 @@ class Head extends React.PureComponent<RouteComponentProps<HeadProp> & reduxStat
 		this.props.dispatchChangeRole(roleIndex);
 	}
 
+	changeFilterAndJump=(filter:string)=>{
+
+		
+		
+		if(this.props.location.pathname=="/summary"){
+				this.props.dispatchChangeFilter(filter);
+		}else{
+			const _self = this;
+			this.props.dispatchChangeMenu("1,0");
+				setTimeout(function(){
+				_self.props.dispatchChangeFilter(filter);
+
+			},0);
+		}
+		
+		
+		
+
+		this.props.history.push({
+			pathname:"/summary",
+			state:{
+				text:"病例清单"	
+			}
+		})
+
+	}
+
 	render() {
 
-		const { user_name, role_arr, role_index, role_ids ,user_id} = this.props;
-		const { initPasswordModal, showPasswordModal, password,newPassword} = this.state;
+		const { user_name, role_arr, role_index, role_ids ,user_id,org_name} = this.props;
+		const { initPasswordModal, showPasswordModal, password,newPassword,warnText} = this.state;
 
 		const role_id = role_ids[role_index];
 
@@ -125,7 +162,7 @@ class Head extends React.PureComponent<RouteComponentProps<HeadProp> & reduxStat
 				className="pwd-M"
 
 			>
-				<p className="item-inp">用户名：{user_name}</p>
+				<p className="item-inp"><span className="m-inp-tit">用户名</span>{user_name}</p>
 				<InpBox
 					type="password"
 					styleType="normal"
@@ -143,6 +180,7 @@ class Head extends React.PureComponent<RouteComponentProps<HeadProp> & reduxStat
 					changeHandle={this.changePassword}
 				/>
 
+				{warnText ? <div><p className="m-warn"><Icon styleType="fa-exclamation-triangle" />{warnText}</p></div> : null} 
 
 			</Modal>) : null}
 			<span className="m-theme">出院小结管理</span>
@@ -165,10 +203,14 @@ class Head extends React.PureComponent<RouteComponentProps<HeadProp> & reduxStat
 					</ul>:null}
 				</div>
 				<div className="m-mail">
-					 <SocketNews  user_id={user_id} role_id={role_id}/>
+					 <SocketNews  user_id={user_id} role_id={role_id} filterDispatch={this.changeFilterAndJump}/>
+				</div>
+				<div>
+					<span >{org_name}</span>
 				</div>
 				<div className="g-user-opt" >
 					<div style={{ padding: "20px 10px" }}>
+						
 						<SvgIcon styleType="user" size="size1"/>
 						<span style={{verticalAlign:4}}>{user_name}</span>
 					</div>
@@ -196,11 +238,14 @@ type reduxStateProp = {
 	role_index: number;
 	role_ids: string[];
 	user_id:string;
+	org_name:string;
 }
 
 type dispatchProp = {
 
+	dispatchChangeFilter:(filter:string)=>void;
 	dispatchChangeRole:(roleIndex:number)=>void;
+	dispatchChangeMenu(url:string):void;
 }
 
 const mapStateToProps: MapStateToProps<reduxStateProp, RouteComponentProps<HeadProp>, appStore> = ({ app }) => {
@@ -211,6 +256,7 @@ const mapStateToProps: MapStateToProps<reduxStateProp, RouteComponentProps<HeadP
 		role_ids: app.get("role_ids"),
 		role_index: app.get("role_index"),
 		user_id:app.get("user_id"),
+		org_name:app.get("org_names")[0]
 	}
 
 }
@@ -221,7 +267,17 @@ const mapDispatchToProps: MapDispatchToProps<dispatchProp, RouteComponentProps<H
 
 
 			dispatch(changeRole(roleIndex))
-		}
+		},
+		dispatchChangeFilter:function(filter:string){
+
+
+			dispatch(changeFilterType(filter))
+		},
+		dispatchChangeMenu: function (url: string) {
+
+
+			dispatch(changeMenuUrl(url))
+		},
 
 	}
 

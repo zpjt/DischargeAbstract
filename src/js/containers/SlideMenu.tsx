@@ -2,10 +2,11 @@ import * as React from "react";
 import MenuNav from "@js/common/NavMenu";
 import ErrorBoundary from "@js/common/ErrorBoundary";
 import * as Velocity from "velocity-react";
-import {connect,MapStateToProps} from "react-redux";
+import {connect,MapStateToProps,MapDispatchToProps} from "react-redux";
 import  Api from "@api/main";
 import {SvgIcon} from "@js/common/Button";
-import {withRouter,RouteComponentProps} from "react-router-dom"
+import {withRouter,RouteComponentProps} from "react-router-dom";
+import {changeFilterType} from "@js/actions/appAction"
 
 type slideMenu={
 	expand:boolean;
@@ -22,7 +23,7 @@ type SlideMenuState ={
 
 }
 
-class SlideMenu extends React.PureComponent< reduxProp & RouteComponentProps<SlideMenuProp> ,SlideMenuState>{
+class SlideMenu extends React.PureComponent< dispatchProp & reduxProp & RouteComponentProps<SlideMenuProp> ,SlideMenuState>{
 
 	state:slideMenu = {
 		expand:true,
@@ -82,7 +83,11 @@ class SlideMenu extends React.PureComponent< reduxProp & RouteComponentProps<Sli
 		})
 	}
 
-	
+	restFilter=()=>{
+
+
+		this.props.dispatchChangeFilter("0");
+	}
 
 	render(){
 
@@ -106,6 +111,7 @@ class SlideMenu extends React.PureComponent< reduxProp & RouteComponentProps<Sli
 												textField="name" 
 												iconField="sysParam"
 												menuUrl={menuUrl}
+												clickBack={this.restFilter}
 											/> :null}
 											</ErrorBoundary>
 					</div>
@@ -132,8 +138,22 @@ const mapStateToProp:MapStateToProps<reduxProp,RouteComponentProps<SlideMenuProp
 
 	}
 };
+type dispatchProp = {
+	dispatchChangeFilter:(filter:string)=>void;
+}
+const mapDispatchToProps: MapDispatchToProps<dispatchProp, RouteComponentProps<SlideMenuProp>> = (dispatch) => {
+
+	return {
+		
+		dispatchChangeFilter:function(filter:string){
 
 
+			dispatch(changeFilterType(filter))
+		}
+
+	}
+
+}
 
 
-export default withRouter(connect(mapStateToProp)(SlideMenu)) ;
+export default withRouter(connect(mapStateToProp,mapDispatchToProps)(SlideMenu)) ;

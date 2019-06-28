@@ -5,6 +5,7 @@ const Url = "ws://"+window.location.host+window.getSession("getPath")+"WebSocket
 type socketProps={
   user_id:string;
   role_id:string;
+ filterDispatch:(filter:string)=>void;
 }
 type soketState={
     data:string[];
@@ -108,6 +109,31 @@ class SoketNews extends React.PureComponent<socketProps,soketState>{
             this.webSocket.close();
         }
     }
+
+    viewType=(e:React.MouseEvent<HTMLLIElement>)=>{
+
+        const str = e.currentTarget!.innerHTML;
+        const {filterDispatch} = this.props;
+        let type ="0";
+        if(str.includes("审核")){
+
+            type="3"
+
+        }else if(str.includes("报错")){
+            type ="6"
+
+        }else if(str.includes("驳回")){
+            type="4"
+        }else if(str.includes("翻译")){
+            type="1"
+        }
+
+        filterDispatch(type);
+
+
+       
+
+    }
 	
 
 	heart() {
@@ -141,7 +167,7 @@ class SoketNews extends React.PureComponent<socketProps,soketState>{
                     {
                       data.length ?  data.map((val,index)=>{
                             return (
-                                <li key={index}>{val}</li>
+                                <li key={index} onClick={this.viewType}>{val}</li>
                             )
                         }) :<li>没有消息!</li>
                     }

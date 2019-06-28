@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import "@css/menu.scss";
 import * as Immutable from "immutable";
 import * as Velocity from "velocity-react";
@@ -49,7 +49,7 @@ class ParMenu extends React.PureComponent<ItemProps>{
 
 		const { obj, textField, idField, iconField, pathField, slectItem, sub, index } = this.props;
 
-		const path = obj.get(pathField);
+	//	const path = obj.get(pathField);
 		const text = obj.get(textField);
 		const icon = obj.get(iconField);
 
@@ -58,12 +58,13 @@ class ParMenu extends React.PureComponent<ItemProps>{
 		const hObj = this.props.expand ? { display: "block" } : {};
 		return (
 			<li className="li-par">
-				<div className={"menu-item menu-par " + activeName} onClick={() => slectItem(index)}>
+				<div className={"menu-item menu-par " + activeName} >
 					<span className="par-icon">
 						<SvgIcon styleType={icon} />
 					</span>
 					<span className="j-nav" >
-						<Link to={path}>{text}</Link>
+						{text}
+						{/* <Link to={path}>{text}</Link> */}
 					</span>
 					<span className="j-slide_menu" onClick={this.toggle}>
 						<i className={"fa fa-chevron-" + (!this.state.drop ? "down" : "up")}></i>
@@ -157,6 +158,7 @@ type props = {
 	iconField?: "sysParam";
 	idField?: "id";
 	menuUrl?: string;
+	clickBack?:()=>void;
 };
 
 
@@ -278,6 +280,10 @@ class NavMenu extends React.PureComponent<props, state>{
 
 
 			return { data, preIndex }
+		},()=>{
+
+
+			this.props.clickBack && this.props.clickBack();
 		});
 
 	}

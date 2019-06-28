@@ -1,12 +1,13 @@
 import  ReduceCreate from "./createReucer";
 import {createTypedMap} from "@js/common/ImmutableMap";
 
-const defaultApp = Object.assign({menuUrl:"0,0"},window.getSession("getUser"));
+const defaultApp = Object.assign({menuUrl:"0,0",filterType:"0"},window.getSession("getUser"));
 
 const defaultLoginState:appStore["app"] =  createTypedMap(defaultApp);
 
 const CHANGE_ROLE = "CHANGE_ROLE";
 const CHANGE_MENUURL = "CHANGE_MENUURL";
+const CHANGE_FILTER = "CHANGE_FILTER";
 
 const changeRole = (roleId:number)=>{
 
@@ -24,18 +25,32 @@ const changeMenuUrl = (menuUrl:string)=>{
 		menuUrl,
 	}
 
+} 
+
+const changeFilterType =(fitler:string)=>{
+
+
+	return {
+		type:CHANGE_FILTER,
+		fitler,
+	}
 }
 
 const userInfo= ReduceCreate(defaultLoginState,{
 	[CHANGE_ROLE]:function(state,action:ReturnType<typeof changeRole>){
 
-		return state.set("role_index",action.roleId).set("menuUrl","0,0");
+		return state.set("role_index",action.roleId).set("menuUrl","0,0").set("filterType","0");
 
 
 	},
 	[CHANGE_MENUURL]:function(state,action:ReturnType<typeof changeMenuUrl>){
 
 		return state.set("menuUrl",action.menuUrl);
+
+	},
+	[CHANGE_FILTER]:function(state,action:ReturnType<typeof changeFilterType>){
+
+		return state.set("filterType",action.fitler).set("menuUrl","0,0");
 
 	}
 });
@@ -48,6 +63,7 @@ const userInfo= ReduceCreate(defaultLoginState,{
 export {
 	userInfo,
 	changeRole,
-	changeMenuUrl
+	changeMenuUrl,
+	changeFilterType
 }
 

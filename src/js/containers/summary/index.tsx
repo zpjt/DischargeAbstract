@@ -173,6 +173,8 @@ class CaseManage extends React.PureComponent<RouteComponentProps<caseProps> & re
 		if(!enPk || !url){
 
 			this.notificationRef.current!.addNotice("填写完整！","warn");
+
+			return ;
 		}
 		Api.upCaseFile(url,enPk).then((res:AxiosInterfaceResponse)=>{
 

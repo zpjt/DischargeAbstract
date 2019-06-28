@@ -21,10 +21,10 @@ body,html{
   fill: currentColor;
 	overflow: hidden;
 	&.size1{
-		font-size:30px;
+		font-size:28px;
 	}
 	&.size2{
-		font-size:40px;
+		font-size:34px;
 	}
 }
 
@@ -51,9 +51,10 @@ body,html{
 				padding-right:16px;
 				color:white;
 				.m-logo{
-						background: url("../assert/imgs/company_logo.svg") center  no-repeat;
-						flex: auto;
+						background: url("../assert/imgs/company.png") center  no-repeat;
+						flex: 1;
 						height: 100%;	
+						background-size: contain;
 					}
 					.j-slideBar{
 						cursor: pointer;
@@ -86,6 +87,7 @@ body,html{
 				overflow: hidden;
 				height: calc(100% - #{$Head});
 				position: relative;
+				z-index: 2;
 			}
 			.g-sys_set{
 				font-size: 20px;
@@ -228,6 +230,17 @@ background: none;
 		letter-spacing: .1em;
 	}
 }
+.m-warn{
+		color: $error;
+		position: absolute;
+		padding: 6px;
+		animation: test .4s cubic-bezier(0.075, 0.82, 0.165, 1) forwards;
+		transform: translateX(300px) ;
+	}
 
+@keyframes test{
 
-
+	to{
+		transform: translateX(0)
+	}
+}

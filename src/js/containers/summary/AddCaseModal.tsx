@@ -124,7 +124,7 @@ class AddCaseModal extends React.PureComponent< caseModalProps, caseModalState>{
         this.setState(pre=>({
            
              data:pre.data.set(field,value),
-             isChange:true,  
+             isChange:value!="",  
         }))
     }
     
@@ -216,6 +216,12 @@ class Container extends React.PureComponent<RouteComponentProps<{}> & reduxState
 
     componentDidMount() {
         const {user_id} = this.props;
+
+        const time = new Date();
+        const year = time.getFullYear();
+		const month = time.getMonth() + 1;
+        const day = time.getDate();
+        const timeStr = ""+year +"-" +month+"-"+day;
         const obj = {
 			fname: "",
 			fsex: "男",
@@ -230,8 +236,8 @@ class Container extends React.PureComponent<RouteComponentProps<{}> & reduxState
 			fcyzd: "",
 			fcyqk: "",
 			fcyyz: "",
-			frydata: "",
-			fcydata: "",
+			frydata: timeStr,
+			fcydata: timeStr,
             fsumd: "",
             id:"",
 		}

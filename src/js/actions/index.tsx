@@ -11,6 +11,7 @@ declare global{
 			user_id: string;
 			user_name: string;
 			menuUrl:string;
+			filterType:string;
 	}
 
 	interface appStore {
