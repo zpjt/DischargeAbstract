@@ -121,9 +121,11 @@ class AddCaseModal extends React.PureComponent< caseModalProps, caseModalState>{
     }
 
     changeState=(field:keyof SummarySpace.params,value:string)=>{
+
+        const val = field =="fage" ? value.substr(0,3) : value;
         this.setState(pre=>({
            
-             data:pre.data.set(field,value),
+             data:pre.data.set(field,val),
              isChange:value!="",  
         }))
     }

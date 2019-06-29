@@ -54,10 +54,10 @@ class CaseModal extends React.PureComponent<caseModalProps>{
 
     
     
-    static ItemInp:React.SFC<{is_en:boolean,value:string,field?:string,handle:(e:React.ChangeEvent<HTMLInputElement>)=>void}>=({is_en,field,value,handle})=>{
+    static ItemInp:React.SFC<{is_en:boolean,value:string,field?:string,handle:(e:React.ChangeEvent<HTMLInputElement>)=>void,type?:string}>=({is_en,field,value,handle,type="text"})=>{
 
 
-        return !is_en ? <input type="text" name={field} className={"s-inp normal "+ (!value?"no-fill":"")}  value={value} onChange={handle} /> :
+        return !is_en ? <input type={type}  name={field} className={"s-inp normal "+ (!value?"no-fill":"")}  value={value} onChange={handle} /> :
                         <input type="text" readOnly className="s-inp normal" defaultValue={value}  />
     }
     
@@ -96,7 +96,7 @@ class CaseModal extends React.PureComponent<caseModalProps>{
                                 </div>
                                  <div className="m-add-item">  
                                     <div>{config.fage}：<br />
-                                     <CaseModal.ItemInp is_en={is_en} field="fage" value={fage} handle={this.changeHandle} />
+                                     <CaseModal.ItemInp is_en={is_en} field="fage" type="number"  value={fage} handle={this.changeHandle} />
                                      </div>
                                     <div>{config.fprn}：<br />
                                      <CaseModal.ItemInp is_en={is_en} field="fprn" value={fprn} handle={this.changeHandle} />

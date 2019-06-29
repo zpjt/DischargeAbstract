@@ -147,9 +147,9 @@ const translateArr2 = [
 				<div style={{ display: "flex", justifyContent: "space-between" }}>
 
 					<div className="m-filter-box">
-						<Search width={140} searchHandle={this.inputChange} field="fdept" hasBtn={false} tip="科室搜索..." closeHandle={this.closeInput} />
+						<Search width={170} searchHandle={this.inputChange} field="fdept" hasBtn={false} tip="科室搜索..." closeHandle={this.closeInput} />
 						<Combobox data={sexArr} field="fsex"  width={100} placeholder="性别..." defaultVal="0" clickCallback={this.comboboxCallback} />
-						<Search searchHandle={this.inputChange} field="fage" hasBtn={false} width={80} tip="年龄搜索..." closeHandle={this.closeInput} />
+						<Search searchHandle={this.inputChange} field="fage" hasBtn={false} width={120} tip="年龄搜索..." closeHandle={this.closeInput} />
 						<Calendar ableClear={true} field="lrdata" width={140} placeholder="录入时间" clickBack={this.changeTime} />
 						{ type == "/gdsummary"? <Calendar ableClear={true} field="gddata" width={140} placeholder="归档时间" clickBack={this.changeTime} /> :null }
 						{

@@ -81,10 +81,12 @@ export default class SearchCom extends React.PureComponent<props, state>{
 					className="s-inp" 
 					placeholder={tip}
 					onKeyDown={this.keyPress}
+					style={!hasBtn?{paddingRight:26}:undefined}
 				/>
+			{!hasBtn && !searching ?	<span className="search-icon" onClick={this.toggleSearch}><i className="fa fa-search fa-lg"></i></span> :null}
 				<VelocityComponent animation={searching ? "fadeIn" : "fadeOut"}>
 					<span className="m-search-close" onClick={this.closeSearch}><i className="fa fa-times fa-lg"></i></span>
-				</VelocityComponent>
+			</VelocityComponent>
 			</span>
 			{hasBtn ? (<button className="s-btn normal-btn" onClick={this.toggleSearch}>
 				<span className="fa fa-search"></span>
