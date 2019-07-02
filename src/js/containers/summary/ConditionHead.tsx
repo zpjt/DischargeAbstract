@@ -69,10 +69,10 @@ const translateArr2 = [
 		text: "未翻译",
 		text2:""
 	},
-	// , {
-	// 	id: "2",
-	// 	text: "已翻译"
-	// }, 
+	 {
+		id: "2",
+	 	text: "未提交"
+	 }, 
 	{
 		id: "4",
 		text: "驳回"

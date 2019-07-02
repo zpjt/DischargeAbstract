@@ -356,8 +356,8 @@ class TranslateManage extends React.PureComponent<translateProps, translateState
 					<div > 
 						<span><button className="s-btn normal-btn primary">导出</button></span>
 						<ul className="m-dao-drop">
-							<li data-name="images" onClick={this.daoHandle}><i className="fa fa-file-image-o">&nbsp;</i><span>导出图片</span></li>
-							<li data-name="pdf" onClick={this.daoHandle}><i className="fa fa-file-pdf-o">&nbsp;</i><span>导出pdf</span></li>
+							{/* <li data-name="images" onClick={this.daoHandle}><i className="fa fa-file-image-o">&nbsp;</i><span>导出图片</span></li>
+							<li data-name="pdf" onClick={this.daoHandle}><i className="fa fa-file-pdf-o">&nbsp;</i><span>导出pdf</span></li> */}
 							<li data-name="word" onClick={this.daoHandle}><i className="fa fa-file-word-o"></i>&nbsp;<span>导出文档</span></li>
 						</ul>
 					</div>

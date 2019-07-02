@@ -122,6 +122,9 @@ class SoketNews extends React.PureComponent<socketProps,soketState>{
         }else if(str.includes("报错")){
             type ="6"
 
+        }else if(str.includes("未提交")){
+            type ="2"
+
         }else if(str.includes("驳回")){
             type="4"
         }else if(str.includes("翻译")){

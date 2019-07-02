@@ -58,7 +58,7 @@ class ParMenu extends React.PureComponent<ItemProps>{
 		const hObj = this.props.expand ? { display: "block" } : {};
 		return (
 			<li className="li-par">
-				<div className={"menu-item menu-par " + activeName} >
+				<div className={"menu-item menu-par " + activeName} onClick={this.toggle}>
 					<span className="par-icon">
 						<SvgIcon styleType={icon} />
 					</span>
@@ -66,11 +66,11 @@ class ParMenu extends React.PureComponent<ItemProps>{
 						{text}
 						{/* <Link to={path}>{text}</Link> */}
 					</span>
-					<span className="j-slide_menu" onClick={this.toggle}>
+					<span className="j-slide_menu" >
 						<i className={"fa fa-chevron-" + (!this.state.drop ? "down" : "up")}></i>
 					</span>
 				</div>
-				<Velocity.VelocityComponent animation={this.state.drop ? "slideDown" : "slideUp"} duration={300}>
+				<Velocity.VelocityComponent animation={this.state.drop ? "slideDown" : "slideUp"} interruptBehavior="queue"  duration={300}>
 					<ul className="child-ul " style={hObj}>
 						{
 							sub!.map((node: MenuItem, childIndex) => {

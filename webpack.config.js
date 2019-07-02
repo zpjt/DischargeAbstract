@@ -116,7 +116,7 @@ module.exports = env => {
 		},
 		optimization: {
 		
-		minimize: false,
+		//minimize: false,
 			namedModules: true,
 			namedChunks: true,
 			chunkIds: 'named',
@@ -223,12 +223,12 @@ module.exports = env => {
 			port: '8035', //设置端口号
 			openPage: "login.html",//导航页面
 			proxy: {
-				'/DischargSummary': {
+				'/DischargeSummary': {
 					target: 'http://localhost:8080',
 					secure: false,
 					changeOrigin: true,
 				},
-				'/DischargSummary/WebSocket': {
+				'/DischargeSummary/WebSocket': {
 					target: 'ws://localhost:8080',
 					ws: true,
 					secure: false,
